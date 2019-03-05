@@ -1,0 +1,45 @@
+/* breadcrumb
+/* ------------------------------------------------------ */
+.breadcrumb {
+    @extend %margin-0;
+    @extend %padding-0;
+    background-color: transparent !important;
+    li {
+        color: $header-text-color;
+        a {
+            font-weight: 400;
+        }
+        &:after{
+            font-family: $font-awesome;
+            color: $text-gray;
+            content: "\f105";
+            padding: 0 5px;
+        }
+        &:last-child{
+            &:after{
+                content: "";
+                @extend %padding-0;
+            }
+        }
+        & + li{
+            &:before{
+                content: " ";
+                @extend %padding-0;
+            }
+        }
+    }
+    & > .active {
+        color: $header-text-color;
+    }
+}
+.breadcrumb-top {
+    .breadcrumb {
+        padding: 0 0 20px;
+        @include respond-to(medium-desktop-to-mini-phone) {
+            padding: 0 0 10px;
+        }
+        .breadcrumb {
+            padding: 0 0 20px;
+        }
+    }
+}

@@ -1,0 +1,101 @@
+/* owl and slick buttons
+/* ------------------------------------------------------------------------ */
+
+.slick-prev {
+    @extend %left-0;
+}
+.slick-next{
+    @extend %right-0;
+}
+.slick-prev,
+.slick-next{
+    //background-color:$anchor;
+    opacity: .6;
+}
+.slick-prev:hover,
+.slick-prev:focus,
+.slick-next:hover,
+.slick-next:focus{
+    color: transparent;
+    outline: none;
+    opacity: .9;
+}
+
+.owl-theme .owl-nav{
+    @extend %margin-0;
+    [class*=owl-]{
+        @extend %animation-default;
+        @extend %padding-0;
+        @extend %margin-0;
+        @extend %absolute;
+        @include translate(0,-50%);
+        font-size: 16px;
+        //background-color:$anchor;
+        border: 1px solid transparent;
+        opacity: .6;
+        top: 44%;
+        width: 24px;
+        height: 24px;
+        line-height: 22px;
+        // &:hover {
+        //     background-color:$anchor;
+        // }
+    }
+    .owl-prev{
+        left: 12px;
+        text-indent: -1px;
+    }
+    .owl-next{
+        right: 12px;
+        text-indent: 1px;
+    }
+}
+.owl-theme .owl-dots{
+    margin-top: 10px;
+    text-align: center;
+    .owl-dot{
+        span{
+            width: 10px;
+            height: 10px;
+            margin: 0 2px;
+            background-color: #959595;
+            @extend %display-block;
+        }
+        &.active {
+            span {
+                @extend %background-color-transparent;
+                border: 1px solid #959595;
+            }
+        }
+    }
+}
+
+.owl-theme .owl-nav [class*=owl-]:hover,
+.owl-theme .owl-nav [class*=owl-]:focus,
+.owl-theme .owl-nav [class*=owl-]:active{
+    color: $white;
+    outline: none;
+    opacity: .9;
+    //background-color: rgba($anchor, 0.75);
+    //border-color: rgba($anchor, 0.75);
+}
+
+.detail-slider,
+.lightbox-slide,
+.banner-slider{
+    .owl-nav .owl-prev,
+    .owl-nav .owl-next{
+        width: 40px;
+        height: 40px;
+        line-height: 36px;
+        border-radius: 0;
+        top: 50%;
+        font-size: 28px;
+        @include respond-to(tablet-portrait){
+            width: 30px;
+            height: 30px;
+            line-height: 26px;
+            font-size: 18px;
+        }
+    }
+}

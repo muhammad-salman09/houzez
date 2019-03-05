@@ -1,0 +1,281 @@
+// * Responsive mixin. The media breakpoints are as defined
+// * in the twitter bootstrap framework:
+// *
+// * - phone
+// * - tablet-portrait
+// * - tablet-landscape-desktop
+// * - large-desktop
+// *
+// * Additional parameters for tagetting retina and non-retina
+// * devices
+// *
+// * - retina
+// * - non-retina
+// *
+// * Moreover, a specific value in px can be passed which is
+// * used to generate a max-width media query.
+ @mixin respond-to($media) {
+     //mini phones and down
+    @if $media == mini-phone {
+        @media (max-width: 321px) { @content; }
+    }
+     //Landscape phones and down
+    @else if $media == phone {
+        @media (max-width: 481px) { @content; }
+    }
+
+    // Landscape phone to portrait tablet
+    @else if $media == tablet-portrait {
+        @media (max-width: 767px) {@content; }
+    }
+    // Landscape phone to portrait tablet
+    @else if $media == equal-tablet-portrait {
+      @media (max-width: 768px) {@content; }
+    }
+    // Portrait tablet to landscape and desktop
+    @else if $media == tablet-landscape-desktop {
+        @media (min-width: 768px) and (max-width: 991px) { @content; }
+    }
+    //   Portrait tablet to landscape and desktop
+    @else if $media == tablet-landscape-up {
+      @media (min-width: 991px) { @content; }
+    }
+    // Medium desktop
+    @else if $media == medium-desktop {
+        @media (min-width: 992px) and (max-width: 1199px) { @content; }
+    }
+    // Large desktop
+    @else if $media == large-desktop {
+        @media (min-width: 1200px) { @content; }
+    }
+    // medium-desktop-to-mini-phone
+    @else if $media == medium-desktop-to-mini-phone {
+        @media (max-width: 991px) { @content; }
+    }
+    // large-desktop-to-mini-phone
+    @else if $media == large-desktop-to-mini-phone {
+        @media (max-width: 1199px) { @content; }
+    }
+
+    // Non-Retina
+    @else if $media == non-retina {
+        @media screen and (-webkit-max-device-pixel-ratio: 1) { @content; }
+    }
+    // Retina Only
+    @else if $media == retina {
+        @media screen and (-webkit-min-device-pixel-ratio: 2) { @content; }
+    }
+    // Specific max width
+    @else {
+        @media only screen and (max-width: #{$media}px) { @content; }
+    }
+}
+
+@mixin typography($font_size, $line_height, $margin, $font_weight, $transform, $position) {
+  font-size: $font_size;
+  line-height: $line_height;
+  margin: $margin;
+  font-weight: $font_weight;
+  text-transform: $transform;
+  text-align: $position;
+}
+@mixin position($type, $top, $right, $bottom, $left,$z-index) {
+  position: $type;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+  z-index: $z-index;
+}
+@mixin blockquote($text_align, $border_style, $border_width) {
+  text-align: $text_align;
+  border-style: $border_style;
+  border-width: $border_width;
+}
+@mixin thumb_content_padding($pad) {
+  padding-top: $pad;
+  padding-bottom: $pad;
+    
+}
+@mixin list-col($cols) {
+  columns: $cols;
+  -webkit-columns: $cols;
+  -moz-columns: $cols;
+}
+
+@mixin animation($str) {
+  -webkit-animation: #{$str};
+  -moz-animation: #{$str};
+  -ms-animation: #{$str};
+  -o-animation: #{$str};
+  animation: #{$str};
+}
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  //-moz-transition: $args;
+  //-ms-transition: $args;
+  //-o-transition: $args;
+  transition: $args;
+}
+
+@mixin backface-visibility ($arguments) {
+  -webkit-backface-visibility: $arguments;
+  -moz-backface-visibility: $arguments;
+  -ms-backface-visibility: $arguments;
+  -o-backface-visibility: $arguments;
+  backface-visibility: $arguments;
+}
+
+
+// generic transform
+@mixin transform($transforms) {
+  //-moz-transform: $transforms;
+  //-o-transform: $transforms;
+  //-ms-transform: $transforms;
+  -webkit-transform: $transforms;
+  transform: $transforms;
+}
+// rotate
+@mixin rotate ($deg) {
+  @include transform(rotate(#{$deg}deg));
+}
+
+// rotate
+@mixin rotateY ($deg) {
+  @include transform(rotateY(#{$deg}deg));
+}
+
+// scale
+@mixin scale($scale) {
+  @include transform(scale($scale));
+}
+@mixin scaleXY($scaleX,$scaleY) {
+  @include transform(scale($scaleX,$scaleY));
+}
+// scale
+@mixin scale_translate ($y,$scale) {
+  @include transform($y $scale);
+}
+// translate
+@mixin translate ($x, $y) {
+  @include transform(translate($x, $y));
+}
+// translate x
+@mixin translateX ($x) {
+  @include transform(translate($x,0));
+}
+// translate Y
+@mixin translateY ($y) {
+  @include transform(translate(0,$y));
+}
+// skew
+@mixin skew ($x, $y) {
+  @include transform(skew(#{$x}deg, #{$y}deg));
+}
+// translate translate3d
+@mixin translate3d ($p) {
+  @include transform(translate3d($p, 0, 0));
+}
+//transform origin
+@mixin transform-origin ($origin) {
+  //moz-transform-origin: $origin;
+  -o-transform-origin: $origin;
+  -ms-transform-origin: $origin;
+  -webkit-transform-origin: $origin;
+  transform-origin: $origin;
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  //-moz-border-radius: $radius;
+  //-ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin place-holder($color) {
+  .form-control::-moz-placeholder {
+    color: $color;
+    opacity: 1;
+  }
+  .form-control:-ms-input-placeholder {
+    color: $color;
+  }
+  .form-control::-webkit-input-placeholder {
+    color: $color;
+  }
+}
+// Placeholder text
+@mixin placeholder($color: $input-color-placeholder) {
+  // Firefox
+  &::-moz-placeholder {
+    color: $color !important;
+    opacity: 1; // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526
+  }
+  &:-ms-input-placeholder { color: $color !important; } // Internet Explorer 10+
+  &::-webkit-input-placeholder  { color: $color !important; } // Safari and Chrome
+}
+
+// Social Media Colors Mixn
+// -----------------------------------------------------------
+@mixin social_media_colors($social_media_color) {
+  &:hover {
+    color: $social_media_color !important;
+  }
+}
+
+@mixin social_media_bg($social_media_color) {
+  background-color: $social_media_color;
+  &:hover {
+    background-color: darken($social_media_color, 10%);
+    //border: 1px solid $social_media_color;
+    //color: $white;
+  }
+}
+
+
+
+/* linear-gradient - https://www.sitepoint.com/building-linear-gradient-mixin-sass/
+/* ------------------------------------------------------------------------ */
+@mixin linear-gradient($direction, $color-stops...) {
+  // Direction has been omitted and happens to be a color-stop
+  @if is-direction($direction) == false {
+    $color-stops: $direction, $color-stops;
+    $direction: 180deg;
+  }
+
+  background: nth(nth($color-stops, 1), 1);
+  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+  background: linear-gradient($direction, $color-stops);
+}
+@function is-direction($value) {
+  $is-keyword: index((to top, to top right, to right top, to right, to bottom right, to right bottom, to bottom, to bottom left, to left bottom, to left, to left top, to top left), $value);
+  $is-angle: type-of($value) == 'number' and index('deg' 'grad' 'turn' 'rad', unit($value));
+
+  @return $is-keyword or $is-angle;
+}
+@function legacy-direction($value) {
+  @if is-direction($value) == false {
+    @error "Cannot convert `#{$value}` to legacy syntax because it doesn't seem to be a direction.";
+  }
+
+  $conversion-map: (
+    to top          : bottom,
+    to top right    : bottom left,
+    to right top    : left bottom,
+    to right        : left,
+    to bottom right : top left,
+    to right bottom : left top,
+    to bottom       : top,
+    to bottom left  : top right,
+    to left bottom  : right top,
+    to left         : right,
+    to left top     : right bottom,
+    to top left     : bottom right
+  );
+
+  @if map-has-key($conversion-map, $value) {
+    @return map-get($conversion-map, $value);
+  }
+
+  @return 90deg - $value;
+}

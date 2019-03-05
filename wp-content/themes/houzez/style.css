@@ -1,0 +1,170 @@
+/*
+Theme Name: Houzez
+Theme URI: http://themeforest.net/user/favethemes/
+Author: Favethemes
+Author URI: http://www.favethemes.com/
+Description: Houzez is a premium WordPress theme for real estate agents where modern aesthetics are combined with tasteful simplicity, and where the ease of use is achieved without compromise in your ability to customise the design. Whether you are a real estate agent looking to build a website for your company or a web developer seeking a perfect WordPress theme for your next project, you are certain to appreciate the numerous features and benefits that our theme provides.
+Version: 1.6.5.1
+Tags: right-sidebar, left-sidebar, custom-colors, custom-menu, featured-images, post-formats, theme-options, translation-ready
+License: GNU General Public License version 3.0
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Text Domain: houzez
+*/
+/* ----------------------------------------------------------------------------------------------
+* styles
+* ----------------------------------------------------------------------------------------------*/
+.new-message {
+    background-color: rgba(0,174,239,0.1);
+}
+.account-block.form-step.houzez-location {
+  display: inherit;
+  visibility: hidden;
+  margin: 0; }
+  .account-block.active.houzez-location {
+    visibility: visible !important; 
+  }
+.btn-yelp:hover {
+    color: #D32323 !important;
+}
+.agent-detail-block .form-small img {
+    width: auto;
+}
+body.page-template-properties-parallax #section-body {
+    padding-bottom: 0;
+}
+.grid-view-style3 .houzez-module .list-tabs {
+    padding: 0 5px 0px;
+}
+.grid-view-style3 .pagination-main .pagination {
+    margin-top: 15px; 
+}
+#submit_property_form .property-thumb {
+    text-align: center;
+    background-color: #efefef;
+    -webkit-box-shadow: inset 0px 0px 0px 2px #dfdfdf;
+    -moz-box-shadow: inset 0px 0px 0px 2px #dfdfdf;
+    box-shadow: inset 0px 0px 0px 2px #dfdfdf;
+    width: 125px;
+    height: 125px;
+    display: table;
+    padding: 0px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+}
+
+#sidebar .widget.houzez-impress-idx-login-widget p,
+#sidebar .widget.houzez-impress-idx-signup-widget p {
+    margin-bottom: 10px;
+}
+.agent-media img {
+    max-height: 75px;
+}
+label.error {
+    display: none;
+}
+p.expiration_date strong {
+    color: #fe3829;
+}
+#myChart {
+    height: 400px!important;
+    width: 100%!important;
+}
+#plupload-container{
+    overflow: hidden;
+}
+.membership-content .houzez_stripe_simple button,
+.membership-content .houzez_stripe_simple_featured button,
+.membership-content .houzez_stripe_membership button {
+    display: none;
+}
+#email_messages label {
+    display: block;
+}
+.invoiceModal .payment-details-product, .invoiceModal .payment-details-total, .invoiceModal .customer-details-name, .invoiceModal .customer-details-email, .invoiceModal .billing-address {
+    padding: 15px 30px 15px 30px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.block-body .auther-info span {
+    display: block;
+}
+.membership-content .free-membership-used {
+    font-weight: 700;
+}
+#houzez-simple-map {
+    height: 400px;
+}
+.panel-btn-close {
+    cursor: pointer;
+}
+.advance-search-header #use_radius,
+.advanced-search-mobile #use_radius,
+.advanced-search-openclose #use_radius,
+.houzez_hidden {
+    display: none;
+}
+a.btn-primary:hover {
+    color: #ffffff !important;
+}
+.advance-search-header .advance-btn-holder {
+    border-right: none !important;
+    border-left: none !important;
+}
+.property-similer .property-listing.grid-view .item-wrap:nth-child(2n+1) {
+    clear: both;
+}
+.account-profile-block #map {
+    height: 265px;
+    margin-bottom: 25px;
+}
+body.single-houzez_agency .grid-view-3-col .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.houzez-single-property-v2 .virtual-tour-block iframe {
+    width: 100%;
+}
+/* PULSE */
+@keyframes pulse {
+    0% {transform: scale(1.1)}
+    50% {transform: scale(0.8)}
+    100% {transform: scale(1.1)}
+}
+.faa-pulse.animated,
+.faa-pulse.animated-hover:hover,
+.faa-parent.animated-hover:hover > .faa-pulse {
+    animation: pulse 2s linear infinite;
+}
+.faa-pulse.animated.faa-fast,
+.faa-pulse.animated-hover.faa-fast:hover,
+.faa-parent.animated-hover:hover > .faa-pulse.faa-fast {
+    animation: pulse 1s linear infinite;
+}
+.faa-pulse.animated.faa-slow,
+.faa-pulse.animated-hover.faa-slow:hover,
+.faa-parent.animated-hover:hover > .faa-pulse.faa-slow {
+    animation: pulse 3s linear infinite;
+}
+
+/*Captcha*/
+#lightbox-popup-main .houzez_google_reCaptcha {
+    transform:scale(0.79);
+    -webkit-transform:scale(0.79);
+    transform-origin:0 0;
+    -webkit-transform-origin:0 0;
+}
+
+/*start step form style*/
+.houzez-one-step-form .board-header,
+.houzez-one-step-form .pay-step-bar,
+.houzez-one-step-form .steps-nav{
+    display: none;
+}
+body.page-template-property-listing-template-style3 .item-thumb .label-featured {
+    position: relative;
+    top: 0;
+    right: auto;
+    bottom: inherit;
+    z-index: 3;
+    left: 0;
+}

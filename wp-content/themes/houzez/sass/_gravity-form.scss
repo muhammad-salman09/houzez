@@ -1,0 +1,144 @@
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+/**
+* Gravity Forms styles with Bootstrap 3 mixins
+*
+* GF settings: 
+* - Output CSS = No
+* - Output HTML5 = Yes
+*/
+.ginput_container input, 
+.ginput_container select, 
+.ginput_container textarea {
+    height: 42px;
+}
+.ginput_full,
+.ginput_left,
+.ginput_right {
+    display: block;
+    margin-bottom: 10px;
+}
+.ginput_full {
+    width: 100%;
+}
+.ginput_left,
+.ginput_right {
+    width: calc(100% / 2 - 5px)
+}
+.ginput_left {
+    float: left;
+}
+.ginput_right {
+    float: right;
+}
+.gf_clear,
+.gf_clear_complex,
+.gform_page_footer {
+    @extend %clearfix;
+}
+.gform_previous_button,
+.gform_next_button {
+    min-width: 100px;
+}
+.gform_wrapper ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.gform_wrapper li {
+    @extend .form-group;
+}
+.gform_wrapper li {
+    margin-bottom: 5px;
+    &.gfield {
+        margin-bottom: 15px;
+    }
+}
+.gform_wrapper form {
+    margin-bottom: 0;
+}
+.ginput_container > ul,
+.gform_wrapper .gform_fields {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;   
+    padding-left: 0 !important;
+}
+.gform_wrapper .gfield_required {
+    padding-left: 1px;
+    color: $state-danger-text;
+}
+.ginput_container input,
+.ginput_container select,
+.ginput_container textarea {
+    @extend .form-control;
+}
+.ginput_container textarea {
+    height: auto;
+    &.small {
+        max-height: 100px;
+    }
+    &.medium {
+        max-height: 200px;
+    }
+    &.large {
+        max-height: 300px;
+    }
+}
+.ginput_container input[type="radio"] {
+    width: auto;
+    height: auto;
+    display: inline-block;
+    margin-right: 10px;
+}
+.gfield_radio label {
+    font-weight: normal;
+}
+.gform_button,
+.gform_wrapper .button, 
+.gform_wrapper .gform_page_footer .button.gform_next_button,
+.gform_wrapper .gform_footer input.button, 
+.gform_wrapper .gform_footer input[type=submit], 
+.gform_wrapper .gform_page_footer input.button, 
+.gform_wrapper .gform_page_footer input[type=submit] {
+    font-size: 14px !important;
+    @extend .btn;
+    @extend .btn-primary;
+}
+.gform_wrapper .gfield_error {
+    .gfield_label {
+        color: $state-danger-text;
+    }
+    input,
+    select,
+    textarea {
+        border-color: $alert-danger-border;
+        background-color: $alert-danger-bg;
+        color: $alert-danger-text;
+    }
+}
+.validation_error {
+    @extend .alert;
+    @include alert-variant($alert-danger-bg, $alert-danger-border, $alert-danger-text);
+}
+#gforms_confirmation_message {
+    @extend .alert;
+}
+.hidden_label label {
+    display: none;
+}
+.gform_wrapper input:not([type=radio]):not([type=checkbox]):not([type=submit]):not([type=button]):not([type=image]):not([type=file]) {
+    padding: 5px 10px;
+}
+@media only screen and (max-width: 641px) {
+    .gform_wrapper input:not([type=radio]):not([type=checkbox]):not([type=image]):not([type=file]) {
+        line-height: 1 !important;
+        padding: 15px !important;
+        min-height: 2rem !important;
+    }    
+}
+@media only screen and (min-width: 641px) {
+    .gform_wrapper ul.gform_fields li.gfield {
+        padding-right: 0 !important;
+    }    
+}

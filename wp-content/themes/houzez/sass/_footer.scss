@@ -1,0 +1,155 @@
+
+/*START SPLASH FOOTER STYLE*/
+.splash-footer {
+    padding: 30px 15px;
+}
+.splash-foot-left {
+    text-align: left;
+
+    color: $white;
+    p {
+        @extend %margin-0;
+        i {
+            margin-right: 5px;
+        }
+    }
+}
+.splash-foot-right {
+    text-align: right;
+
+    color: $white;
+    p {
+        @extend %margin-0;
+        a {
+            margin-left: 5px;
+
+            text-decoration: none;
+
+            color: $white;
+            &:hover {
+                color: $green;
+            }
+        }
+    }
+}
+
+/*START HOMEPAGE FOOTER STYLE*/
+#footer-section {
+    @extend %full-width;
+}
+.footer {
+    margin-bottom: -30px;
+    padding: 100px 0 70px;
+
+    background-color: $bg-gray-light;
+
+    @include respond-to(tablet-portrait) {
+        padding: 45px 0 35px;
+    }
+    p {
+        font-weight: inherit;
+
+        color: $footer-text-color;
+    }
+    a {
+        font-weight: 300;
+
+        color: $white;
+        &:hover {
+            opacity: .6;
+        }
+    }
+    .read {
+        font-size: 14px;
+        line-height: 20px;
+
+        margin-top: 20px;
+
+        @extend %margin-0;
+        .fa {
+            top: 1px;
+
+            @extend %relative;
+        }
+    }
+    li {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 20px;
+
+        margin-bottom: 6px;
+
+        color: $white;
+    }
+    //.fa{
+    //margin-right: 10px;
+    //}
+    .social {
+        font-size: 0;
+        li {
+            font-size: 18px;
+
+            margin: 0 7px 0 0 !important;
+
+            list-style: none;
+
+            @extend %display-inline-block;
+            &:last-child {
+                @extend %margin-0;
+            }
+        }
+        .fa {
+            @extend %margin-0;
+        }
+    }
+    .widget-pages li {
+        padding: 0 0 0 20px;
+        line-height: 18px;
+    }
+}
+/* footer bottom nav
+/* ------------------------------------------------------------------------ */
+.footer-bottom {
+    padding: 30px 0 25px;
+    font-size: 14px;
+    @extend %full-width;
+    @include respond-to(tablet-portrait) {
+        padding: 15px 0;
+    }
+    div[class*='col-'] {
+        @include respond-to(tablet-portrait) {
+            margin-bottom: 15px;
+            text-align: center;
+            &:last-child {
+                margin: 0;
+            }
+        }
+    }
+    p {
+        @extend %margin-0;
+    }
+    .foot-social {
+        @extend .splash-foot-right;
+        @include respond-to(tablet-portrait) {
+            text-align: center;
+        }
+    }
+}
+.footer-bottom {
+    .navi {
+        ul {
+            text-align: center;
+        }
+        li {
+
+            text-align: center;
+            text-transform: inherit;
+            @extend %display-inline-block;
+            @extend %float-none;
+            @extend %margin-0;
+        }
+        a {
+            padding: 0 10px;
+        }
+    }
+}

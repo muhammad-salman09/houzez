@@ -1,0 +1,453 @@
+/* logo
+/* ------------------------------------------------------------------------ */
+.logo {
+    @extend %float-left;
+}
+/* header section
+/* ------------------------------------------------------------------------ */
+#header-section {
+    .container {
+        @extend %relative;
+    }
+}
+.header-section {
+    @extend %relative;
+    z-index: 11;
+    @include respond-to(991) {
+        display: none;
+    }
+    .logo {
+        img {
+            top: -4px;
+            @extend %relative;
+        }
+    }
+    .header-left {
+        @extend %float-left;
+        width: 74%;
+        .navi {
+            @extend %float-left;
+            margin-left: 5%;
+        }
+    }
+    .header-right {
+        @extend %float-right;
+        width: 26%;
+    }
+}
+.header-section {
+    .logo,
+    .header-right,
+    .navi > ul > li > a {
+        line-height: 60px;
+    }
+    .navi > ul > li > a {
+        padding: 0 15px;
+    }
+}
+.header-top {
+    @extend %display-table;
+    @extend %full-width;
+}
+.header-bottom {
+    @extend %full-width;
+    @include respond-to(991) {
+        display: none;
+    }
+    .header-nav {
+        @extend %float-left;
+    }
+    .header-right {
+        @extend %float-right;
+    }
+}
+/* header top social
+/* ------------------------------------------------------------------------ */
+.header-top-social {
+    ul {
+        @extend %margin-0;
+    }
+    li {
+        font-size: 20px;
+        @extend %display-inline-block;
+        @include respond-to(tablet-landscape-desktop) {
+            line-height: 36px;
+        }
+        @include respond-to(tablet-portrait) {
+            font-size: 17px;
+        }
+        & + li {
+            margin-left: 3px;
+        }
+    }
+}
+/* header v2
+/* ------------------------------------------------------------------------ */
+.header-section-2 {
+    @extend %relative;
+    z-index: 11;
+    .logo {
+        @extend %display-table-cell;
+        @extend %float-none;
+        @extend %v-middle;
+        padding-left: 20px;
+    }
+    .header-top {
+        min-height: 70px;
+        @include respond-to(medium-desktop-to-mini-phone) {
+            padding: 10px 15px;
+            height: 45px;
+            min-height: 0px;
+        }
+    }
+    .header-right {
+        padding-left: 20px;
+    }
+    .header-top-social {
+        @extend %display-table-cell;
+        @extend %v-middle;
+        padding-right: 20px;
+        text-align: right;
+        @include respond-to(medium-desktop-to-mini-phone) {
+            float: right;
+            padding-right: 0;
+        }
+    }
+    .header-top-call {
+        @extend %display-table-cell;
+        @extend %v-middle;
+        width: 365px;
+        padding: 0 0 0 32px;
+        @include respond-to(medium-desktop-to-mini-phone) {
+            float: left;
+            padding: 0;
+            background-color: transparent !important;
+        }
+    }
+    .avatar {
+        font-size: 21px;
+        img {
+            margin-right: 15px;
+        }
+        @include respond-to(tablet-landscape-desktop) {
+            font-size: 17px;
+            img {
+                width: 29px;
+                margin-right: 10px;
+            }
+        }
+        @include respond-to(tablet-portrait) {
+            font-size: 14px;
+            img {
+                position: relative;
+                top: -2px;
+                width: 25px;
+                margin-right: 8px;
+            }
+        }
+    }
+    .account-action > li {
+        padding: 9px 0px;
+    }
+    .header-right {
+        //margin-top: 4px;
+        .user a {
+            line-height: 16px;
+        }
+    }
+}
+.header-section-2 .navi > ul > li > a {
+    padding: 0 15px;
+    line-height: 46px;
+}
+.header-section-2 .account-action > li,
+.header-section-2 .header-right > div {
+    padding: 0;
+    line-height: 46px;
+}
+/* header v3
+/* ------------------------------------------------------------------------ */
+.header-section-3 {
+    @extend %relative;
+    z-index: 11;
+    .header-top-inner {
+        @extend %display-table;
+        max-width: 1200px;
+        min-height: 110px;
+        margin: 0 auto;
+        padding: 0 15px;
+        @include respond-to(medium-desktop-to-mini-phone) {
+            min-height: 55px;
+        }
+    }
+    .logo {
+        @extend %display-table-cell;
+        @extend %float-none;
+        @extend %v-middle;
+        width: 20%;
+        @include respond-to(medium-desktop-to-mini-phone) {
+            display: none;
+        }
+    }
+    .header-top-social {
+        @extend %display-table-cell;
+        @extend %float-none;
+        @extend %v-middle;
+        text-align: right;
+        width: 20%;
+        @include respond-to(medium-desktop-to-mini-phone) {
+            display: none;
+        }
+    }
+    .header-contact {
+        @extend %display-table-cell;
+        @extend %float-none;
+        @extend %v-middle;
+        width: 60%;
+        @include respond-to(medium-desktop-to-mini-phone) {
+            width: 100%;
+        }
+    }
+    .contact-block {
+        @extend %float-left;
+        width: 33.333%;
+        padding-right: 10px;
+        .media-heading {
+            font-weight: 500;
+        }
+        .media-heading, p {
+            @extend %margin-0;
+            line-height: normal;
+            @include respond-to(tablet-portrait) {
+                font-size: 12px;
+                line-height: 12px;
+            }
+            @include respond-to(phone) {
+                font-size: 10px;
+                line-height: 10px;
+            }
+        }
+        .fa {
+            font-size: 30px;
+            margin: 5px 5px 0 0;
+            @include respond-to(tablet-portrait) {
+                font-size: 24px;
+                margin: 0 5px 0 0;
+            }
+            @include respond-to(phone) {
+                font-size: 16px;
+                margin: -2px 0 0 0;
+            }
+        }
+    }
+    // .account-action > li {
+    //     padding: 9px 0px;
+    // }
+    .header-right {
+        .user a {
+            line-height: 16px;
+        }
+    }
+}
+.header-section-3 .header-right .user a.btn {
+    line-height: 38px;
+}
+.header-section-3 .account-action li, 
+.header-section-3 .header-right .user, 
+.header-section-3 .header-right a, 
+.header-section-3 .navi>ul>li>a {
+    line-height: 60px;
+    padding: 0 15px;
+}
+/* header v4
+/* ------------------------------------------------------------------------ */
+.header-section-4 {
+    @extend .header-section;
+    .logo,
+    .header-left .navi > ul > li > a,
+    .account-action li,
+    .user {
+        line-height: 90px;
+    }
+
+}
+/* header v5
+/* ------------------------------------------------------------------------ */
+.header-section-5 {
+    @include respond-to(medium-desktop-to-mini-phone) {
+        display: none;
+    }
+    @extend %relative;
+    z-index: 11;
+    .logo {
+        @extend %float-none;
+        padding: 30px 0;
+    }
+    .header-top {
+        @extend %display-inline-block;
+        min-height: 70px;
+        text-align: center;
+        margin-bottom: -7px;
+        @include respond-to(medium-desktop-to-mini-phone) {
+            padding: 10px 15px;
+            height: 45px;
+            min-height: 0px;
+        }
+    }
+    .header-top-social {
+        text-align: left;
+        padding: 32px 0 0;
+    }
+    .account-action > li {
+        padding: 30px 0;
+        line-height: normal;
+    }
+    .header-right {
+        .user {
+            padding: 18px 0 0;
+            a {
+                line-height: 16px;
+            }
+        }
+    }
+    .header-nav {
+        @extend %float-none;
+        @extend %display-table;
+        margin: 0 auto;
+    }
+}
+/* header right
+/* ------------------------------------------------------------------------ */
+.header-right {
+    text-align: right;
+    a + a {
+        margin-left: 15px;
+    }
+    .fa {
+        margin: 0 10px;
+    }
+}
+/* header v6
+/* ------------------------------------------------------------------------ */
+.header-section-6 {
+    @include respond-to(medium-desktop-to-mini-phone) {
+        display: none;
+    }
+    .header-nav-right {
+        padding-left: 15px;
+    }
+    .header-nav-left {
+        padding-right: 15px;
+        @extend %float-right;
+    }
+}
+.header-section-6-wrap {
+    line-height: 60px;
+}
+.header-section-6-icons,
+.header-section-6-user-tools {
+    width: 19%;
+}
+.header-section-6-logo {
+    width: 10%;
+    text-align: center;
+    .logo {
+        @extend %float-none;
+    }
+}
+.header-section-6-left-menu,
+.header-section-6-right-menu {
+    width: 25%;
+    margin-bottom: -27px;
+}
+// .header-section-6-left-menu .main-nav {
+//     @extend %float-right;
+// }
+.header-section-6 .navi > ul > li > a {
+    line-height: 60px;
+    padding: 1px 15px;
+    @include respond-to(medium-desktop) {
+        padding: 1px 8px;
+    }
+}
+.header-section-6 {
+    a {
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+.header-section-6-logo,
+.header-section-6-icons,
+.header-section-6-left-menu,
+.header-section-6-right-menu,
+.header-section-6-user-tools {
+    @extend %display-inline-block;
+}
+/* header splash
+/* ------------------------------------------------------------------------ */
+.splash-header {
+    @extend %display-block;
+    background-color: transparent !important;
+
+    @include respond-to(medium-desktop-to-mini-phone) {
+        padding: 0 0 30px 0;
+        display: block !important;
+    }
+    .splash-header-inner {
+        padding: 10px !important;
+        .header-right {
+            line-height: 90px;
+        }
+    }
+    .header-mobile {
+        background-color: transparent !important;
+    }
+}
+/* header mobile
+/* ------------------------------------------------------------------------ */
+.header-mobile {
+    @extend %clearfix;
+    @extend %display-none;
+    @include respond-to(991) {
+        display: block;
+    }
+    & > .container {
+        @extend %relative;
+        @include respond-to(medium-desktop-to-mini-phone) {
+            padding-left: 15px;
+            padding-right: 15px;
+            width: 100%;
+        }
+    }
+    .header-logo,
+    .header-user,
+    .mobile-nav {
+        @extend %float-left;
+        line-height: 60px;
+    }
+    .mobile-nav {
+        z-index: 999;
+        width: 25%;
+        .nav-dropdown {
+            z-index: 1000;
+        }
+    }
+    .header-logo {
+        width: 50%;
+        text-align: center;
+        img {
+            max-height: 24px;
+        }
+    }
+    .header-user {
+        width: 25%;
+        text-align: right;
+    }
+    .user-icon {
+        @extend %display-inline-block;
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
+    }
+}

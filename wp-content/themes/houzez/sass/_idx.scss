@@ -1,0 +1,1112 @@
+// Core variables and mixins
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+/*START IDX PLUGIN STYLING*/
+.idx-form-control {
+  @extend %display-block;
+  @extend %full-width;
+  //height: $input-height-base; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
+  height: 42px;
+  //padding: $padding-base-vertical $padding-base-horizontal;
+  padding: 6px 15px;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  //color: $input-color;
+  color: #959595;
+  //background-color: $input-bg;
+  background-color: #fff;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  //border: 1px solid $input-border;
+  border: 1px solid #ccc;
+  //border-radius: $input-border-radius; // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
+  border-radius: 4px; // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
+  //@include box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+  @include transition(border-color ease-in-out .15s, box-shadow ease-in-out .15s);
+
+  // Customize the `:focus` state to imitate native WebKit styles.
+  @include form-control-focus;
+
+  // Placeholder
+  @include placeholder(#999);
+
+  // Unstyle the caret on `<select>`s in IE10+.
+  &::-ms-expand {
+    @extend %border-0;
+    @extend %background-color-transparent;
+  }
+
+  // Disabled and read-only inputs
+  //
+  // HTML5 says that controls under a fieldset > legend:first-child won't be
+  // disabled if the fieldset is disabled. Due to implementation difficulty, we
+  // don't honor that edge case; we style them as disabled anyway.
+  &[disabled],
+  &[readonly],
+  fieldset[disabled] & {
+    background-color: $input-bg-disabled;
+    opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
+  }
+
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: $cursor-disabled;
+  }
+}
+.idx-btn{
+  @include transition(0.2s);
+  outline: none !important;
+  @extend %display-inline-block;
+  margin-bottom: 0; // For input.btn
+  font-weight: 500;
+  text-align: center;
+  @extend %v-middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: 1px solid transparent;
+  white-space: nowrap;
+  @include button-size(11px, 15px, 14px, $line-height-base, $btn-border-radius-base);
+  @include user-select(none);
+
+
+
+  &:hover,
+  &:focus,
+  &.focus {
+    color: $btn-default-color;
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background-image: none;
+    @include box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: $cursor-disabled;
+    opacity: .65;
+    @include box-shadow(none);
+  }
+}
+/* iHomeFinder
+/* ------------------------------------------------------ */
+.ihf-grid-result-price{
+  font-weight: 500;
+}
+
+.ihf-grid-result-address {
+  margin-bottom: 15px;
+  @extend %display-block;
+  font-weight: 400;
+  margin-top: 5px;
+}
+.ihf-grid-result-basic-info-container{
+  @extend %full-width;
+  // text-align: center;
+  > div{
+    @extend %float-none;
+    @extend %display-inline-block;
+  }
+}
+#ihf-main-container{
+  .modal-dialog {
+    left: auto !important;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    z-index: 1050;
+  }
+  .modal-body{
+    overflow: inherit !important;
+  }
+  .ihf-grid-result-price a{
+    line-height: 1.4;
+  }
+  // a {
+  //   color: #00aeef;
+  // }
+  .well{
+    border-radius: 0;
+  }
+  .title-bar-1{
+    // background-color: #004274;
+    font-weight: 600;
+    border-radius: 0;
+    text-shadow: none;
+    @extend %border-none;
+    padding: 8px 8px;
+  }
+  .tab-content {
+    .title-bar-1{
+      margin-top: 30px;
+      background-color: #f5f5f5;
+      border-top: 3px solid #000;
+      color: #000;
+      font-weight: 500;
+      padding: 10px 16px;
+    }
+  }
+  .form-control{
+    height: 40px;
+    @extend .idx-form-control;
+  }
+  .chosen-container-single .chosen-single{
+    height: 40px;
+    line-height: 30px;
+    text-shadow: none;
+    box-shadow: none;
+    color: #959595 !important;
+    font-weight: 500;
+    div{
+      @extend %display-none;
+    }
+    &:after{
+      content: "\f0dc";
+      @extend %display-inline-block;
+      @extend %v-middle;
+      font-family: $font-awesome;
+      @extend %absolute;
+      right: 14px;
+      @extend %top-0;
+      height: 40px;
+      line-height: 38px;
+    }
+  }
+  .btn{
+    @extend .idx-btn;
+  }
+  .btn-default {
+     color: #333333;
+     background-color: #ffffff;
+     border: 1px solid #cccccc;
+  }
+  .btn-primary{
+    @extend .idx-btn;
+    // @extend %btn-secondary;
+    font-size: 14px !important;
+  }
+  .ihf-map-search-refine-link{
+    margin-top: 30px;
+    @extend .idx-btn;
+    // @extend %btn-secondary;
+    &:hover{
+      text-decoration: none;
+    }
+  }
+  .ihf-advanced-search-launch{
+    @extend .idx-btn;
+    color: #333333;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    text-transform: capitalize;
+    &:hover{
+      text-decoration: none;
+      color: #333333;
+      background-color: #ebebeb;
+      border-color: #adadad;
+    }
+  }
+  .field-label{
+    font-size: 14px;
+    font-weight: 500;
+    color: $black;
+  }
+  .ihf-map-results-count.field-label {
+    font-weight: 300;
+    line-height: 19px;
+    margin-bottom: 5px;
+  }
+  .mt-5 {
+    margin-top: 20px;
+  }
+  .ihf-search-form-input{
+    text-align: right;
+  }
+  .ihf-label-overlay-money{
+    top: 10px;
+    font-weight: 500;
+  }
+  .input-group .form-control:first-child{
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+  #areaPickerInputWrapper{
+    height: 46px;
+  }
+  #areaPickerContainer{
+    .input-group-addon{
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+    input[type="text"]{
+      padding: 6px 0 0 5px !important;
+    }
+    .areaPickerExpandAllButtonClass{
+      font-size: 14px;
+    }
+  }
+  .areaPickerExpandAllTopBar{
+    border-radius: 0;
+    @extend %full-width;
+    padding: 0 9px;
+    // background-color: #004274;
+    cursor: auto;
+    &:hover{
+      // background-color: #004274;
+    }
+  }
+  .badge{
+    color: #fff !important;
+    background-color: transparent !important;
+    border: 1px solid #fff;
+    padding: 3px 10px;
+    font-weight: 300;
+  }
+  #areaPickerExpandAllContainer{
+    @extend %border-none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .autocompleteMouseOver{
+    // background-color: #004274;
+  }
+  .areaPickerExpandAllElement div{
+    text-align: center;
+  }
+  #ihf-status-fields{
+    > div{
+      margin-top: 4px;
+    }
+    .radio-inline{
+      input{
+        margin-top: 3px;
+      }
+    }
+  }
+  .chosen-container-multi .chosen-choices{
+    height: 40px !important;
+    background-image: none;
+  }
+  #ihf-detail-features-tab{
+    > .row{
+      @extend %margin-0;
+    }
+    .mt-10{
+      margin-top: 10px;
+    }
+  }
+  .areaPickerExpandAllButtonClass{
+    display: inline-block !important;
+  }
+  #ihf-main-search-form{
+    .text-danger{
+      //@extend %alert;
+      //@extend %alert-danger;
+      @extend %display-block;
+    }
+  }
+
+  #ihf-refine-search{
+    .dropdown-menu{
+      min-width: 260px;
+    }
+  }
+  .btn-group-justified{
+    .btn-primary{
+      padding: 12px 15px;
+      &.active{
+        box-shadow: none !important;
+      }
+    }
+  }
+
+}
+
+  .listing-info-item {
+    padding: 10px 0;
+  }
+  h4.ihf-address,
+  h4.ihf-price {
+    font-size: 1.5em;
+    line-height: 1.2em;
+  }
+
+.ihf-property-photo {
+  .ihf-image-carousel {
+    background: #000;
+    margin-top: 20px;
+  }
+}
+.ihf-share-btn-more {
+  .fa-share {
+    top: -4px;
+    @extend %relative;
+    left: -6px;
+  }
+}
+#ihf-detail-features-tab {
+  h5 {
+    @extend %display-none;
+  }
+}
+#ihf-main-container .nav-tabs > li > a {
+  font-weight: 400;
+}
+#ihf-board-detail-disclaimer,
+#ihf-board-detail-updatetext  {
+  margin-bottom: 0;
+}
+#ihf-main-container .error[style] {
+    display: none !important;
+}
+#ihf-main-container .form-control {
+    padding: 10px !important;
+}
+
+/*START IDX PLUGIN STYLING*/
+.dsidx-resp-area{
+  margin-bottom: 15px;
+  label{
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 500;
+  }
+  input[type='text'],input[type='password'],input[type='email'],select,textarea{
+    @extend .idx-form-control;
+  }
+}
+.dsidx-resp-area-submit{
+  input[type='submit']{
+    @extend .idx-btn;
+    @extend %border-none;
+    width: 100% !important;
+    background-color: $orange;
+    &:focus{
+      border-color: $orange;
+      outline: 0;
+    }
+  }
+}
+
+.dsidx-prop-summary{
+  padding-bottom: 35px !important;
+  margin-bottom: 0 !important;
+  /*border-bottom: 1px solid #ccc;*/
+  img{
+    border: none !important;
+  }
+  .item-thumb{
+    margin-right: 15px !important;
+  }
+}
+.dsidx-prop-title{
+  background-color: #F6F6F6;
+  margin-bottom: 15px !important;
+  font-size: 20px;
+  color: #727272;
+  padding: 8px 12px !important;
+  /*border-bottom: 1px solid #ccc;
+  padding-bottom: 6px !important;*/
+  a{
+    font-size: 14px;
+    color: $anchor;
+  }
+}
+
+
+// /*START idxbroker PLUGIN STYLING*/
+// #IDX-widgetLeadLoginHeader,
+// #IDX-widgetLeadSignupHeader{
+//   text-align: left !important;
+//   font-size: 14px;
+//   h3{
+//     font-size: 14px !important;
+//     line-height: 14px;
+//     @extend %margin-0;
+//   }
+// }
+// #IDX-widgetLeadSignupHeader{
+//   h3{
+//     margin-bottom: 10px !important;
+//   }
+// }
+// .IDX-widgetLeadLoginWrapper,
+// .LeadSignup,
+// .IDX-quicksearchWrapper,
+// .IDX-featuredAgentWrap{
+//   width: 100% !important;
+//   box-shadow: none !important;
+//   padding: 0 !important;
+//   border: none !important;
+// }
+// .IDX-leadLoginTextInput[type='text'],
+// .IDX-qsSelectInput,
+// .IDX-qsTextInput[type='text']{
+//   @extend %idx-form-control;
+//   width: 100% !important;
+//   margin-left: 0 !important;
+//   margin-right: 0 !important;
+//   margin-bottom: 15px !important;
+// }
+// textarea.IDX-leadLoginTextInput{
+//   @extend %IDX-leadLoginTextInput[type='text'];
+//   min-height: 100px !important;
+// }
+// .IDX-leadLoginButtonInput,
+// .IDX-leadLoginTextInput[type='submit'],
+// .IDX-qsButtonInput,
+// .idx-omnibar-form button,
+// .impress-lead-signup input[type='submit'],
+// .impress-lead-login input[type='submit']{
+//   @extend .idx-btn;
+//   width: 100% !important;
+//   color: $white;
+//   background-color: $orange;
+//   border: 1px solid $orange;
+//   &:hover{
+//     background-color: rgba(255,110,0,0.75);
+//     border-color: rgba(255,110,0,0.75);
+//   }
+// }
+
+// .IDX-qsFieldWrap{
+//   margin-top: 10px ;
+//   padding: 0 !important;
+//   @extend %full-width;
+// }
+// .idx-omnibar-form{
+//   label{
+//     margin: 0 !important;
+//   }
+//   input[type='text'],
+//   input[type='password'],
+//   input[type='email'],
+//   input[type='tel'],
+//   input[type='number']{
+//     @extend %idx-form-control;
+//     margin-bottom: 15px !important;
+//   }
+// }
+
+// .idx-omnibar-mini{
+//   > div{
+//     width: 75% !important;
+//     padding-right: 10px !important;
+//   }
+//   button{
+//     width: 25% !important;
+//   }
+// }
+
+// .IDX-slideshowWrapper{
+//   margin: 0 auto;
+//   box-shadow: none !important;
+//   width: 100% !important;
+//   a{
+//     @extend %full-width;
+//   }
+//   img{
+//     width: 100% !important;
+//     //height: auto !important;
+//   }
+// }
+
+// #IDX-featuredAgentWrap{
+//   //@extend %clearfix;
+//   @extend %display-table;
+//   #IDX-featAgentImgWrap{
+//     //@extend %float-left;
+//     @extend %display-table-cell;
+//     @extend %v-middle;
+//     padding: 0 15px 0 0;
+//     img{
+//       width: auto;
+//       height: auto;
+//     }
+//     a{
+//       @extend %display-block;
+//       width: 124px;
+//     }
+//   }
+//   #IDX-featuredAgentCaption{
+//     @extend %display-table-cell;
+//     @extend %v-top;
+//     @extend %full-width;
+//     font-size: 14px !important;
+//     font-weight: 500 !important;
+//     text-shadow: none !important;
+//     text-align: left !important;
+//   }
+
+// }
+
+// /*IDX SHOWCASE STYLE*/
+// .impress-showcase-property{
+//   margin-bottom: 22px;
+// }
+// .impress-showcase-photo{
+//   //@extend %clearfix;
+//   display: block !important;
+//   margin-bottom: 10px !important;
+//   position: relative !important;
+//   img{
+//     //margin-bottom: 15px;
+//     border: none !important;
+//   }
+//   .impress-price{
+//     @extend %absolute;
+//     bottom: 12px;
+//     left: 12px;
+//     color: $white;
+//   }
+// }
+// .impress-price{
+//   @extend %float-left;
+// }
+// .impress-status{
+//   @extend %display-none;
+//   @extend %float-right;
+//   background-color: #333;
+//   color: $white;
+//   padding: 0 6px;
+//   border-radius: 3px;
+
+// }
+// .impress-address{
+//   color: #636363;
+//   &:hover{
+//     color: $anchor;
+//   }
+// }
+// .impress-beds-baths-sqft,
+// .beds-baths-sqft{
+//   span{
+//     margin: 0 5px 0 0 !important;
+//   }
+// }
+
+// /*IDX impress_lead_signup STYLE*/
+// .impress-lead-signup{
+//   input[type='text'],
+//   input[type='email'],
+//   input[type='password'],
+//   input[type='tel']{
+//     @extend %idx-form-control;
+//     margin-bottom: 15px;
+//   }
+// }
+
+// /*IDX impress-lead-login STYLE*/
+// .impress-lead-login{
+//   input[type='text'],
+//   input[type='email'],
+//   input[type='password'],
+//   input[type='tel']{
+//     @extend %idx-form-control;
+//     margin-bottom: 15px;
+//   }
+
+//   input[type='submit']{
+//     margin-left: 5%;
+//     width: 35% !important;
+//   }
+// }
+
+// .select2-choices{
+//   border: none !important;
+// }
+
+// .IDX-resultsAddress{
+//   margin-bottom: 22px !important;
+//   a{
+//     color: $black !important;
+//     &:hover{
+//       color: $hover !important;
+//     }
+//   }
+// }
+// .IDX-column{
+//   margin-left: 3% !important;
+//   > div{
+//     margin-bottom: 3px !important;
+//   }
+// }
+// .IDX-column2 .IDX-resultsLabel{
+//   text-align: left !important;
+//   font-size: 12px !important;
+//   font-weight: 700 !important;
+//   color: $black !important;
+// }
+// .IDX-column3 {
+//   width: 28% !important;
+// }
+// .IDX-resultsPhotogallery{
+//   margin-bottom: 10px !important;
+// }
+// .IDX-saveProperty{
+//   @extend .idx-btn;
+//   @extend %full-width;
+//   color: $white;
+//   background-color: #cbcbcb !important;
+//   &:hover{
+//     background-color: #c4c4c4;
+//   }
+// }
+// .IDX-resultsDetailsLink{
+//   a{
+//     @extend .idx-btn;
+//     @extend %full-width;
+//     color: $white;
+//     background-color: #00aeef !important;
+//     &:hover{
+//       background-color: #01a8e6;
+//     }
+//   }
+// }
+// .IDX-resultsSeparatorText{
+//   font-size: 18px !important;
+//   font-weight: 500;
+//   margin: 35px 0 !important;
+// }
+// .IDX-resultsCell{
+//   padding-bottom: 22px !important;
+//   border-bottom: 1px solid #e5eeed !important;
+// }
+
+// .IDX-perPageForm{
+//   float: right !important;
+// }
+// #IDX-resultsCountWrap{
+//   clear: left !important;
+//   color: #888 !important;
+//   float: left !important;
+//   width: 50% !important;
+//   line-height: 40px !important;
+// }
+// #IDX-resultsTopLinks {
+//   clear: right !important;
+//   float: right !important;
+//   width: 50% !important;
+//   line-height: 40px !important;
+//   margin: 0 !important;
+//   text-align: right !important;
+// }
+
+// .IDX-perPageForm select {
+//   padding: 3px 3px !important;
+//   border-radius: 4px !important;
+//   background: none !important;
+//   -webkit-appearance: inherit !important;
+//   -moz-appearance: inherit !important;
+// }
+// #IDX-resultMap{
+//   overflow: hidden !important;
+// }
+// #IDX-listingID-group{
+//   width: 100% !important;
+//   margin-right: 0 !important;
+// }
+// #IDX-listingID{
+//   @extend %idx-form-control;
+//   margin-bottom: 15px !important;
+// }
+// .IDX-help-block{
+//   font-family: $font-primary !important;
+//   font-size: 15px !important;
+//   font-weight: 300 !important;
+//   margin-bottom: 15px;
+// }
+// .IDX-submitContainer{
+//   text-align: right !important;
+// }
+// #IDX-formReset{
+//   @extend .idx-btn;
+//   background-color: #cbcbcb !important;
+//   color: $white !important;
+//   margin: 0 !important;
+//   &:hover{
+//     background-color: #bebdbd !important;
+//   }
+// }
+// #IDX-formSubmit{
+//   @extend .idx-btn;
+//   background-color: $orange !important;
+//   color: $white !important;
+//   margin-right: 0 !important;
+//   margin-left: 30px !important;
+//   border: 1px solid $orange;
+//   &:hover{
+//     background-color: rgba(255,110,0,0.75);
+//     border-color: rgba(255,110,0,0.75);
+//   }
+// }
+
+// #IDX-streetNumber,
+// #IDX-streetDirection{
+//   @extend %idx-form-control;
+//   width: 30px !important;
+// }
+// #IDX-streetName{
+//   @extend %idx-form-control;
+// }
+
+// #IDX-searchForm{
+//   .IDX-control-label{
+//     margin-bottom: 10px !important;
+//     font-weight: 500 !important;
+//     font-size: 15px !important;
+//     color: $black !important;
+//   }
+//   .IDX-addressLabel{
+
+//   }
+// }
+// .IDX-wrapper-standard .IDX-cczList select{
+//   @extend %idx-form-control;
+//   height: 95px !important;
+// }
+/* IDX Broker - hidden elements
+/* ------------------------------------------------------ */
+.idx-wrapper-template-default .page-title,
+.idx-wrapper-template-default .advanced-search, 
+.idx-wrapper-template-default .advanced-search-mobile,
+.idx-wrapper-template-default .blog-section,
+#IDX-resultsPagerTop,
+.IDX-perPageForm[name="resultsPerPageTop"],
+.IDX-listingCountWrap,
+#IDX-detailscontactContent .IDX-contactFormRight,
+#IDX-resultsPager-header .IDX-pagination-action {
+  display: none;
+}
+.IDX-help-block {
+  font-size: 14px !important;
+}
+/* IDX Broker - mobile first - container
+/* ------------------------------------------------------ */
+#IDX-mapContainer {
+    width: 100%;
+    min-width: 100%;
+}
+.idx-wrapper-template-default .section-detail-content {
+  margin-top: 30px;
+}
+/* IDX Broker - mobile first - list
+/* ------------------------------------------------------ */
+.IDX-listAsRow {
+    list-style: none;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+/* IDX Broker - mobile first - forms
+/* ------------------------------------------------------ */
+.IDX-wrapper-standard label,
+#IDX-main .IDX-control-label,
+.IDX-wrapper-standard .IDX-panel-body .IDX-label {
+  font-weight: 400;
+}
+#IDX-main input[type="text"] {
+  min-height: 40px;
+  padding: 5px 8px;
+}
+/* IDX Broker - mobile first - selects
+/* ------------------------------------------------------ */
+#IDX-main .select2-choice .select2-arrow b {
+  top: 16px;
+    right: 12px;
+    margin-top: 0;
+    border-left: 6px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #000;
+}
+#IDX-main .select2-choice .select2-chosen {
+    margin-top: 6px;
+}
+.IDX-wrapper-standard select[multiple], .IDX-wrapper-standard select[size] {
+    height: auto;
+    min-height: 150px;
+}
+.IDX-wrapper-standard .select2-container a.select2-choice, .IDX-wrapper-standard .select2-container a.select2-default {
+    min-height: 40px;
+}
+/* IDX Broker - mobile first - address page
+/* ------------------------------------------------------ */
+#IDX-main #IDX-streetNumber, #IDX-main #IDX-streetDirection, #IDX-main #IDX-streetName {
+  margin-top: 0;
+}
+/* IDX Broker - map search page
+/* ------------------------------------------------------ */
+#IDX-mapContainer {
+  width: 100%;
+}
+#IDX-mapContainer .IDX-control-group {
+  width: auto;
+}
+/* IDX Broker - email update signup page
+/* ------------------------------------------------------ */
+.IDX-wrapper-standard .IDX-emailUpdateSignupText {
+  border-radius: 4px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-size: 14px;
+    margin: 20px 0;
+    padding: 10px;
+  color: #0c5460;
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+}
+/* IDX Broker - pagination
+/* ------------------------------------------------------ */
+.IDX-wrapper-standard .IDX-pagination-action {
+  min-height: 40px;
+}
+/* IDX Broker - details
+/* ------------------------------------------------------ */
+.IDX-wrapper-standard .IDX-panel-collapse-toggle span {
+    top: 6px;
+    position: relative;
+}
+#IDX-detailsContainer-body-greatSchools * {
+    border: none !important;
+}
+.IDX-wrapper-standard .IDX-resultsDescription {
+    margin-bottom: 10px;
+}
+/* IDX Broker - browse by city
+/* ------------------------------------------------------ */
+.IDX-pageContainer ul {
+  margin: 0 0 10px !important;
+    padding: 0 !important;
+  list-style: none;
+}
+.IDX-searchByCityList li {
+  font-size: 14px !important;
+    line-height: 24px !important;
+}
+.IDX-pageContainer ul.IDX-searchByCityList {
+  padding: 10px !important;
+}
+
+/* ------------------------------------------ */
+/* =============== iHomeFinder=============== */
+/* ------------------------------------------ */
+.page-template-template-idx .white-block {
+  background-color: transparent;
+  padding: 0;
+}
+
+/* ihf reset default styles
+----------------------------------------- */
+#ihf-main-container .mt-10 {
+  margin-top: 0;
+}
+
+/* ihf gallery slider - style color
+----------------------------------------- */
+.ihf-vcenter .ihf-slider-prev,
+.ihf-vcenter .ihf-slider-next {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    width: 40px;
+    line-height: 40px;
+    display: inline-block;
+    border-radius: 50%;
+}
+/* ihf gallery slider - style plain
+----------------------------------------- */
+#ihf-main-container .thumbnail .ihf-gallery-slider-photo[style],
+#ihf-main-container .thumbnail .ihf-gallery-slider-photo img[style]{
+    height: auto !important;
+    max-height: 187px !important;
+    padding-left: 1px;
+    padding-right: 1px;
+    overflow: hidden;
+    width: 100%;
+}
+#ihf-main-container .thumbnail .ihf-gallery-slider-photo,
+#ihf-main-container .thumbnail .gallery-address {
+    margin-bottom: 4px;
+    text-align: center;
+  font-weight: 400;
+}
+/* ihf gallery slider - pagination
+----------------------------------------- */
+#ihf-main-container .pagination.ihf-gallery-slider-paging {
+  margin: -10px 0 40px 0;
+}
+/* ihf property grid
+----------------------------------------- */
+.ihf-grid-result-container.well {
+    padding: 0 !important;
+}
+.ihf-grid-result-address,
+.ihf-grid-result-basic-info-container,
+.ihf-grid-result-price,
+.ihf-grid-result-additional-info {
+    margin: 0;
+    padding: 10px 15px;
+}
+.ihf-grid-result-basic-info-item1 br,
+.ihf-grid-result-basic-info-item2 br,
+.ihf-grid-result-basic-info-item3 br {
+    content: "";
+    display: inline;
+}
+.ihf-grid-result-basic-info-item1,
+.ihf-grid-result-basic-info-item2,
+.ihf-grid-result-basic-info-item3 {
+    border: none;
+}
+.ihf-grid-result-additional-info {
+  padding: 0 15px;
+}
+/* ihf property grid - price bar
+----------------------------------------- */
+#ihf-main-container .title-bar-1 {
+    position: relative;
+    top: auto;
+    margin-bottom: 10px;
+    z-index: 1;
+    padding: 8px 15px;
+}
+/* ihf property grid - map icon
+----------------------------------------- */
+.ihf-grid-result-container .ihf-map-icon {
+    top: 20px;
+    right: 15px;
+}
+/* ihf property grid - photo count
+----------------------------------------- */
+.ihf-grid-result-photocount {
+    right: 15px;
+    top: 10px;
+}
+/* ihf property list
+----------------------------------------- */
+.ihf-listing-search-results .ihf-result {
+  background-color: #fff; 
+  margin-left: 0 !important;
+    margin-right: 0 !important;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px 0 15px;
+  border: 1px solid #ddd;
+}
+.ihf-listing-search-results .ihf-results-property-info br {
+  content: "";
+    display: inline;
+}
+.ihf-results-address {
+  font-weight: 500;
+}
+.ihf-listing-search-results .ihf-result .col-xs-12 .row:nth-child(1) {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  .ihf-listing-search-results .ihf-result > .col-xs-12 {
+    position: relative;
+  }
+  .ihf-listing-search-results .ihf-result,
+  .ihf-listing-search-results .ihf-result .col-xs-12 .row:nth-child(3),
+  .ihf-listing-search-results .ihf-result .col-xs-12 .row:last-of-type .col-xs-12 {
+    padding-top: 3px !important;
+      padding-left: 3px !important;
+      padding-right: 3px !important;
+      padding-bottom: 3px !important;
+  }
+  .ihf-listing-search-results .ihf-result .col-xs-12 .row:nth-child(2) {
+    position: absolute;
+    z-index: 1;
+    left: 261px;
+    top: 33px;
+    width: calc(100% - 245px);
+    font-size: 15px;
+  }
+  #ihf-main-container .ihf-results-property-info,
+  #ihf-main-container .ihf-results-photo {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  #ihf-main-container .ihf-results-property-info {
+    position: relative;
+    top: 50px;
+  }
+
+  #ihf-main-container .ihf-results-extra-info {
+    position: absolute;
+    right: 6px;
+      bottom: 0;
+  }
+  .ihf-listing-search-results .ihf-results-property-info strong {
+    padding-right: 10px;
+  }
+  #ihf-main-container .ihf-results-property-info .ihf-results-price {
+      font-size: 15px;
+  }
+  #ihf-main-container .ihf-results-links a {
+    background: #00AEEF;
+    color: #fff;
+    border-radius: 3px;
+    padding: 2px 4px;
+    font-weight: 500;
+    font-size: 12px;
+    margin-right: 10px;
+  }
+  #ihf-main-container .ihf-results-links {
+    margin-top: 0;
+  }
+  #ihf-main-container .ihf-results-address + .pull-right {
+    top: -14px;
+      position: relative;
+  }
+}
+@media screen and (max-width: 767px) {
+  #ihf-main-container .ihf-results-photo img {
+    width: 100%;
+  }
+  #ihf-main-container .ihf-results-photo {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
+/* ihf search
+----------------------------------------- */
+.chosen-container.chosen-with-drop .chosen-single {
+  border-radius: 5px 5px 0 0 !important;
+}
+.chosen-container .chosen-drop {
+  border: 1px solid #ccc;
+  border-top: none;
+}
+.chosen-container .chosen-results li {
+  padding: 10px 6px;
+}
+.chosen-container .chosen-results li.highlighted {
+  background-color: #aaa;
+  background-image: none;
+}
+/* ihf buttons
+----------------------------------------- */
+.idx-btn, #ihf-main-container .btn, #ihf-main-container .btn-primary, #ihf-main-container .ihf-map-search-refine-link, #ihf-main-container .ihf-advanced-search-launch, .dsidx-resp-area-submit input[type='submit'] {
+  padding: 9px 15px !important;
+}
+/* ihf agent bio
+----------------------------------------- */
+.ihf-agent-info {
+  margin-top: 30px; 
+}
+.ihf-agent-list .thumbnail {
+  min-height: 92px;
+}
+.ihf-office-photo {
+  margin-right: 30px;
+}
+
+
+
+

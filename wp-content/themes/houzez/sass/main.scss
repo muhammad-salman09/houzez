@@ -1,0 +1,74 @@
+//@import 'compass';
+
+// Core variables and mixins
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+//@import 'fonts.scss';
+@import 'variables.scss';
+@import 'mixings.scss';
+@import 'extends.scss';
+@import 'global.scss';
+
+@import 'header.scss';
+@import 'navigation.scss';
+@import 'top-bar.scss';
+@import 'modal_windows.scss';
+@import 'searches.scss';
+@import 'splash-page.scss';
+@import 'content.scss';
+@import 'listing.scss';
+@import 'pagination.scss';
+
+@import 'modules.scss';
+@import 'widgets.scss';
+@import 'footer.scss';
+@import 'breadcrumb.scss';
+@import 'slider-arrows.scss';
+@import 'alerts.scss';
+@import 'label.scss';
+@import 'buttons.scss';
+@import 'typography.scss';
+@import 'bootstrap-rating.scss';
+@import 'wp-classes.scss';
+@import 'key-frams.scss';
+@import 'gravity-form.scss';
+@import 'idx.scss';
+
+/* PLEASE PUT THE CODE BELOW IN EACH RELATED FILE */
+#myChart {
+  height: 100% !important;
+  width: 100% !important;
+}
+.houzez-single-property-v2 .video-block {
+  background: transparent;
+}
+.houzez-single-property-v2 .video-block iframe {
+  width: 100%;
+}
+
+.packages-no-padding div[class^="col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}
+#properties_module_section .pagination-main {
+  margin-top: 10px;
+}
+.fave-svg-loader {
+  display: none;
+  text-align: center;
+  margin-bottom: 10px;
+}
+/* Mailchimp
+-------------------------------------*/
+.mc4wp-form-fields .table-list {
+  margin-bottom: 15px;
+}
+/* Property popup
+-------------------------------------*/
+.popup-trigger-v2 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}

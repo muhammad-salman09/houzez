@@ -1,0 +1,29 @@
+/* splash page 
+/* ------------------------------------------------------ */
+#splash-section {
+    @extend %relative;
+    @extend %full-width;
+    .container-fluid {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+    .vegas-overlay {
+        z-index: 2;
+    }
+    .splash-inner-media {
+        @extend %absolute;
+        z-index: 1;
+        @extend %top-0;
+        @extend %right-0;
+        @extend %left-0;
+        @extend %full-width;
+        height: 100% !important;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover,100%;
+    }
+    .splash-inner-content {
+        @extend %relative;
+        z-index: 3;
+    }
+}

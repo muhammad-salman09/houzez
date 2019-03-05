@@ -1,0 +1,1314 @@
+/* property listing loading bar - used for google maps
+/* ------------------------------------------------------ */
+.list-loading {
+    @extend %absolute;
+    font-size: 0;
+    top: 50%;
+    left: 50%;
+}
+.list-loading-bar {
+    @extend %display-inline-block;
+    animation: loading 1s ease-in-out infinite;
+    width: 4px;
+    height: 18px;
+    margin-right: 3px;
+    border-radius: 4px;
+}
+.list-loading-bar:nth-child(1) {
+    animation-delay: 0s;
+}
+.list-loading-bar:nth-child(2) {
+    animation-delay: .09s;
+}
+.list-loading-bar:nth-child(3) {
+    animation-delay: .18s;
+}
+.list-loading-bar:nth-child(4) {
+    animation-delay: .27s;
+}
+/* Listing - List Style
+------------------------------------------------------------ */
+.item-thumb {
+    @extend %relative;
+    //overflow: hidden;
+    img {
+        //@extend %relative;
+        //left: 50%;
+        //@extend %top-0;
+        //@include translate(-50%,0);
+        @extend %full-width;
+    }
+    .label-featured {
+        @extend %absolute;
+        z-index: 3;
+        top: 12px;
+        left: 12px;
+    }
+    
+    .actions {
+        @extend %absolute;
+        z-index: 4;
+        right: 12px;
+        bottom: 12px;
+    }
+    .price {
+        @extend %absolute;
+        z-index: 4;
+        bottom: 12px;
+        left: 12px;
+
+        text-align: left;
+        // h3 {
+        //     color: $white;
+        // }
+        .rant {
+            //@extend %margin-0;
+            color: $white;
+        }
+        .price-start {
+            color: $white;
+        }
+        .item-price {
+            @extend %display-block;
+
+            color: $white;
+        }
+        .item-sub-price {
+            @extend %display-block;
+
+            color: $white;
+        }
+    }
+    .item-price-block {
+        @extend %absolute;
+        bottom: 12px;
+        left: 12px;
+    }
+    .blue {
+        color: $white;
+    }
+    .thumb-caption {
+        @extend %full-width;
+        padding: 12px;
+
+        @include position(absolute, inherit, 0, 0, 0,3);
+        .cap-price {
+            color: $white;
+        }
+        .actions {
+            color: $white;
+        }
+    }
+    .hover-effect {
+        &:before {
+            @extend %absolute;
+            z-index: 2;
+            @extend %top-0;
+            @extend %left-0;
+
+            @extend %display-block;
+
+            @extend %full-width;
+            @extend %full-height;
+
+            content: '';
+
+            background-color: rgba($white,.5);
+
+            @extend %animation-default;
+            opacity: 0;
+        }
+        &:after {
+            @extend %absolute;
+            z-index: 1;
+            @extend %top-0;
+            @extend %right-0;
+            @extend %left-0;
+
+            @extend %full-width;
+            @extend %full-height;
+
+            content: '';
+
+            @extend %animation;
+            opacity: 1;
+            @include linear-gradient(to bottom, rgba($black,0) 0%, rgba($black,0) 0%, rgba($black,.2) 65%,rgba($black,.8) 100%);
+        }
+    }
+    &:hover {
+        .hover-effect {
+            &:before {
+                //background-color: $blue;
+                z-index: 2;
+
+                background-image: none;
+
+                opacity: .5;
+            }
+            &:after {
+                opacity: 0;
+            }
+        }
+        .detail {
+            h3 {
+                color: $white;
+            }
+        }
+        a {
+            color: $white;
+        }
+    }
+}
+
+.item-body {
+    .rating + h2 {
+        margin-top: 5px;
+    }
+    .info-row {
+        & + .info-row {
+            margin-top: 10px;
+        }
+    }
+    .amenities {
+        min-height: 40px;
+
+        @include respond-to(phone) {
+            margin-bottom: 15px;
+        }
+        span {
+            margin-right: 10px;
+        }
+    }
+    .property-title {
+        a {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+    }
+    .property-title,
+    h2 {
+        //overflow: hidden;
+
+        max-width: 380px;
+
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        @include respond-to(large-desktop-to-mini-phone) {
+            max-width: 260px;
+        }
+        @include respond-to(tablet-portrait) {
+            max-width: 100%;
+        }
+    }
+    .property-address,
+    h4 {
+        overflow: hidden;
+
+        max-width: 265px;
+
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        color: $text-gray;
+    }
+    p {
+        @extend %margin-0;
+    }
+    .phone {
+        @extend %absolute;
+        @extend %right-0;
+        @extend %bottom-0;
+
+        @include respond-to(tablet-portrait) {
+            top: 0;
+        }
+    }
+    .date {
+        a {
+            color: $text-gray;
+        }
+        p {
+            @extend %display-inline-block;
+
+            margin-right: 10px;
+
+            color: $text-gray;
+            i {
+                margin-right: 5px;
+            }
+            &:last-child {
+                @extend %margin-0;
+            }
+        }
+    }
+    .table-cell {
+        @extend %relative;
+    }
+    .btn {
+        & + p {
+            margin-top: 12px;
+        }
+    }
+}
+.price {
+    text-align: right;
+
+    color: $black;
+    .price-start {
+        color: #777;
+    }
+    .item-price {
+        @extend %display-block;
+    }
+    .item-sub-price {
+        @extend %display-block;
+
+        color: $gray-ae;
+    }
+    .item-price-text {
+        font-size: 14px;
+        font-weight: 400;
+    }
+}
+.item-foot {
+    padding: 14px 20px;
+
+    border-top: 1px solid $border-light-gray;
+    background-color: $white;
+
+    @extend %clearfix;
+    .item-foot-left {
+        @extend %float-left;
+    }
+    .item-foot-right {
+        @extend %float-right;
+    }
+    p {
+        color: $text-gray;
+    }
+    a {
+        color: $text-gray;
+    }
+    i {
+        margin-right: 5px;
+    }
+}
+
+
+/* Listing - Grid Style
+------------------------------------------------------------ */
+.list-grid-area {
+    @extend %float-right;
+
+    @include respond-to(tablet-portrait) {
+        float: inherit;
+    }
+}
+
+/* Listing Tabs
+------------------------------------------------------------ */
+.list-tabs {
+    .tabs {
+        @include respond-to(tablet-portrait) {
+            display: block;
+
+            width: 100%;
+        }
+        a {
+            padding: 18px 10px;
+            @include respond-to(tablet-portrait) {
+                padding: 12px 10px;
+            }
+        }
+    }
+    .sort-tab {
+        @include respond-to(tablet-portrait) {
+            display: block;
+
+            width: 100%;
+            padding: 10px 0;
+
+            text-align: left;
+        }
+    }
+}
+.tabs {
+    @extend %v-middle;
+    p {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 16px;
+
+        margin-top: 4px;
+        margin-bottom: 21px;
+
+        @include respond-to(tablet-portrait) {
+            font-size: 14px;
+
+            margin-bottom: 15px;
+        }
+        @include respond-to(phone) {
+            font-size: 12px;
+        }
+    }
+    ul {
+        font-size: 0;
+        @extend %margin-0;
+    }
+    li {
+        @extend %display-inline-block;
+
+        margin-right: 1px;
+    }
+    a {
+        @extend %display-block;
+
+        width: 170px;
+
+        color: $black;
+        background-color: $actions-color;
+
+        @include respond-to(medium-desktop) {
+            width: 135px;
+        }
+        @include respond-to(tablet-landscape-desktop) {
+            width: 125px;
+        }
+        @include respond-to(tablet-portrait) {
+            width: 84px;
+        }
+        @include respond-to(phone) {
+            //width: 90px;
+            font-size: 12px;
+        }
+        &:hover,
+        &:active,
+        &.active {
+            background-color: $white;
+        }
+    }
+}
+/* Listing - Sort Properties
+------------------------------------------------------------ */
+.sort-tab {
+    //font-size: 15px;
+    //font-weight: 400;
+
+    @extend %v-middle;
+
+    color: $text-gray;
+
+    @include respond-to(tablet-portrait) {
+        font-size: 12px;
+    }
+    .bootstrap-select {
+        top: -1px;
+        left: -8px;
+
+        width: auto !important;
+    }
+    .bootstrap-select .btn-default {
+        height: auto;
+        padding-top: 0;
+        padding-bottom: 0;
+
+        @extend %border-none;
+        background-color: transparent;
+        &:hover {
+            color: $black;
+            @extend %background-color-transparent;
+        }
+        &:focus {
+            outline: none !important;
+            @extend %background-color-transparent;
+            @extend %border-none;
+            box-shadow: none;
+        }
+    }
+    .dropdown-menu {
+        @extend %right-0;
+        left: auto;
+    }
+    .open {
+        & > .btn {
+            @extend %border-none;
+            background: none !important;
+            box-shadow: none;
+        }
+    }
+
+}
+.item-wrap {
+    margin-bottom: 14px;
+    padding-right: 7px;
+    padding-left: 7px;
+
+    @include respond-to(tablet-portrait) {
+        float: left;
+
+        width: 100%;
+        //@extend %margin-0;
+    }
+}
+.property-listing {
+    margin-bottom: -8px;
+
+    @extend %clearfix;
+    .row {
+        margin-right: -4px;
+        margin-left: -4px;
+    }
+    .item-wrap {
+        margin-bottom: 8px;
+        padding-right: 4px;
+        padding-left: 4px;
+    }
+    .grid-row {
+        margin-right: -4px;
+        margin-left: -4px;
+    }
+    .not-found {
+        padding: 20px;
+
+        background-color: $white;
+    }
+}
+.property-listing.list-view {
+    .figure-block {
+        width: 254px;
+        height: 170px;
+    }
+    @include respond-to(tablet-portrait) {
+        .figure-block {
+            width: 100%;
+            height: auto;
+        }
+
+        .property-item {
+            display: block;
+            .table-cell {
+                display: block;
+            }
+            .item-body {
+                width: 100%;
+                padding: 15px 7px 7px;
+                .phone {
+                    position: relative !important;
+                }
+            }
+            .body-left {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            .body-right {
+                width: 100%;
+            }
+            .info-row {
+                text-align: left;
+            }
+        }
+        .hide-on-grid {
+            display: none;
+        }
+        .hide-on-list {
+            display: block;
+        }
+        .hidden-gird-cell {
+            display: none !important;
+        }
+    }
+    
+    .hide-on-grid {
+        @extend %display-block;
+    }
+    .hide-on-list {
+        @extend %display-none;
+    }
+    .hidden-gird-cell {
+        display: table-cell;
+    }
+    .property-item-v2 {
+        @include respond-to(tablet-portrait) {
+            padding-right: 8px;
+            .figure-block,
+            .item-thumb {
+                display: block;
+
+                width: 100%;
+                height: auto;
+            }
+            .item-body {
+                display: block;
+
+                width: 100%;
+            }
+            .body-inner {
+                position: relative;
+                width: 100%;
+            }
+            .item-body-top,
+            .item-body-bottom {
+                position: relative;
+                padding: 12px 15px;
+            }
+            .item-body-top {
+                padding-bottom: 0;
+            }
+            .item-body-bottom {
+                padding-top: 0;
+            }
+            .item-title {
+                width: 100%;
+                margin-bottom: 30px;
+            }
+            .item-amenities {
+                width: 100%;
+            }
+            .item-price-block {
+                position: absolute;
+                z-index: 4;
+                bottom: 12px;
+                left: 12px;
+
+                text-align: left;
+                span {
+                    color: $white;
+                }
+            }
+            .item-date {
+                width: 100%;
+            }
+            .actions {
+                right: 12px;
+                left: auto;
+            }
+        }
+    }
+}
+.grid-view {
+    .figure-block,
+    .item-thumb {
+        @extend %display-block;
+
+        @extend %full-width;
+        height: auto;
+    }
+    .item-wrap {
+        @extend %float-left;
+
+        width: 50%;
+        @extend %margin-0;
+        margin-bottom: 10px;
+        padding-right: 4px;
+        padding-left: 4px;
+
+        @include respond-to(medium-desktop) {
+            width: 50%;
+        }
+        @include respond-to(tablet-portrait) {
+            width: 100%;
+        }
+        &:nth-child(2n+1) {
+            clear: both;
+        }
+    }
+    .property-item {
+        @extend %display-block;
+        .table-cell {
+            @extend %display-block;
+        }
+        .item-body {
+            @extend %full-width;
+            padding: 15px 12px 7px;
+            .phone {
+                position: relative !important;
+            }
+            .amenities {
+                height: auto;
+            }
+        }
+        .body-left {
+            @extend %full-width;
+            margin-bottom: 15px;
+        }
+        .body-right {
+            @extend %full-width;
+        }
+        .info-row {
+            text-align: left;
+        }
+    }
+    .property-item-v2 {
+        padding: 8px;
+        .figure-block,
+        .item-thumb {
+            @extend %display-block;
+
+            @extend %full-width;
+            height: auto;
+        }
+        .item-body {
+            @extend %display-block;
+
+            @extend %full-width;
+        }
+        .body-inner {
+            @extend %relative;
+
+            @extend %full-width;
+        }
+        .item-body-top,
+        .item-body-bottom {
+            @extend %relative;
+
+            padding: 12px 15px;
+        }
+        .item-body-top {
+            padding-bottom: 0;
+        }
+        .item-body-bottom {
+            padding-top: 0;
+        }
+        .item-title {
+            @extend %full-width;
+            margin-bottom: 30px;
+        }
+        .item-amenities {
+            @extend %full-width;
+        }
+        .item-price-block {
+            @extend %absolute;
+            z-index: 4;
+            bottom: 12px;
+            left: 12px;
+
+            text-align: left;
+            span {
+                color: $white;
+            }
+        }
+        .item-date {
+            @extend %full-width;
+        }
+        .actions {
+            right: 12px;
+            left: auto;
+        }
+    }
+    .hide-on-grid {
+        @extend %display-none;
+    }
+    .hide-on-list {
+        @extend %display-block;
+    }
+    .hidden-gird-cell {
+        display: none !important;
+    }
+}
+
+.grid-view-3-col {
+    @include respond-to(tablet-landscape-desktop) {
+        .item-body {
+            .amenities {
+                margin-bottom: 15px;
+            }
+        }
+        .property-item {
+            .cell {
+                display: block;
+
+                text-align: left;
+            }
+        }
+    }
+    @include respond-to(tablet-portrait) {
+        .item-wrap {
+            width: 100% !important;
+        }
+    }
+    .item-wrap {
+        width: 33.33%;
+        &:nth-child(2n+1) {
+            clear: none;
+        }
+        &:nth-child(3n+1) {
+            clear: both;
+        }
+    }
+}
+.grid-view-1-col .item-wrap {
+    @extend %full-width;
+}
+
+.property-item {
+    @extend %display-block;
+
+    @extend %full-width;
+    padding: 8px;
+
+    background-color: $white;
+    .item-body {
+        @extend %display-table-cell;
+        overflow: hidden;
+
+        width: 10000px;
+        padding: 10px 12px 10px 20px;
+
+        @extend %v-top;
+    }
+    .body-left {
+        @extend %display-block;
+        @extend %float-left;
+
+        width: 70%;
+    }
+    .body-right {
+        @extend %display-block;
+        @extend %float-right;
+
+        width: 30%;
+        min-height: 145px;
+    }
+    .btn {
+        @include respond-to(tablet-portrait) {
+            //font-size: 11px;
+            padding: 11px 15px;
+        }
+    }
+    .table-cell {
+        @extend %v-top;
+    }
+    .cell {
+        @extend %display-table-cell;
+
+        @extend %full-width;
+        //white-space: nowrap;
+
+        @extend %v-top;
+
+        @include respond-to(mini-phone) {
+            display: block;
+
+            text-align: left;
+        }
+        & + .cell {
+            text-align: right;
+        }
+    }
+    .label-wrap {
+        margin-bottom: 5px;
+    }
+}
+
+.property-item.item-grid {
+    @extend %relative;
+
+    @extend %display-block;
+    .item-thumb {
+        @extend %display-block;
+    }
+    figure {
+        @extend %display-block;
+    }
+    .body-left {
+        @extend %display-block;
+
+        @extend %full-width;
+    }
+    .body-right {
+        @extend %display-block;
+
+        @extend %full-width;
+    }
+    .info-row {
+        text-align: left;
+    }
+    .item-body {
+        @extend %display-block;
+
+        @extend %full-width;
+        padding: 15px 12px 7px;
+        .amenities {
+            height: auto;
+        }
+    }
+    .phone {
+        @extend %relative;
+        @extend %top-0;
+    }
+    .cell {
+        @include respond-to(mini-phone) {
+            display: block;
+
+            width: 100%;
+
+            text-align: left;
+        }
+        & + .cell {
+            @include respond-to(mini-phone) {
+                margin-top: 15px;
+            }
+        }
+    }
+}
+
+.property-item-v2 {
+    @extend %full-width;
+    padding: 8px;
+    padding-right: 0;
+
+    background-color: #fff;
+    .figure-block {
+        @extend %display-table-cell;
+
+        width: auto;
+        height: auto;
+
+        @extend %v-top;
+    }
+    .item-thumb {
+        width: 280px;
+        //height: 280px;
+    }
+    .item-body {
+        @extend %relative;
+
+        @extend %display-table-cell;
+
+        width: 1000px;
+
+        @extend %v-top;
+    }
+    .item-body-top,
+    .item-body-bottom {
+        @extend %absolute;
+        z-index: 4;
+        @extend %right-0;
+        @extend %left-0;
+
+        @extend %full-width;
+        padding: 12px 20px;
+
+        @extend %clearfix;
+    }
+    .item-body-top {
+        @extend %top-0;
+    }
+    .item-body-bottom {
+        @extend %bottom-0;
+    }
+    .item-title {
+        @extend %float-left;
+    }
+    .property-title {
+        @include typography(20px, 26px, 0 0 8px, 500, inherit, inherit);
+        @include respond-to(tablet-portrait) {
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
+    .property-address {
+        color: #777;
+
+        @include typography(14px, 20px, 0, 300, inherit, inherit);
+        @include respond-to(tablet-portrait) {
+            font-size: 12px;
+            line-height: 14px;
+        }
+    }
+    .item-amenities {
+        @extend %float-left;
+    }
+    .item-date {
+        @extend %float-right;
+
+        margin-top: 20px;
+    }
+    .item-price-block {
+        @extend %float-right;
+    }
+    .actions {
+        right: auto;
+        left: 12px;
+    }
+}
+.property-item-v2.item-grid {
+    padding: 8px;
+    .figure-block,
+    .item-thumb {
+        @extend %display-block;
+
+        @extend %full-width;
+        height: auto;
+    }
+    .item-body {
+        @extend %display-block;
+
+        @extend %full-width;
+    }
+    .body-inner {
+        @extend %relative;
+
+        @extend %full-width;
+    }
+    .item-body-top,
+    .item-body-bottom {
+        @extend %relative;
+
+        padding: 12px 15px;
+    }
+    .item-body-top {
+        padding-bottom: 0;
+    }
+    .item-body-bottom {
+        padding-top: 0;
+    }
+    .item-title {
+        @extend %full-width;
+        margin-bottom: 30px;
+    }
+    .item-amenities {
+        @extend %full-width;
+    }
+    .item-price-block {
+        @extend %absolute;
+        z-index: 4;
+        bottom: 12px;
+        left: 12px;
+
+        text-align: left;
+        span {
+            color: $white;
+        }
+    }
+    .item-date {
+        @extend %full-width;
+    }
+    .actions {
+        right: 12px;
+        left: auto;
+    }
+}
+/* Listing v2
+------------------------------------------------------------ */
+.item-amenities {
+    font-size: 0;
+
+    @extend %margin-0;
+
+    list-style: none;
+    li {
+        font-size: 12px;
+        font-weight: 300;
+
+        @extend %display-inline-block;
+
+        padding: 0 8px;
+
+        color: #777;
+        border-right: 1px solid #ccc;
+        &:first-child {
+            padding-left: 0;
+        }
+        &:last-child {
+            @extend %border-none;
+        }
+        span {
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 18px;
+
+            @extend %display-block;
+
+            margin-bottom: 5px;
+
+            color: $black;
+        }
+    }
+}
+
+.item-date {
+    @extend %margin-0;
+
+    list-style: none;
+    li {
+        font-size: 12px;
+        font-weight: 300;
+
+        @extend %display-inline-block;
+
+        margin-right: 12px;
+
+        color: #777;
+        &:last-child {
+            @extend %margin-0;
+        }
+    }
+    .fa {
+        font-size: 14px;
+
+        margin-right: 5px;
+    }
+}
+.item-price-block {
+    text-align: right;
+    span {
+        @extend %display-block;
+    }
+    .item-price {
+        color: $black;
+
+        @include typography(20px, 26px, 0, 400, inherit, inherit);
+    }
+    .item-sub-price {
+        color: #777;
+
+        @include typography(14px, 20px, 0, 300, inherit, inherit);
+    }
+}
+/* Listing v3
+------------------------------------------------------------ */
+.property-item-grid {
+    .actions {
+        top: 20px;
+        right: 20px;
+        bottom: auto;
+        left: auto;
+    }
+    .price {
+        top: auto;
+        right: 20px;
+        bottom: 20px;
+        left: auto;
+    }
+    .item-caption {
+        @extend %absolute;
+        z-index: 3;
+        bottom: 20px;
+        left: 20px;
+    }
+    .item-price {
+        color: $white;
+
+        @include typography(16px, 20px, 0, 500, inherit, inherit);
+    }
+    .item-sub-price {
+        color: $white;
+
+        @include typography(12px, 18px, 3px 0 0, 300, inherit, inherit);
+    }
+    .label-wrap {
+        top: 20px;
+        right: 20px;
+        
+    }
+    .label-left {
+        //top: 20px;
+        left: 20px;
+    }
+    .label-right {
+        //top: 20px;
+        right: 20px;
+    }
+}
+.item-caption {
+    .label-wrap {
+        margin-bottom: 7px;
+    }
+    .item-caption-title {
+        color: $white;
+
+        @include typography(16px, 20px, 0 0 3px, 500, inherit, inherit);
+    }
+    .item-caption-list {
+        @extend %margin-0;
+
+        list-style: none;
+
+        @extend %clearfix;
+        li {
+            @extend %float-left;
+
+            margin-right: 5px;
+
+            color: $white ;
+
+            @include typography(12px, 18px, 0, 300, inherit, inherit);
+            &:last-child {
+                @extend %margin-0;
+            }
+        }
+        .cap-price {
+            font-size: 16px;
+            font-weight: 500;
+        }
+    }
+}
+/* Listing parallax properties
+------------------------------------------------------------ */
+.parallax-properties-media {
+    @extend %relative;
+}
+.parallax-properties-inner {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    overflow: hidden;
+    height: 600px;
+    @include respond-to(tablet-portrait) { 
+        height: 480px;
+    }
+}
+.parallax-property-caption-wrap {
+    @extend %absolute;
+    //padding: 60px;
+    z-index: 5;
+    top: 50%;
+    left: 50%;
+    max-width: 1170px;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    &.left {
+        .parallax-property-caption {
+            @extend %float-left;
+            @include respond-to(tablet-portrait) { 
+                float: none;
+                margin: 0 30px;
+            }
+        }        
+    }
+    &.right {
+        .parallax-property-caption {
+            @extend %float-right;
+            @include respond-to(tablet-portrait) { 
+                float: none;
+                margin: 0 30px;
+            }
+        }        
+    }
+    @include respond-to(large-desktop-to-mini-phone) { 
+        max-width: 970px;
+    }
+    @include respond-to(medium-desktop-to-mini-phone) { 
+        max-width: 750px;
+    }
+    @include respond-to(tablet-portrait) { 
+        max-width: 480px;
+    }
+    
+}
+.parallax-property-caption {
+    padding: 60px;
+    z-index: 5;
+    max-width: 540px;
+    @include respond-to(tablet-portrait) { 
+        padding: 30px;
+    }
+    h2 {
+        font-size: 32px;
+        line-height: 40px;
+        margin: 0 0 5px 0;
+        @include respond-to(medium-desktop-to-mini-phone) { 
+            font-size: 24px;
+            line-height: 30px;
+        }
+        @include respond-to(tablet-portrait) { 
+            font-size: 18px;
+            line-height: 24px;
+            margin: 0 0 2px 0;
+        }
+    }
+    .label-wrap {
+        margin-bottom: 10px;
+    }
+    address,
+    .amenities {
+        font-size: 16px;
+        line-height: 16px;
+        @include respond-to(medium-desktop-to-mini-phone) { 
+            font-size: 14px;
+            line-height: 22px;
+        }
+        @include respond-to(tablet-portrait) { 
+            font-size: 12px;
+            line-height: 18px;
+            //margin-bottom: 10px;
+        }
+        span {
+            margin-right: 10px;
+        }
+    }
+    .price {
+        text-align: left;
+        margin-bottom: 25px;
+        @include respond-to(tablet-portrait) { 
+            margin-bottom: 10px;
+        }
+        .item-sub-price {
+            font-size: 16px;
+            line-height: 16px;
+            font-weight: 300;
+            margin: 10px 0 0;
+            @include respond-to(medium-desktop-to-mini-phone) { 
+                font-size: 14px;
+                line-height: 14px;
+            }
+            @include respond-to(tablet-portrait) { 
+                font-size: 12px;
+                line-height: 12px;
+            }
+        }
+        .item-price {
+            font-size: 24px;
+            line-height: 24px;
+            @include respond-to(medium-desktop-to-mini-phone) { 
+                font-size: 18px;
+                line-height: 18px;
+            }
+            @include respond-to(tablet-portrait) { 
+                font-size: 16px;
+                line-height: 16px;
+            }
+        }
+    }
+}
+/* Multi unit listing
+/* ------------------------------------------------------ */
+.detail-multi-properties {
+    &.list-view { 
+        .figure-block {
+            width: 150px;
+            height: 100px;
+            @include respond-to(tablet-portrait) { 
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+    .property-item {
+        padding: 0;
+        .item-body {
+            padding: 0 0 0 20px;
+        }
+        .body-right {
+            min-height: 105px;
+        }
+    }
+    &.property-listing {
+        .item-wrap {
+            padding-right: 0;
+            padding-left: 0;
+            padding-bottom: 20px;
+            border-bottom: 1px solid $border-light-gray;
+            margin-bottom: 25px;
+        }
+    }
+    .item-foot {
+        padding: 0 7px;
+        border-top: none;
+    }
+}
+

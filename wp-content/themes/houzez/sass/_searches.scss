@@ -1,0 +1,633 @@
+/* splash page search 
+/* ------------------------------------------------------ */
+.splash-search {
+    @extend %relative;
+    @extend %full-width;
+    .search-table {
+        @extend %display-table;
+        @extend %full-width;
+    }
+    .search-col {
+        @extend %display-table-cell;
+        text-align: center;
+        @extend %v-middle;
+    }
+}
+/* parallax banner search style 1
+/* ------------------------------------------------------ */
+.banner-search-main {
+    max-width: 810px;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, .66);
+    @include respond-to(medium-desktop-to-mini-phone) {
+        width: 75%;
+        .form-group {
+            width: 100%;
+        }
+    }
+    .form-group {
+        @include respond-to(tablet-portrait) {
+            margin: 0 !important;
+        }
+        .bootstrap-select {
+            @extend %display-table-cell;
+            width: 300px !important;
+            @extend %v-middle;
+            @include respond-to(medium-desktop-to-mini-phone) {
+                display: block;
+                width: 100% !important;
+                margin-bottom: 10px;
+                .dropdown-toggle {
+                    float: none;
+
+                    width: 100%;
+
+                    border-radius: 4px;
+                }
+            }
+            &.open {
+                @extend %relative;
+                z-index: 6;
+            }
+        }
+        .search {
+            @extend %display-table-cell;
+            width: 10000px;
+            @extend %v-middle;
+            @include respond-to(medium-desktop-to-mini-phone) {
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        .search-btn {
+            @extend %display-table-cell;
+            @extend %v-middle;
+            @include respond-to(medium-desktop-to-mini-phone) {
+                display: block;
+                width: 100%;
+                padding-left: 0;
+            }
+        }
+    }
+    .form-control {
+        @extend %full-width;
+        text-align: left;
+        @extend %border-none;
+        border-left: 1px solid #dbdbdb;
+        box-shadow: none;
+        @include border-radius(0 4px 4px 0);
+        @include respond-to(medium-desktop-to-mini-phone) {
+            border: none;
+
+            @include border-radius(4px);
+        }
+    }
+    .dropdown-toggle {
+        border: none !important;
+        @include border-radius(4px 0 0 4px);
+        @include respond-to(tablet-landscape-desktop) {
+            width: 107px;
+        }
+        .caret {
+            margin-left: 10px;
+        }
+    }
+    .search-btn {
+        padding-left: 10px;
+    }
+    .btn-secondary {
+        @extend %full-width;
+        height: $form-height;
+        padding: 6px 30px;
+        &:hover {
+            i {
+                @include scale(1.1);
+            }
+        }
+    }
+}
+.bootstrap-select.btn-group .dropdown-menu.open {
+    overflow-y: scroll !important;
+    max-height: 325px !important;
+}
+
+/* parallax banner search style 2
+/* ------------------------------------------------------ */
+.banner-search-taber {
+    max-width: 920px;
+    margin: 0 auto;
+    padding-right: 30px;
+    padding-left: 30px;
+    .tab-content {
+        padding: 10px;
+        background-color: rgba($white,.85);
+        @include border-radius(0 0 4px 4px);
+    }
+    .banner-search-main {
+        @extend %full-width;
+        max-width: 100%;
+        @extend %padding-0;
+        @extend %background-color-transparent;
+    }
+}
+.banner-search-tabs {
+    @extend %display-table;
+    @extend %full-width;
+    @extend %margin-0;
+    table-layout: fixed;
+    @include respond-to(tablet-portrait) {
+        .search-tab-inner {
+            font-size: 12px;
+        }
+    }
+    .search-tab {
+        @extend %display-table-cell;
+        @extend %full-width;
+        padding-right: 2px;
+        @extend %animation;
+        &:last-child {
+            @extend %padding-0;
+        }
+        &.active {
+            .search-tab-inner {
+                color: $black;
+                background-color: rgba($white,.85);
+            }
+        }
+    }
+    .search-tab-inner {
+        font-weight: 500;
+        line-height: 43px;
+        @extend %relative;
+        cursor: pointer;
+        text-align: center;
+        text-transform: uppercase;
+
+        @include border-radius(4px 4px 0 0);
+        &:hover,
+        &:active {
+            color: $black;
+            background-color: rgba($white,.85);
+        }
+    }
+}
+/* searches
+/* ------------------------------------------------------ */
+.advance-search-header,
+.advanced-search-mobile,
+.search-expandable {
+    div[class^='col-'] {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+    .row {
+        margin-right: -5px;
+        margin-left: -5px;
+    }
+}
+.advanced-search-hidden {
+    @extend %display-none;
+}
+.search-hidden {
+    @extend %display-none;
+}
+/* search autocomplete
+/* ------------------------------------------------------ */
+.auto-complete {
+    @extend %absolute;
+    z-index: 3;
+    top: 98%;
+    @extend %right-0;
+    @extend %left-0;
+    @extend %display-none;
+    @extend %full-width;
+    text-align: left;
+    border-style: solid;
+    border-width: 1px;
+    color: $black;
+    .result {
+        padding: 20px;
+        p {
+            font-weight: 500;
+            @extend %margin-0;
+            text-align: center;
+        }
+    }
+    ul {
+        overflow: auto;
+        max-height: 305px;
+        @extend %margin-0;
+        list-style: none;
+    }
+    .media-object {
+        width: 40px;
+    }
+    .media-heading {
+        font-size: 14px;
+        line-height: 14px;
+    }
+    .media {
+        @extend %relative;
+        @extend %margin-0;
+        padding: 10px;
+        cursor: pointer;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        color: $black;
+        &:last-of-type {
+            @extend %border-0;
+        }
+    }
+    .amenities {
+        li {
+            @extend %display-inline-block;
+            margin-right: 5px;
+        }
+    }
+    .address {
+        @extend %margin-0;
+    }
+    .search-view {
+        @extend %absolute;
+        top: 17px;
+        right: 20px;
+        @extend %display-block;
+    }
+    .search-view,
+    .search-footer .search-result-view {
+        font-weight: 500;
+    }
+    .search-footer {
+        padding: 10px 20px;
+        border-top: 1px solid $gray-ccc;
+        @extend %clearfix;
+        .search-count,
+        .search-result-view {
+            line-height: 20px;
+        }
+        .search-count {
+            font-weight: 300;
+            @extend %float-left;
+        }
+        .search-result-view {
+            @extend %float-right;
+        }
+    }
+}
+/* search sticky
+/* ------------------------------------------------------ */
+.advanced-search-sticky {
+    position: fixed !important;
+    z-index: 11 !important;
+    @extend %top-0;
+    display: block !important;
+    width: 100% !important;
+    @include animation(fadein .4s);
+}
+/* advanced search style 1
+/* ------------------------------------------------------ */
+.advanced-search {
+    @extend %relative;
+    @extend %full-width;
+    padding: 10px 0;
+    box-shadow: 0 2px 2px $black-trans;
+    @include respond-to(medium-desktop-to-mini-phone) {
+        display: none;
+    }
+    &.advanced-search-module {
+        @include respond-to(medium-desktop-to-mini-phone) {
+            display: block;
+        }    
+    }
+    .advance-fields {
+        @extend %display-none;
+        padding-top: 15px;
+    }
+    .btn.btn-secondary,
+    .btn.btn-primary,
+    .btn.btn-default {
+        @extend %display-block;
+        i {
+            line-height: 22px;
+            @extend %float-left;
+            margin-right: 5px;
+        }
+    }
+    .form-control {
+        height: 42px;
+        font-weight: 500;
+        @include respond-to(tablet-landscape-desktop) {
+            height: 50px;
+        }
+    }
+    .advance-btn {
+        @extend %border-none;
+        background-color: transparent;
+        line-height: 21px;
+        .fa {
+            float: inherit;
+            font-size: 15px;
+            position: relative;
+            margin-right: 6px;
+        }
+    }
+    .advance-btn.active {
+        color: $blue;
+        box-shadow: none;
+    }
+    .features-list {
+        font-size: 14px;
+        .checkbox-inline {
+            line-height: 26px;
+            width: 20%;
+            @extend %margin-0;
+            @include respond-to(tablet-portrait) {
+                width: 50%;
+                margin: 0;
+                padding-right: 10px;
+            }
+            input {
+                margin-top: 7px;
+            }
+            &:last-child {
+                @extend %margin-0;
+            }
+        }
+    }    
+    .ui-slider .ui-slider-handle {
+        top: -7px;
+        width: 20px;
+        height: 20px;
+    }
+}
+.field-expand {
+    @extend %display-none;
+}
+.advance-trigger {
+    cursor: pointer;
+}
+/* advanced search style 2
+/* ------------------------------------------------------ */
+.search-long {
+    @extend %margin-0;
+    .search {
+        @extend %padding-0;
+        @extend %v-middle;
+        display: table-cell !important;
+        border-width: 1px 0 1px 1px;
+        border-style: solid;
+        @include border-radius(4px 0 0 4px);
+        .form-control {
+            border-width: 0 1px 0 0;
+            @include border-radius(4px 0 0 4px);
+        }
+    }
+    .bootstrap-select {
+        width: 130px !important;
+        background-color: $white;
+        .btn {
+            @include border-radius(0);
+            border-width: 0 1px 0 0 !important;
+            border-style: solid !important;
+        }
+    }
+    .search-btn {
+        .btn {
+            @include border-radius(0 4px 4px 0);
+            height: 45px;
+        }
+    }
+    .input-icon {
+        width: 10000px;
+        background-color: $white;
+    }
+    .search-location {
+        width: 10000px;
+    }
+    .advance-btn-holder {
+        background-color: $white;
+    }
+}
+.search-long {
+    .search-btn,
+    .advance-btn-holder,
+    .input-search,
+    .bootstrap-select,
+    .search-location {
+        display: table-cell !important;
+        @extend %v-middle;
+    }
+}
+/* advanced search mobile
+/* ------------------------------------------------------ */
+.advanced-search-mobile {
+    @extend %relative;
+    @extend %display-none;
+    z-index: 2;
+    box-shadow: 0 2px 2px rgba($black, .2);
+    @include respond-to(phone) {
+        .container {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+    }
+    @include respond-to(medium-desktop-to-mini-phone) {
+        display: block;
+    }
+    .form-group {
+        margin-bottom: 10px;
+    }
+    .form-control {
+        font-weight: 400;
+        height: 50px;
+    }
+    .single-search-inner {
+        @extend %display-table-cell;
+        @extend %v-middle;
+        .form-control {
+            @extend %border-none;
+        }
+    }
+    .search-location .location-trigger {
+        height: 50px;
+        line-height: 50px;
+        width: 50px;
+    }
+    .single-search {
+        @extend %relative;
+        width: 10000px;
+        .auto-complete {
+            top: 100%;
+        }
+    }
+    .advance-fields {
+        @extend %relative;
+        @extend %display-none;
+        padding: 10px 0 30px;        
+    }
+    .single-search-wrap {
+        @extend %display-table;
+        button {
+            font-size: 18px;
+            width: 30px;
+            height: 40px;
+            @extend %border-none;
+            @extend %background-none;
+        }
+    }
+    .btn-secondary {
+        padding: 15px 15px;
+    }
+    .range-wrap {
+        padding-right: 0;
+        padding-left: 0;
+        border-radius: 4px;
+        background-color: #f1f1f1;
+    }
+    .ui-slider .ui-slider-handle {
+        top: -1px;
+        width: 50px;
+        height: 50px;
+        margin-left: -49px;
+        &:first-of-type {
+            margin-left: -1px;
+        }
+    }
+    .ui-slider-horizontal {
+        height: 48px;
+        border: none;
+        background-color: transparent !important;
+    }
+    .range-advanced-main {
+        margin: 10px 0 0;
+    }
+    .advance-trigger {
+        line-height: 45px;
+        margin-bottom: 10px 0;
+    }
+    .features-list {
+        padding-bottom: 15px;
+        .checkbox-inline {
+            width: 28%;
+            margin-right: 20px;
+            margin-left: 0;
+        }
+    }
+}
+/* advanced search expandable
+/* ------------------------------------------------------ */
+.search-expandable {
+    @extend %absolute;
+    @extend %right-0;
+    @extend %bottom-0;
+    @extend %left-0;
+    z-index: 10;
+    @include respond-to(medium-desktop-to-mini-phone) {
+        position: relative;
+        bottom: 40px;
+    }
+    .advanced-search {
+        padding: 20px 20px 0;
+        box-shadow: none;
+    }
+    .advance-btn {
+        @extend %full-width;
+        i {
+            margin-right: 6px;
+        }
+    }
+    .search-expandable-left {
+        width: 80%;
+        @include respond-to(medium-desktop-to-mini-phone) {
+            width: 100%;
+        }
+    }
+    .search-expandable-right {
+        width: 20%;
+        @include respond-to(medium-desktop-to-mini-phone) {
+            width: 100%;
+        }
+    }
+    .field-expand {
+        @extend %display-block;
+    }
+}
+.search-expand-btn {
+    font-weight: 400;
+    line-height: 40px;
+    @extend %relative;
+    @extend %display-inline-block;
+    min-width: 235px;
+    padding: 0 20px;
+    cursor: pointer;
+    border-radius: 4px 4px 0 0;
+    z-index: 1;
+    &:after {
+        font-family: $font-awesome;
+        @extend %absolute;
+        right: 15px;
+        content: '\f0d8';
+    }
+    &.active {
+        &:after {
+            content: '\f0d7';
+        }
+    }
+}
+/* advanced search VC module
+/* ------------------------------------------------------ */
+.advanced-search-module {
+    box-shadow: none;
+    padding: 30px 0;
+    display: block !important;
+    .fa {
+        margin-right: 8px;
+    }
+    button.btn {
+        @extend %full-width;
+    }
+    .advance-title {
+        @include respond-to(tablet-landscape-desktop) {
+            .fa {
+                display: none;
+            }
+        }
+        @include respond-to(tablet-portrait) {
+            font-size: 16px;
+            line-height: 16px;
+            .fa {
+                display: none;
+            }
+        }
+    }
+    .features-list {
+        @extend %display-none;
+    }
+}
+/* search range slider
+/* ------------------------------------------------------ */
+.range-advanced-main {
+    margin-bottom: 20px;
+}
+.range-text {
+    p {
+        line-height: 14px;
+        margin-bottom: 14px;
+        font-size: 14px;
+    }
+}
+.range-title,
+.min-price-range,
+.max-price-range {
+    font-weight: 500;
+}
+.range-wrap {
+    padding: 0 7px;
+}
+.radius-range-wrap {
+    padding: 7px 5px 0 5px;
+}

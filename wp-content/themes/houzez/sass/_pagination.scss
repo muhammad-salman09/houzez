@@ -1,0 +1,45 @@
+/* pagination
+/* ------------------------------------------------------ */
+.pagination-main {
+    .pagination {
+        font-size: 0;
+
+        @extend %full-width;
+        margin-top: 0;
+        margin-bottom: 0;
+
+        text-align: center;
+
+        li {
+            @extend %display-inline-block;
+
+            margin-right: 1px !important;
+            &:last-child {
+                a {
+                    border-radius: 0;
+                }
+            }
+            &:first-child {
+                a {
+                    border-radius: 0;
+                }
+            }
+        }
+        li.active {
+            a {
+                color: $white;
+                background-color: $blue;
+            }
+        }
+        a {
+            min-width: 40px;
+            height: 40px;
+
+            color: $blue;
+            @extend %border-none;
+            &:hover {
+                color: $blue;
+            }
+        }
+    }
+}

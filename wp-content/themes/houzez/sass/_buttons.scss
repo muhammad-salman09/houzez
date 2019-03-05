@@ -1,0 +1,238 @@
+/* Buttons
+/* ------------------------------------------------------ */
+.btn {
+    font-size: 14px;
+    padding: 11px 15px;
+    @include respond-to(tablet-portrait) {
+        padding: 15px 15px;
+    }
+    &:hover,
+    &:focus,
+    &.focus {
+        outline: 0 !important;
+        outline-offset: 0  !important;
+        background-image: none  !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none  !important;
+    }
+
+    &:active,
+    &.active {
+        outline: 0 !important;
+        outline-offset: 0  !important;
+        background-image: none  !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none  !important;
+    }
+}
+.btn {
+    .fa.fa-left {
+        margin-right: 8px;
+    }
+    .fa.fa-right {
+        margin-left: 8px;
+    }
+    .fa.pull-left {
+        line-height: 20px;
+    }
+}
+// .btn.active.focus,
+// .btn.active:focus,
+// .btn.focus,
+// .btn.focus:active,
+// .btn:active:focus,
+// .btn:focus {
+//     outline: 0 !important;
+//     outline-offset: 0  !important;
+//     background-image: none  !important;
+//     -webkit-box-shadow: none !important;
+//     box-shadow: none  !important;
+// }
+.btn-long {
+    padding: 10px 55px;
+}
+.btn-md {
+    padding: 8px 15px;
+}
+.btn-small {
+    padding: 2px 8px;
+    font-size: 12px;
+}
+/* load more
+/* ------------------------------------------------------ */
+.fave-load-more {
+    text-align: center;
+    a {
+        @extend %display-block;
+        @extend %background-color-transparent;
+        border-radius: 4px;
+        padding: 10px 60px;
+        font-size: 14px;
+        &:hover {
+            color: $white;
+        }
+        @include respond-to(tablet-portrait) {
+            padding: 15px 60px;
+        }
+    }
+}
+/* scroll to top
+/* ------------------------------------------------------ */
+.scrolltop-btn {
+    @extend %display-none;
+    @extend %fixed;
+    @extend %padding-0;
+    @extend %border-none;
+    right: 30px;
+    bottom: 30px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 24px !important;
+    z-index:999;
+    transition: none;
+    border-radius: 4px;
+    &:hover {
+        opacity: .8;
+    }
+}
+/* view pop up
+/* ------------------------------------------------------ */
+.view-popup {
+    width: 50px;
+    height: 50px;
+    background-color: $white;
+    font-size: 20px;
+    color: $black;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    @include respond-to(tablet-portrait){
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 15px;
+    }
+}
+/* view button in listing page
+/* ------------------------------------------------------ */
+.view-btn {
+    font-size: 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    @extend %v-middle;
+    color: $view-icon-color;
+    &:hover,
+    &:active,
+    &.active {
+        color: $black;
+    }
+}
+/* social moedia buttons
+/* ------------------------------------------------------ */
+.btn-social {
+    color: $white;
+    & + .btn-social{
+        margin-top: 10px;
+    }
+    &:hover{
+        color: $white;
+    }
+    .fa {
+        @extend %float-left;
+        line-height: 20px;
+    }
+}
+.btn-facebook {
+    @include social_media_colors($facebook);
+}
+.btn-twitter {
+    @include social_media_colors($twitter);
+}
+.btn-pinterest {
+    @include social_media_colors($pinterest);
+}
+.btn-instagram {
+    @include social_media_colors($instagram);
+}
+.btn-google-plus {
+    @include social_media_colors($google-plus);
+}
+.btn-linkedin {
+    @include social_media_colors($linkedin);
+}
+.btn-youtube {
+    @include social_media_colors($youtube);
+}
+.btn-dribbble {
+    @include social_media_colors($dribbble);
+}
+.btn-foursquare {
+    @include social_media_colors($foursquare);
+}
+.btn-flickr {
+    @include social_media_colors($flickr);
+}
+.btn-vimeo {
+    @include social_media_colors($vimeo);
+}
+.btn-tumblr {
+    @include social_media_colors($tumblr);
+}
+.btn-rss {
+    @include social_media_colors($rss);
+}
+.btn-email {
+    @include social_media_colors($email);
+}
+.btn-bg-facebook {
+    @include social_media_bg($facebook);
+}
+.btn-bg-twitter {
+    @include social_media_bg($twitter);
+}
+.btn-bg-pinterest {
+    @include social_media_bg($pinterest);
+}
+.btn-bg-instagram {
+    @include social_media_bg($instagram);
+}
+.btn-bg-google-plus {
+    @include social_media_bg($google-plus);
+}
+.btn-bg-linkedin {
+    @include social_media_bg($linkedin);
+}
+.btn-bg-youtube {
+    @include social_media_bg($youtube);
+}
+.btn-bg-dribbble {
+    @include social_media_bg($dribbble);
+}
+.btn-bg-foursquare {
+    @include social_media_bg($foursquare);
+}
+.btn-bg-flickr {
+    @include social_media_bg($flickr);
+}
+.btn-bg-vimeo {
+    @include social_media_bg($vimeo);
+}
+.btn-bg-tumblr {
+    @include social_media_bg($tumblr);
+}
+.btn-bg-rss {
+    @include social_media_bg($rss);
+}
+.btn-bg-email {
+    @include social_media_bg($email);
+}
+.btn-bg-yahoo {
+    @include social_media_bg($yahoo);
+}
+
+.btn-bg-facebook,.btn-bg-twitter,.btn-bg-pinterest,.btn-bg-instagram,.btn-bg-google-plus,.btn-bg-linkedin,.btn-bg-youtube,.btn-bg-dribbble,.btn-bg-foursquare,.btn-bg-flickr,.btn-bg-vimeo,.btn-bg-tumblr,.btn-bg-rss,.btn-bg-email,.btn-bg-yahoo{
+    &:hover{
+        color: $white;
+    }
+}

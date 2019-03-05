@@ -1,0 +1,104 @@
+/* labels
+/* ------------------------------------------------------------------------ */
+label,
+.label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    &.error {
+        @extend %absolute;
+        color: $red;
+        top: 50%;
+        right: 17px;
+        margin-top: -7.5px;
+        height: 30px;
+        margin-bottom: 0;
+        padding: 0 10px 0 10px;
+        background-color: $white;
+        z-index: 1;
+        @include respond-to(tablet-portrait){
+            top: 63%;
+        }
+    }
+    & + .bootstrap-select {
+        .btn-default {
+            border-color: $red;
+        }
+        .success {
+            @extend %absolute;
+            color: $green;
+        }
+    }
+}
+.label-wrap {
+    @extend %display-inline-block;
+    @extend %v-middle;
+    line-height: normal;
+    .label{
+        @extend %display-inline-block;
+        position: relative;
+        margin-right: 5px;
+        color: $white;
+        border-radius: 2px;
+        font-size: 10px;
+        padding: 3px 6px 2px;
+        text-transform: uppercase;
+        line-height: 11px;
+        @extend %v-top;
+        font-weight: 500;
+        a {
+            color: inherit;      
+        }
+        &:last-child{
+            margin-right: 0;
+        }
+    }
+    .label-featured {
+        top: 0;
+        left: 0;
+    }
+}
+.label-left,
+.label-right {
+    @extend %absolute;
+    top: 12px;
+    z-index: 3;
+}
+.label-left {
+    left: 12px;
+}
+.label-right {
+    right: 12px;
+    text-align: right;
+    .label {
+        margin-left: 5px;
+        margin-right: 0;
+        &:last-child{
+            margin-left: 5px;
+        }
+    }
+}
+.label-featured {
+    background-color: $green;
+    color: $white;
+    padding: 3px 6px 3px;
+    @extend %v-top;
+}
+.label-status,
+.label-default {
+    background-color: $listing-status-color;
+}
+.list-view {
+    .label-left, 
+    .label-right {
+        max-width: 200px;
+    }
+}
+.grid-view {
+    .label-left, 
+    .label-right {
+        max-width: 240px;
+        @include respond-to(medium-desktop) {
+            max-width: 190px;
+        }
+    }    
+}

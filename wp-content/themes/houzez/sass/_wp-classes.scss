@@ -1,0 +1,287 @@
+/* WP Classes */
+.mce-edit-area {
+    iframe {
+        @include respond-to(991) {
+            height: 200px !important;
+        }
+    }
+}
+.screen-reader-text {
+    position: absolute !important;
+
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+
+    width: 1px;
+    height: 1px;
+}
+
+.screen-reader-text:focus {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: normal;
+
+    z-index: 100000; /* Above WP toolbar. */
+    top: 5px;
+    left: 5px;
+
+    clip: auto !important;
+
+    width: auto;
+    height: auto;
+    padding: 15px 23px 14px;
+
+    text-decoration: none;
+
+    color: #21759b;
+    border-radius: 3px;
+    background-color: #f1f1f1;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, .6);
+
+    @extend %display-block;
+}
+
+.alignnone,
+a img.alignnone,
+.wp-caption.alignnone {
+    margin: 5px 20px 20px 0;
+}
+.aligncenter,
+div.aligncenter {
+    margin: 5px auto 20px auto;
+
+    @extend %display-block;
+}
+.alignright,
+a img.alignright,
+.wp-caption.alignright {
+    margin: 5px 0 20px 20px;
+}
+
+.alignright,
+a img.alignright {
+    @extend %float-right;
+}
+.alignleft,
+a img.alignleft,
+.wp-caption.alignleft {
+    margin: 5px 20px 20px 0;
+}
+.alignleft,
+a img.alignleft {
+    @extend %float-left;
+}
+.aligncenter {
+    margin: 5px auto 20px auto;
+
+    @extend %display-block;
+}
+
+a img.aligncenter {
+    margin-right: auto;;
+    margin-left: auto;
+
+    @extend %display-block;
+}
+.wp-caption {
+    //border: 1px solid #f0f0f0;
+    max-width: 96%;  /*Image does not overflow the content area*/
+    //padding: 5px 3px 10px;
+    //text-align: center;
+}
+
+.wp-caption img {
+    width: auto;
+    max-width: 98.5%;
+    height: auto;
+
+    border: 0 none;
+
+    @extend %margin-0;
+    @extend %padding-0;
+}
+.wp-caption p.wp-caption-text {
+    font-size: 12px;
+    font-style: italic;
+    line-height: 12px;
+
+    margin-top: 12px;
+    padding: 0 0 0 4px;
+
+    color: #aaa;
+    border-left: 3px solid $anchor;
+
+    @extend %margin-0;
+}
+
+.post-password-form {
+    input[type='password'] {
+        padding: 6px 12px;
+
+        border: 1px solid #e5e5e5;
+        border-radius: 4px;
+
+        @include respond-to(tablet-portrait) {
+            margin-top: 6px;
+        }
+    }
+    input[type='submit'] {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.42857;
+
+        margin-bottom: 0; // For input.btn
+        padding: 9px 15px;
+
+        cursor: pointer;
+        text-align: center;
+        white-space: nowrap;
+
+        color: $white;
+        border: 1px solid $anchor;
+        border-radius: 4px;
+        outline: none !important;
+        background-color: $anchor;
+        background-image: none;
+
+        @extend %display-inline-block;
+        @extend %v-middle;
+        touch-action: manipulation;
+        &:hover {
+            background-color: darken($hover,15%);
+        }
+    }
+}
+
+/*CONTACT FORM 7 STYLE*/
+.f7-form-control {
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    //height: $input-height-base; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
+
+    height: 42px;
+    //padding: $padding-base-vertical $padding-base-horizontal;
+    padding: 6px 15px;
+    //color: $input-color;
+
+    color: #959595;
+    //border: 1px solid $input-border;
+    border: 1px solid #ccc;
+    //border-radius: $input-border-radius; // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
+    border-radius: 4px; // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
+    //background-color: $input-bg;
+    background-color: #fff;
+    background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+    //@extend %form-control;
+
+    @extend %display-block;
+    @extend %full-width;
+    //@include box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+    @include transition(border-color ease-in-out .15s, box-shadow ease-in-out .15s);
+    // Customize the `:focus` state to imitate native WebKit styles.
+    @include form-control-focus;
+    // Placeholder
+    @include placeholder(#999);
+
+    // Unstyle the caret on `<select>`s in IE10+.
+    &::-ms-expand {
+        @extend %border-0;
+        @extend %background-color-transparent;
+    }
+
+    // Disabled and read-only inputs
+    //
+    // HTML5 says that controls under a fieldset > legend:first-child won't be
+    // disabled if the fieldset is disabled. Due to implementation difficulty, we
+    // don't honor that edge case; we style them as disabled anyway.
+    &[disabled],
+    &[readonly],
+    fieldset[disabled] & {
+        opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
+        background-color: $input-bg-disabled;
+    }
+
+    &[disabled],
+    fieldset[disabled] & {
+        cursor: $cursor-disabled;
+    }
+}
+.wpcf7-form {
+    p {
+        font-size: 14px !important;
+        font-weight: 400 !important;
+
+        position: relative !important;
+
+        margin-bottom: 5px !important;
+    }
+    .wpcf7-form-control-wrap {
+        margin-top: 2px;
+
+        @extend %display-block;
+    }
+}
+.wpcf7-submit {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.42857;
+
+    margin-bottom: 0;
+    padding: 11px 15px;
+
+    cursor: pointer;
+    transition: all .5s ease-in-out 0s;
+    text-align: center;
+    white-space: nowrap;
+
+    border: 1px solid transparent;
+    border-radius: 4px;
+    outline: none !important;
+    background-image: none;
+
+    @extend %display-inline-block;
+    @extend %v-middle;
+    touch-action: manipulation;
+}
+.wpcf7-text,
+.wpcf7-textarea {
+    @extend %full-width;
+}
+input[type='text'].wpcf7-form-control,
+input[type='email'].wpcf7-form-control,
+input[type='password'].wpcf7-form-control,
+input[type='tel'].wpcf7-form-control,
+textarea.wpcf7-form-control,
+.post-password-form input[type='password'] {
+    @extend .f7-form-control;
+}
+input[type='text'].wpcf7-form-control[disabled],
+input[type='text'].wpcf7-form-control[readonly],
+fieldset[disabled] input[type='text'].wpcf7-form-control {
+    opacity: 1;
+    background-color: #eee;
+}
+.wpcf7-form-control[disabled],
+fieldset[disabled] input[type='text'].wpcf7-form-control {
+    cursor: not-allowed;
+}
+textarea.wpcf7-form-control {
+    min-height: 100px;
+}
+div.wpcf7 .ajax-loader {
+    display: block;
+    padding: 0;
+    margin: 10px auto;
+}
+.wpcf7-form .wpcf7-response-output.wpcf7-validation-errors {
+    color: #D8000C;
+    background-color: #FFBABA;
+    border: 0;
+    padding: 10px 20px
+}
+.wpcf7-form .wpcf7-response-output.wpcf7-mail-sent-ok {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    border: 0;
+    padding: 10px 20px
+}

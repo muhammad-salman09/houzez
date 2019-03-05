@@ -1,0 +1,104 @@
+/* modal windows
+/* ------------------------------------------------------ */
+.modal {
+    z-index: 999999;
+}
+.modal-content {
+    border-radius: 0;
+}
+.modal-header {
+    @extend %padding-0;
+    height: 60px;
+    .close {
+        @extend %absolute;
+        @extend %top-0;
+        @extend %right-0;
+        width: 60px;
+        height: 60px;
+        margin-top: 0;
+        text-align: center;
+        color: $white;
+        border-left: 1px solid rgba($white,.15);
+        text-shadow: none;
+        opacity: 1;
+    }
+    ul {
+        @extend %float-left;
+    }
+    .modal-title {
+        @extend %float-left;
+        font-size: 18px;
+        line-height: 26px;
+        padding: 16px 0 16px 24px;
+        color: $white;
+        @include respond-to(tablet-portrait) {
+            font-size: 14px;
+        }
+    }
+}
+.modal-body {
+    &.modal-payment {
+        padding: 64px;
+        text-align: center;
+        @include respond-to(tablet-portrait) {
+            padding: 44px;
+            .btn {
+                padding: 10px 45px;
+            }
+        }
+        .btn {
+            margin-top: 12px;
+            padding: 13px 75px;
+        }
+    }
+}
+/* modal login - register
+/* ------------------------------------------------------ */
+.login-block {
+    padding: 28px;
+    .checkbox {
+        @extend %margin-0;
+        color: rgba($black, .40);
+    }
+    hr {
+        margin-top: 25px;
+        margin-bottom: 25px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+}
+.login-tabs {
+    li {
+        @extend %animation;
+        @extend %float-left;
+        list-style: none;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 60px;
+        height: 60px;
+        padding: 0 28px;
+        cursor: pointer;
+        color: $white;
+        border-right: 1px solid rgba($white,.15);
+        &:hover {
+            color: $black;  
+            background-color: $white;
+        }
+    }
+    li.active {
+        color: $black;
+        background-color: $white;
+    }
+}
+.login-register-block {
+    width: 360px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: $white;
+    .back {
+        @extend %display-block;
+        margin-top: 30px;
+        text-align: center;
+    }
+}

@@ -1,0 +1,15 @@
+/* alert 
+/* ------------------------------------------------------ */
+.alert {
+    border-radius: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 22px;
+    .close {
+        opacity: 1;
+        text-decoration: none;
+    }
+}
