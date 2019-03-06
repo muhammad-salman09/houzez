@@ -1,4 +1,7 @@
-<?php 
+<?php
+/**
+ * Custom taxonomy for custom post type 'Property'
+ */
 add_action('admin_head', 'custom_styles');
 function custom_styles() {
   echo '<style>
@@ -390,4 +393,238 @@ if ( !function_exists( 'houzez_update_property_region_colors' ) ):
 
     }
 endif;
+
+/*-----------------------------------------------------------------------------------*/
+/*  Property Addon Settings
+/*-----------------------------------------------------------------------------------*/
+if ( !function_exists('houzez_property_addon_settings') ) {
+    function houzez_property_addon_settings($atts, $content = null)
+    {
+        extract(shortcode_atts(array(
+            'hz_limit_post_number' => '',
+            'hz_select_addon' => ''
+        ), $atts));
+
+        ob_start();
+        ?>
+
+        <?php
+        $result = ob_get_contents();
+        ob_end_clean();
+        return $result;
+
+    }
+
+    add_shortcode('houzez-property_addon_settings', 'houzez_property_addon_settings');
+}
+
+vc_map( array(
+    "name"  =>  esc_html__( "Property Addon Settings", "houzez" ),
+    "description"           => '',
+    "base"                  => "houzez-property_addon_settings",
+    'category'              => "By Favethemes",
+    "class"                 => "",
+    'admin_enqueue_js'      => "",
+    'admin_enqueue_css'     => "",
+    "icon"                  => "icon-addon-settings",
+    "params"                => array(
+        array(
+            "param_name" => "hz_limit_post_number",
+            "type" => "textfield",
+            "value" => '',
+            "heading" => esc_html__("Limit post number:", "houzez" ),
+            "description" => esc_html__( "Enter limit post number", "houzez" ),
+            "save_always" => true
+        ),
+        array(
+            "param_name" => "hz_select_addon",
+            "type" => "dropdown",
+            "value" => array( 'Featured Listing' => 'featured', 'Property of the week' => 'week' ),
+            "heading" => esc_html__("Select Property Add On", "houzez" ),
+            "save_always" => true
+        ),
+    )
+) );
+
+/*
+ * Widget Name: Property Add On: Property of the week
+ */
+ 
+class HOUZEZ_property_week extends WP_Widget {
+    /**
+     * Register widget
+    **/
+    public function __construct() {
+        
+        parent::__construct(
+            'houzez_property_week', // Base ID
+            esc_html__( 'HOUZEZ: Property Add On: Property of the Week', 'houzez' ), // Name
+            array( 'description' => esc_html__( 'Show property of the week', 'houzez' ), ) // Args
+        );
+        
+    }
+    /**
+     * Front-end display of widget
+    **/
+    public function widget( $args, $instance ) {
+        
+    }
+    /**
+     * Sanitize widget form values as they are saved
+    **/
+    public function update( $new_instance, $old_instance ) {
+        $instance = array();
+
+        /* Strip tags to remove HTML. For text inputs and textarea. */
+        $instance['title'] = strip_tags( $new_instance['title'] );
+        $instance['items_num'] = strip_tags( $new_instance['items_num'] );
+        $instance['widget_type'] = strip_tags( $new_instance['widget_type'] );
+        
+        return $instance;
+    }
+    /**
+     * Back-end widget form
+    **/
+    public function form( $instance ) {
+        /* Default widget settings. */
+        $defaults = array(
+            'title' => 'Property of the Week',
+            'items_num' => '1',
+            'widget_type' => 'entries'
+        );
+        $instance = wp_parse_args( (array) $instance, $defaults );
+        
+    ?>
+        <p>
+            <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e('Title:', 'houzez'); ?></label>
+            <input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
+        </p>
+        <p>
+            <label for="<?php echo esc_attr( $this->get_field_id( 'items_num' ) ); ?>"><?php esc_html_e('Maximum posts to show:', 'houzez'); ?></label>
+            <input type="text" id="<?php echo esc_attr( $this->get_field_id( 'items_num' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'items_num' ) ); ?>" value="<?php echo esc_attr( $instance['items_num'] ); ?>" size="1" />
+        </p>
+        <p>
+            <input type="radio" id="<?php echo esc_attr( $this->get_field_id( 'slider' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'widget_type' ) ); ?>" <?php if ($instance["widget_type"] == 'slider')  echo 'checked="checked"'; ?> value="slider" />
+            <label for="<?php echo esc_attr( $this->get_field_id( 'slider' ) ); ?>"><?php esc_html_e( 'Display Properties as Slider', 'houzez' ); ?></label><br />
+
+            <input type="radio" id="<?php echo esc_attr( $this->get_field_id( 'entries' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'widget_type' ) ); ?>" <?php if ($instance["widget_type"] == 'entries') echo 'checked="checked"'; ?> value="entries" />
+            <label for="<?php echo esc_attr( $this->get_field_id( 'entries' ) ); ?>"><?php esc_html_e( 'Display Properties as List', 'houzez' ); ?></label>
+        </p>
+        
+    <?php
+    }
+
+}
+
+if ( ! function_exists( 'HOUZEZ_property_week_loader' ) ) {
+    function HOUZEZ_property_week_loader (){
+     register_widget( 'HOUZEZ_property_week' );
+    }
+     add_action( 'widgets_init', 'HOUZEZ_property_week_loader' );
+}
+
+/*
+ * Widget Name: Property Add On: Featured Listing
+ */
+ 
+class HOUZEZ_featured_listing extends WP_Widget {
+    /**
+     * Register widget
+    **/
+    public function __construct() {
+        
+        parent::__construct(
+            'houzez_featured_listing', // Base ID
+            esc_html__( 'HOUZEZ: Property Add On: Featured Listing', 'houzez' ), // Name
+            array( 'description' => esc_html__( 'Show featured listing', 'houzez' ), ) // Args
+        );
+        
+    }
+    /**
+     * Front-end display of widget
+    **/
+    public function widget( $args, $instance ) {
+
+    }
+    /**
+     * Sanitize widget form values as they are saved
+    **/
+    public function update( $new_instance, $old_instance ) {
+        $instance = array();
+
+        /* Strip tags to remove HTML. For text inputs and textarea. */
+        $instance['title'] = strip_tags( $new_instance['title'] );
+        $instance['items_num'] = strip_tags( $new_instance['items_num'] );
+        $instance['widget_type'] = strip_tags( $new_instance['widget_type'] );
+        
+        return $instance;
+    }
+    /**
+     * Back-end widget form
+    **/
+    public function form( $instance ) {
+        
+        /* Default widget settings. */
+        $defaults = array(
+            'title' => 'Featured Listing',
+            'items_num' => '5',
+            'widget_type' => 'entries'
+        );
+        $instance = wp_parse_args( (array) $instance, $defaults );    
+    ?>
+        <p>
+            <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e('Title:', 'houzez'); ?></label>
+            <input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
+        </p>
+        <p>
+            <label for="<?php echo esc_attr( $this->get_field_id( 'items_num' ) ); ?>"><?php esc_html_e('Maximum posts to show:', 'houzez'); ?></label>
+            <input type="text" id="<?php echo esc_attr( $this->get_field_id( 'items_num' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'items_num' ) ); ?>" value="<?php echo esc_attr( $instance['items_num'] ); ?>" size="1" />
+        </p>
+        <p>
+            <input type="radio" id="<?php echo esc_attr( $this->get_field_id( 'slider' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'widget_type' ) ); ?>" <?php if ($instance["widget_type"] == 'slider')  echo 'checked="checked"'; ?> value="slider" />
+            <label for="<?php echo esc_attr( $this->get_field_id( 'slider' ) ); ?>"><?php esc_html_e( 'Display Properties as Slider', 'houzez' ); ?></label><br />
+
+            <input type="radio" id="<?php echo esc_attr( $this->get_field_id( 'entries' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'widget_type' ) ); ?>" <?php if ($instance["widget_type"] == 'entries') echo 'checked="checked"'; ?> value="entries" />
+            <label for="<?php echo esc_attr( $this->get_field_id( 'entries' ) ); ?>"><?php esc_html_e( 'Display Properties as List', 'houzez' ); ?></label>
+        </p>
+        
+    <?php
+    }
+
+}
+
+if ( ! function_exists( 'HOUZEZ_featured_listing_loader' ) ) {
+    function HOUZEZ_featured_listing_loader (){
+     register_widget( 'HOUZEZ_featured_listing' );
+    }
+     add_action( 'widgets_init', 'HOUZEZ_featured_listing_loader' );
+}
+
+/**
+ * Footer Mortage Sitemap
+ */
+add_action('widgets_init', 'houzez_add_widget', 20);
+if( !function_exists('houzez_add_widget') ) {
+    function houzez_add_widget() {
+        register_sidebar(array(
+            'name' => esc_html__('Footer Area 5', 'houzez'),
+            'id' => 'footer-sidebar-5',
+            'description' => esc_html__('Widgets in this area will be show in footer column five', 'houzez'),
+            'before_widget' => '<div id="%1$s" class="footer-widget %2$s">',
+            'after_widget' => '</div>',
+            'before_title' => '<div class="widget-top"><h3 class="widget-title">',
+            'after_title' => '</h3></div>',
+        ));
+
+        register_sidebar(array(
+            'name' => esc_html__('Footer Area 6', 'houzez'),
+            'id' => 'footer-sidebar-6',
+            'description' => esc_html__('Widgets in this area will be show in footer column six', 'houzez'),
+            'before_widget' => '<div id="%1$s" class="footer-widget %2$s">',
+            'after_widget' => '</div>',
+            'before_title' => '<div class="widget-top"><h3 class="widget-title">',
+            'after_title' => '</h3></div>',
+        ));
+    }
+}
 ?>
