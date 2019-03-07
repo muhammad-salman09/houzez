@@ -603,6 +603,7 @@ if ( ! function_exists( 'HOUZEZ_featured_listing_loader' ) ) {
 /**
  * Footer Mortage Sitemap
  */
+/* Add 2 widgets for footer */
 add_action('widgets_init', 'houzez_add_widget', 20);
 if( !function_exists('houzez_add_widget') ) {
     function houzez_add_widget() {
@@ -627,4 +628,5 @@ if( !function_exists('houzez_add_widget') ) {
         ));
     }
 }
+
 ?>

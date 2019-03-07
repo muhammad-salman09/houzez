@@ -7703,6 +7703,10 @@ Redux::setSection( $opt_name, array(
                 'four_cols' => array(
                     'alt' => '4 Column',
                     'img' => ReduxFramework::$_url . 'assets/img/4cl.png'
+                ),
+                'six_cols' => array(
+                    'alt' => '6 Column',
+                    'img' => ReduxFramework::$_url . 'assets/img/4cl.png'
                 )
             ),
             'default'  => 'three_cols'
