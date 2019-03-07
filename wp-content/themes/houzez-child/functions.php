@@ -394,6 +394,15 @@ if ( !function_exists( 'houzez_update_property_region_colors' ) ):
     }
 endif;
 
+if ( ! function_exists( 'HOUZEZ_property_taxonomies_remove' ) ) {
+    function HOUZEZ_property_taxonomies_remove (){
+        unregister_widget( 'HOUZEZ_property_taxonomies' );
+    }
+    add_action( 'widgets_init', 'HOUZEZ_property_taxonomies_remove', 11 );
+
+    require_once( get_stylesheet_directory(). '/houzez-property-taxonomies.php' );
+}
+
 /*-----------------------------------------------------------------------------------*/
 /*  Property Addon Settings
 /*-----------------------------------------------------------------------------------*/
