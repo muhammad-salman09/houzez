@@ -1,0 +1,10 @@
+			@font-face {
+				font-family: 'tiempos-bold';
+				font-style: normal;
+				src: url('/wp-content/uploads/useanyfont/181219024209Tiempos-Bold.eot');
+				src: local('tiempos-bold'), url('/wp-content/uploads/useanyfont/181219024209Tiempos-Bold.eot') format('embedded-opentype'), url('/wp-content/uploads/useanyfont/181219024209Tiempos-Bold.woff') format('woff');
+			}
+            
+            .et_gf_tiempos-bold{background:none !important;font-family:tiempos-bold;text-indent:0 !important;font-size:25px;}
+            
+		

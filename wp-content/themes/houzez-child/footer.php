@@ -13,7 +13,7 @@ global $houzez_local;
 
 <?php if ( houzez_is_footer() ) { ?>
 
-    <?php if( houzez_container_needed() ) { ?>
+    <?php if( houzez_container_needed() && !is_page_template('template-user-dashboard-properties.php') ) { ?>
     </div> <!--.container Start in header-->
     <?php } ?>
 </div> <!--Start in header end #section-body-->
@@ -22,7 +22,7 @@ global $houzez_local;
 
 <!--start footer section-->
 <footer id="footer-section">
-    
+    <?php if (!is_page_template('template-user-dashboard-properties.php')) { ?>
     <?php 
     if ( !is_active_sidebar( 'footer-sidebar-1' )
         && ! is_active_sidebar( 'footer-sidebar-2' )
@@ -152,7 +152,8 @@ global $houzez_local;
             </div>
         </div>
     </div>
-
+    <?php } ?>
+    
     <div class="footer-bottom">
 
     	<div class="container">

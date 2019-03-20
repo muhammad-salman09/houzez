@@ -170,6 +170,21 @@ houzez_count_property_views( $post->ID );
                     } else { ?>
 
                     <div class="detail-bar">
+                    	<?php
+                    		$terms = get_the_terms(get_the_ID(), 'property_lifestyle');
+
+                    		if ($terms) {
+                    	?>
+                    	<div class="lifestyle">
+                		<?php
+                			foreach ($terms as $term) {
+                				echo '<span>' . $term->name . '</span>';
+                			}
+                		?>
+                    	</div>
+                    	<?php
+                    		}
+                    	?>
 
                         <?php
                         if ( $property_top_area == 'v3' ) {

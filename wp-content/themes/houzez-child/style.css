@@ -15,5 +15,380 @@ Template: houzez
 
 @import url("../houzez/style.css");
 
-/* Your CSS code goes here
--------------------------------------- */
+@font-face {
+  font-family: TiemposBold;
+  src: url('fonts/TiemposText-Bold.otf');
+}
+/* Header Style Start */
+.header-section-4 .header-left .navi > ul > li > a {
+	font-size: 18px;
+}
+.home .header-section-4 .header-left .navi > ul > li > a:hover {
+	color: #55d2d8 !important;
+}
+#section-body .vc_row.vc_row-o-full-height {
+	min-height: initial !important;
+}
+.header-right .user,
+.header-right .account-action {
+	float: right;
+}
+.header-section-4 .header-right .account-action>li {
+	float: left;
+	margin: 0 10px 0 0;
+}
+.header-right .account-action li a {
+	color: #000000;
+	font-size: 20px;
+}
+.houzez-header-transparent .header-right .account-action li a {
+	color: #ffffff;
+}
+.header-right .account-action select {
+	background: transparent;
+	border: none;
+	cursor: pointer;
+}
+.page-template-template-homepage .header-right .account-action select {
+	color: #ffffff;
+}
+.header-right .account-action select option {
+	color: #000000;
+}
+.header-right .account-action .account-dropdown {
+	background-color: #ffffff;
+}
+/* Header Style End */
+
+/* Advanced Search Style Start */
+.advanced-search-module {
+	margin: 0 auto;
+	width: 75%;
+}
+.advance-title {
+	color: #001489;
+}
+.front .advance-title {
+	color: #ffffff;
+}
+.advanced-search .row {
+	margin: 0;
+}
+.advanced-search form .row:last-child {
+	margin-top: 20px;
+}
+.advanced-search .col-md-1,
+.advanced-search .col-md-2,
+.advanced-search .col-md-3,
+.advanced-search .col-md-6,
+.advanced-search .col-md-9,
+.advanced-search .col-md-10 {
+	padding: 0;
+}
+.advanced-search input,
+.advanced-search button {
+	border-radius: 0px;
+}
+.houzez-adv-price-range.advanced-search .bootstrap-select .btn,
+.houzez-adv-price-range.advanced-search .dropdown-toggle {
+    background: transparent !important;
+    border: none !important;
+    color: white !important;
+    height: 20px;
+	padding: 0 5px;
+}
+.advanced-search .bootstrap-select.btn-group .dropdown-toggle .filter-option {
+	width: initial;
+}
+.advanced-search .bootstrap-select .fa {
+	border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    float: left;
+    margin-left: 10px;
+    margin-top: 3px;
+    padding: 3px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+.advanced-search .bootstrap-select .fa:before {
+	content: "";
+}
+.advanced-search .bootstrap-select.btn-group .dropdown-menu.open {
+	overflow-y: hidden !important;
+}
+.advanced-search .buy-btn {
+	margin-right: 10px;
+}
+.advanced-search .btn-type {
+	color: #ffffff;
+}
+.advanced-search .btn-type:not(.btn-primary) {
+	background: rgba(0, 0, 0, 0.5);
+}
+.advanced-search .btn-type:hover,
+.advanced-search .btn-type:focus {
+	background-color: #009da5;
+    border-color: #009da5;
+}
+.advanced-search .has-search .form-control {
+    padding-left: 4rem;
+}
+.advanced-search .has-search .form-control-feedback {
+    height: 4rem;
+    left: 0;
+    line-height: 4rem;
+    position: absolute;
+    width: 4rem;
+}
+.advanced-search .range-advanced-main span {
+	color: #001489;
+	font-size: 14px;
+}
+.advanced-search .range-advanced-main .range-text {
+	margin-top: -3px;
+	text-align: right;
+}
+.advanced-search .range-advanced-main .range-wrap {
+	border: none;
+}
+.advanced-search .range-advanced-main .price-range,
+.advanced-search .range-advanced-main .price-range-advanced {
+	margin: 0 auto;
+	width: 90%;
+}
+.advanced-search .range-advanced-main span.min-price-range {
+	color: #000000;
+	left: 10px;
+	position: absolute;
+	top: 20px;
+}
+.advanced-search .range-advanced-main span.max-price-range {
+	color: #000000;
+	position: absolute;
+	right: 0;
+	top: 20px;
+}
+.front.advanced-search .range-advanced-main span {
+	color: #ffffff;
+}
+#section-body .main-title h1 span {
+	font-family: 'TiemposBold';
+	line-height: 50px;
+}
+/* Advanced Search Style End */
+
+/* Homepage Property Addon Style Start */
+.item-wrap.prop_addon .property-item>div {
+	display: block;
+	float: left;
+	height: auto;
+}
+.item-wrap.prop_addon .property-item .item-thumb {
+	width: 100%;
+}
+.item-wrap.prop_addon .property-item .figure-block {
+	width: 66.67%;
+}
+.item-wrap.prop_addon .property-item .item-body {
+	width: 33.33%;
+}
+.item-wrap.prop_addon .property-item .figure-block .actions,
+.item-wrap.prop_addon .property-item-v2 .figure-block .actions {
+	right: 12px;
+    left: auto;
+}
+.item-wrap.prop_addon .property-item .figure-block .actions li,
+.item-wrap.prop_addon .property-item-v2 .figure-block .actions li {
+	font-size: 30px !important;
+}
+.item-wrap.prop_addon .property-item .figure-block .actions li span,
+.item-wrap.prop_addon .property-item-v2 .figure-block .actions li span {
+	background: transparent;
+	height: 40px;
+	line-height: 40px;
+	opacity: 1;
+	width: 40px;
+}
+.item-wrap.prop_addon .property-item .figure-block .actions li span:hover,
+.item-wrap.prop_addon .property-item-v2 .figure-block .actions li span:hover {
+	background-color: #001489;
+	border-color: #001489;
+}
+.item-wrap.prop_addon .property-item .item-body .property-title {
+	color: #777;
+    text-overflow: ellipsis;
+	white-space: normal;
+}
+.item-wrap.prop_addon .property-item-v2 .item-body .item-title {
+	margin: 20px 0 0;
+}
+.item-wrap.prop_addon .item-body .property-title, .item-body h2 {
+	font-size: 18px;
+}
+.item-wrap.prop_addon .property-item .item-body .item-detail p {
+	color: #009da5;
+}
+.item-wrap.prop_addon .property-item-v2 .item-body .item-detail p {
+	color: #777;
+}
+.grid-view .item-wrap.prop_addon .property-item .item-body .item-detail p {
+	font-size: 10px;
+	line-height: 14px;
+}
+.item-wrap.prop_addon .item-info {
+	clear: both;
+	height: 120px;
+}
+.item-wrap.prop_addon .item-amenities {
+	margin-top: 10px;
+}
+.list-view .item-wrap.prop_addon .item-amenities {
+	height: 80px;
+}
+.item-wrap.prop_addon .item-amenities li {
+	border: none;
+	float: left;
+	min-width: 40px;
+	padding: 0;
+}
+.list-view .item-wrap.prop_addon .item-amenities li,
+.item-wrap.prop_addon .item-info .item-amenities li {
+	min-width: 80px;
+}
+.item-wrap.prop_addon .item-info .item-amenities li:last-child {
+	float: right;
+	margin: 10px 0;
+}
+.item-wrap.prop_addon .item-amenities li img {
+	display: block;
+	margin: 0 auto;
+}
+.grid-view .item-wrap.prop_addon .item-amenities li img {
+	width: 25px;
+}
+.item-wrap.prop_addon .property-item-v2 .item-amenities li img {
+	width: 50px;
+}
+.item-wrap.prop_addon .item-amenities li span {
+	text-align: center;
+}
+.item-wrap.prop_addon .property-item-v2 .item-price-block {
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+}
+.item-wrap.prop_addon .item-price-block .item-price {
+	border-bottom: 1px solid #777;
+	color: #009da5;
+	margin-bottom: 5px;
+	text-align: left;
+}
+.item-wrap.prop_addon .property-item-v2 .item-price-block .item-price {
+	border-bottom: none;
+	border-top: 1px solid #777;
+}
+.item-wrap.prop_addon .item-body a.btn {
+	background: transparent;
+	border: 1px solid #009da5;
+	color: #009da5;
+	float: right;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 10px 25px;
+	text-transform: uppercase;
+}
+.item-wrap.prop_addon .item-body a.btn:hover {
+	background-color: #009da5;
+	color: #ffffff;
+}
+.item-wrap.prop_addon .item-info a.btn {
+	text-transform: capitalize;
+}
+/* Homepage Property Addon Style End */
+
+/* Mortgage Calculator Style Start */
+.mortgage-col {
+    background: rgb(0,157,165, 0.5);
+    clip-path: polygon(20% 100%, 100% 100%, 100% 0, 0 0);
+    float: right !important;
+    padding: 20px 50px !important;
+    shape-outside: polygon(20% 100%, 100% 100%, 100% 0, 0 0);
+    width: 55% !important;
+}
+.mortgage-col .vc_column-inner {
+	padding-left: 25% !important;
+}
+.mortgage-col .white {
+	color: #ffffff;
+	font-size: 16px;
+}
+.mortgage-col .row {
+	margin-bottom: 20px;
+}
+.mortgage-col button {
+    background: transparent;
+	border: 2px solid #ffffff;
+    color: #ffffff;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+.mortgage-col button:hover {
+	background-color: #009da5;
+	color: #ffffff;
+}
+.morg-detail {
+	display: none;
+}
+.morg-detail h2 {
+	color: #ffffff;
+	font-size: 30px;
+}
+.morg-detail span {
+	color: #ffffff;
+	font-size: 20px;
+}
+/* Mortgage Calculator Style End */
+
+/* Featured Listing/Property of the Week Style Start */
+.item-thumb .label-week, figure .label-week, .carousel-module .carousel .item figure .label-week {
+    background-color: #0000ff;
+    border-radius: 4px;
+    color: #ffffff;
+}
+.item-thumb .label-week, figure .label-week {
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 12px;
+    margin: 0;
+}
+.item-thumb .label-week, figure .label-week {
+    left: 12px;
+    position: absolute;
+    top: 12px;
+    z-index: 3;
+}
+/* Featured Listing/Property of the Week Style End */
+
+/* Package Style Start */
+.houzez-module>div {
+	margin-top: 20px;
+}
+.houzez-module .package-block {
+	box-shadow: 0 0 0 1px #dddddd;
+	height: 540px;
+}
+.houzez-module .package-block .package-link {
+	margin: 0 20px;
+}
+.houzez-module .package-block .package-link p {
+	text-align: left;
+}
+.houzez-module .package-block .package-link p:first-child {
+	text-align: center;
+}
+.houzez-module .package-block .package-link a {
+    bottom: 40px;
+    left: 30%;
+	position: absolute;
+}
+/* Package Style End */
