@@ -392,3 +392,16 @@ Template: houzez
 	position: absolute;
 }
 /* Package Style End */
+
+/* Listing Content/Sidebar Style Start */
+.lifestyle {
+	margin-bottom: 20px;
+}
+.lifestyle span {
+    border: 1px solid #009da5;
+    border-radius: 10px;
+    color: #009da5;
+    margin-right: 10px;
+	padding: 5px 15px;
+}
+/* Listing Content/Sidebar Style End */
