@@ -28,10 +28,15 @@ $(document).ready(function() {
     });
 
     $('.bootstrap-select button').mouseout(function() {
-        $(this).find('.filter-option').css('color', '#ffffff');
+        var color = '#001489';
+
+        if ($(this).closest('.advanced-search').hasClass('front'))
+            color = '#ffffff';
+
+        $(this).find('.filter-option').css('color', color);
         $(this).find('.filter-option').css('cursor', 'pointer');
         $(this).find('.filter-option').css('font-style', 'normal');
-        $(this).find('.fa-sort').css('border', 'solid #ffffff');
+        $(this).find('.fa-sort').css('border', 'solid ' + color);
         $(this).find('.fa-sort').css('border-width', '0 2px 2px 0');
     });
 
@@ -169,68 +174,6 @@ $(document).ready(function() {
 
         $('#total_mortgage_with_interest').html();
         $('.morg-detail').show();
-		/*var price = 0;
-		var mortgage = 0;
-		var interest = 0;
-		var length = 0;
-
-		if ($('#cPrice').val() != '')
-			price = parseInt($('#cPrice').val());
-		if ($('#cMortgage').val() != '')
-			mortgage = parseInt($('#cMortgage').val());
-		if ($('#cInterest').val() != '')
-			interest = parseInt($('#cInterest').val());
-		if ($('#cLength').val() != '')
-			length = parseInt($('#cLength').val());
-
-		var currency = $('#cCurrency').val();
-		var type = $('#cType').val();
-
-		var monthly = 0;
-		var total_interest = 0;
-		var total_pay = 0;
-		var prefix = '';
-
-		if (price != 0 && mortgage != 0 && interest != 0 && length != 0) {
-			if (type == 'repayment') {
-				rate = interest / 100 / 12;
-				monthly = mortgage * rate * Math.pow((1 + rate), 12 * length) / (Math.pow((1 + rate), 12 * length) - 1);
-				total_interest = monthly * (12 * length) - mortgage;
-			}
-
-			if (type == 'interest') {
-				monthly = mortgage / 12 * (interest / 100);
-				total_interest = mortgage / (interest / 100) * length;
-			}
-
-			total_pay = mortgage + Math.round(total_interest);
-
-			switch(currency) {
-				case 'eur':
-					prefix = '€';
-					break;
-				case 'usd':
-					prefix = '$';
-					break;
-				case 'gbp':
-					prefix = '£';
-					break;
-				case 'btc':
-					prefix = '฿';
-					break;
-			}
-
-			var txt = '';
-			txt += '<h2>Your Mortgage information</h2>';
-			txt += '<p><b>Monthly Payments : </b>' + prefix + Math.round(monthly) + '</p>';
-			txt += '<p><b>House Price : </b>' + prefix + price + '</p>';
-			txt += '<p><b>Mortgage Amount : </b>' + prefix + mortgage + '</p>';
-			txt += '<p><b>Total Interest : </b>' + prefix + Math.round(total_interest) + '</p>';
-			txt += '<p><b>Total to Pay : </b>' + prefix + total_pay + '</p>';
-			txt += '<p><b>Total Repayments : </b>' + (12 * length) + '</p>';
-
-			$('.mortgage-info').empty().append(txt);
-		}*/
 	});
 
 	$('input[type=number]').on('keydown', function(evt) {

@@ -201,7 +201,7 @@ houzez_count_property_views( $post->ID );
 
                         ?>
 
-                        <?php get_template_part( 'property-details/property', 'similer' ); ?>
+                        <?php //get_template_part( 'property-details/property', 'similer' ); ?>
 
                         <?php if( $property_reviews != 0 ) { get_template_part( 'property-details/property', 'ratings' ); } ?>
 
@@ -230,4 +230,4 @@ houzez_count_property_views( $post->ID );
 
 <?php endwhile; endif; ?>
 
-<?php get_footer('single-property'); ?>
+<?php get_footer('../houzez/single-property'); ?>

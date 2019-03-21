@@ -67,43 +67,23 @@ if (is_admin() ){
 }
 
 /**
- * Remove theme's template for custom templates
+ * Theme Option Update for Redux options
  */
-function houzez_remove_page_templates( $templates ) {
-    unset( $templates['template/template-packages.php'] );
-    unset( $templates['template/template-search.php'] );
-    unset( $templates['template/user_dashboard_properties.php'] );
-    return $templates;
-}
-add_filter( 'theme_page_templates', 'houzez_remove_page_templates' );
-
-/**
- * Homepage Advanced Search
- */
-
-// Theme Option Update
-function array_insert_after( array $array, $key, array $new ) {
-    $keys = array_keys( $array );
-    $index = array_search( $key, $keys );
-    $pos = false === $index ? count( $array ) : $index + 1;
-    
-    return array_merge( array_slice( $array, 0, $pos ), $new, array_slice( $array, $pos ) );
-}
-
-function update_advance_search($sections){
-    $x = 0;
-    $y = 0;
+add_filter("redux/options/houzez_options/sections", 'update_redux_options');
+function update_redux_options($sections){
+    $search_field = 0;
+    $search_index = 0;
 
     for ($i = 0; $i < sizeof($sections); $i++) {
         if ($sections[$i]['id'] == 'adv-search-fields') {
-            $x = $i;
+            $search_field = $i;
 
             $fields = $sections[$i]['fields'];
             $keys = array_keys($fields);
 
             for ($j = $keys[0]; $j < $keys[sizeof($keys) - 1] + 1; $j++) {
                 if ($fields[$j]['id'] == 'adv_show_hide') {
-                    $y = $j;
+                    $search_index = $j;
                 }
             }
         }
@@ -119,18 +99,137 @@ function update_advance_search($sections){
         'region' => '1'
     );
 
-    $sections[$x]['fields'][$y]['options'] = array_insert_after($sections[$x]['fields'][$y]['options'], 'type', $add_option);
-    $sections[$x]['fields'][$y]['default'] = array_insert_after($sections[$x]['fields'][$y]['default'], 'type', $add_default);
+    $sections[$search_field]['fields'][$search_index]['options'] = 
+        array_insert_after($sections[$search_field]['fields'][$search_index]['options'], 'type', $add_option);
+    $sections[$search_field]['fields'][$search_index]['default'] = 
+        array_insert_after($sections[$search_field]['fields'][$search_index]['default'], 'type', $add_default);
 
-    unset($sections[$x]['fields'][$y]['options']['label']);
-    unset($sections[$x]['fields'][$y]['default']['label']);
+    unset($sections[$search_field]['fields'][$search_index]['options']['label']);
+    unset($sections[$search_field]['fields'][$search_index]['default']['label']);
 
     return $sections;
 }
 
-add_filter("redux/options/houzez_options/sections", 'update_advance_search');
+function array_insert_after( array $array, $key, array $new ) {
+    $keys = array_keys( $array );
+    $index = array_search( $key, $keys );
+    $pos = false === $index ? count( $array ) : $index + 1;
+    
+    return array_merge( array_slice( $array, 0, $pos ), $new, array_slice( $array, $pos ) );
+}
 
-// Homepage Update
+/**
+ * Add, Remove, Update Meta box
+ * For Package Creation, Solar Perstpective Creation
+ */
+add_filter('rwmb_meta_boxes', 'update_custom_metabox', 1000);
+function update_custom_metabox($meta_boxes) {
+    $options = array(
+        'One-Time', 'Monthly (recurring basis)',
+        'Quarterly (recurring basis)', 'Semi-Annually (recurring basis)'
+    );
+
+    for ($j = 0; $j < sizeof($meta_boxes); $j++) {
+        if ($meta_boxes[$j]['pages'][0] == 'houzez_packages') {
+            for ($i = sizeof($meta_boxes[$j]['fields']) + 12; $i > 2; $i--) {
+                if ($i > 14) {
+                    $meta_boxes[$j]['fields'][$i] = $meta_boxes[$j]['fields'][$i - 13];
+                } else {
+                    $index = floor($i / 3);
+
+                    switch ($i) {
+                        case 3:
+                        case 6:
+                        case 9:
+                        case 12:
+                            $meta_boxes[$j]['fields'][$i] = array(
+                                'name' => 'Payment Option:',
+                                'type' => 'custom_html',
+                                'std' => '<span>' . $options[$index - 1] . '</span>',
+                                'columns' => 4
+                            );
+                            break;
+                        case 4:
+                        case 7:
+                        case 10:
+                        case 13:
+                            $meta_boxes[$j]['fields'][$i] = array(
+                                'id' => 'fave_payment_option' . $index,
+                                'name' => 'Amount',
+                                'type' => 'number',
+                                'std' => '',
+                                'columns' => 4
+                            );
+                            break;
+                        case 5:
+                        case 8:
+                        case 11:
+                        case 14:
+                            $meta_boxes[$j]['fields'][$i] = array(
+                                'id' => 'fave_payment_btn' . $index,
+                                'name' => '',
+                                'type' => 'button',
+                                'std' => 'Remove',
+                                'class' => 'payment_option',
+                                'columns' => 3
+                            );
+                            break;
+                    }
+                }
+            }
+
+            $meta_boxes[$j]['fields'][2] = $meta_boxes[$j]['fields'][1];
+
+            $meta_boxes[$j]['fields'][1] = array(
+                'id' => 'fave_billing_unit_add',
+                'name' => '',
+                'type' => 'button',
+                'std' => 'Add',
+                'columns' => 2
+            );
+
+            $meta_boxes[$j]['fields'][0]['name'] = 'Payment Options';
+            $meta_boxes[$j]['fields'][0]['options'] = array(
+                '' => 'Select from the following',
+                'option1' => 'One-Time',
+                'option2' => 'Monthly (recurring basis)',
+                'option3' => 'Quarterly (recurring basis)',
+                'option4' => 'Semi-Annually (recurring basis)'
+            );
+
+            $meta_boxes[$j]['fields'][0]['columns'] = 4;
+
+            ksort($meta_boxes[$j]['fields']);
+
+            $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields']) - 1]['columns'] = 6;
+            $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields'])] = array(
+                'id' => 'fave_encrypt_doc',
+                'name' => 'Encryption and Document Storage',
+                'type' => 'checkbox',
+                'desc' => 'Enable',
+                'std' => '',
+                'columns' => 6
+            );
+        }
+    }
+    
+    return $meta_boxes;
+}
+
+/**
+ * Remove theme's template for custom templates
+ */
+function houzez_remove_page_templates( $templates ) {
+    unset( $templates['template/template-packages.php'] );
+    unset( $templates['template/template-search.php'] );
+    unset( $templates['template/user_dashboard_properties.php'] );
+    return $templates;
+}
+add_filter( 'theme_page_templates', 'houzez_remove_page_templates' );
+
+/**
+ * Homepage Advanced Search
+ */
 vc_remove_element('hz-advance-search');
 
 if( !function_exists('houzez_advance_search_update') ) {
@@ -1316,99 +1415,7 @@ endif;
  * Package Creation
  */
 
-add_filter('rwmb_meta_boxes', 'update_custom_metabox', 1000);
-function update_custom_metabox($meta_boxes) {
-    $options = array(
-        'One-Time', 'Monthly (recurring basis)',
-        'Quarterly (recurring basis)', 'Semi-Annually (recurring basis)'
-    );
-
-    for ($j = 0; $j < sizeof($meta_boxes); $j++) {
-        if ($meta_boxes[$j]['pages'][0] == 'houzez_packages') {
-            for ($i = sizeof($meta_boxes[$j]['fields']) + 12; $i > 2; $i--) {
-                if ($i > 14) {
-                    $meta_boxes[$j]['fields'][$i] = $meta_boxes[$j]['fields'][$i - 13];
-                } else {
-                    $index = floor($i / 3);
-
-                    switch ($i) {
-                        case 3:
-                        case 6:
-                        case 9:
-                        case 12:
-                            $meta_boxes[$j]['fields'][$i] = array(
-                                'name' => 'Payment Option:',
-                                'type' => 'custom_html',
-                                'std' => '<span>' . $options[$index - 1] . '</span>',
-                                'columns' => 4
-                            );
-                            break;
-                        case 4:
-                        case 7:
-                        case 10:
-                        case 13:
-                            $meta_boxes[$j]['fields'][$i] = array(
-                                'id' => 'fave_payment_option' . $index,
-                                'name' => 'Amount',
-                                'type' => 'number',
-                                'std' => '',
-                                'columns' => 4
-                            );
-                            break;
-                        case 5:
-                        case 8:
-                        case 11:
-                        case 14:
-                            $meta_boxes[$j]['fields'][$i] = array(
-                                'id' => 'fave_payment_btn' . $index,
-                                'name' => '',
-                                'type' => 'button',
-                                'std' => 'Remove',
-                                'class' => 'payment_option',
-                                'columns' => 3
-                            );
-                            break;
-                    }
-                }
-            }
-
-            $meta_boxes[$j]['fields'][2] = $meta_boxes[$j]['fields'][1];
-
-            $meta_boxes[$j]['fields'][1] = array(
-                'id' => 'fave_billing_unit_add',
-                'name' => '',
-                'type' => 'button',
-                'std' => 'Add',
-                'columns' => 2
-            );
-
-            $meta_boxes[$j]['fields'][0]['name'] = 'Payment Options';
-            $meta_boxes[$j]['fields'][0]['options'] = array(
-                '' => 'Select from the following',
-                'option1' => 'One-Time',
-                'option2' => 'Monthly (recurring basis)',
-                'option3' => 'Quarterly (recurring basis)',
-                'option4' => 'Semi-Annually (recurring basis)'
-            );
-
-            $meta_boxes[$j]['fields'][0]['columns'] = 4;
-
-            ksort($meta_boxes[$j]['fields']);
-
-            $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields']) - 1]['columns'] = 6;
-            $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields'])] = array(
-                'id' => 'fave_encrypt_doc',
-                'name' => 'Encryption and Document Storage',
-                'type' => 'checkbox',
-                'desc' => 'Enable',
-                'std' => '',
-                'columns' => 6
-            );
-        }
-    }
-    
-    return $meta_boxes;
-}
+// Use update_custom_metabox
 
 add_action( 'wp_ajax_nopriv_houzez_remove_payment_option', 'houzez_remove_payment_option');
 add_action( 'wp_ajax_houzez_remove_payment_option', 'houzez_remove_payment_option' );
