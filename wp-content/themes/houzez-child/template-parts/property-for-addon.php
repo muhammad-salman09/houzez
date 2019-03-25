@@ -107,23 +107,7 @@ $disable_photo_count = houzez_option('disable_photo_count');
 
             <div class="item-price-block">
                 <span class="item-price">
-                    <?php
-                        global $wpdb;
-
-                        $currency_code = get_post_meta( get_the_ID(), 'fave_currency', true);
-
-                        $result = $wpdb->get_results(" SELECT currency_symbol FROM " . $wpdb->prefix . "houzez_currencies where currency_code='$currency_code'");
-
-                        if (sizeof($result) > 0)
-                            $symbol = $result[0]->currency_symbol;
-                        else
-                            $symbol = '€';
-
-                        $sale_price = get_post_meta( get_the_ID(), 'fave_property_price', true );
-                        $sale_price = number_format ( $sale_price , 0, '', ',' );
-                        
-                        echo $symbol . $sale_price;
-                    ?>
+                    <?php echo houzez_listing_price_v1(); ?>
                 </span>
             </div>
             <a href="<?php echo esc_url( get_permalink() ); ?>" class="btn btn btn-primary">View</a>

@@ -132,6 +132,7 @@ $houzez_local = houzez_get_localization();
             get_page_template_slug() != 'template/user_dashboard_profile.php' &&
             get_page_template_slug() != 'template-user-dashboard-properties.php' &&
             get_page_template_slug() != 'template/submit_property.php' &&
+            get_page_template_slug() != 'template-document-upload.php' &&
             get_page_template_slug() != 'template-advanced-package.php' &&
             get_page_template_slug() != 'template/user_dashboard_favorites.php' &&
             get_page_template_slug() != 'template/user_dashboard_saved_search.php' &&
@@ -335,7 +336,8 @@ if( houzez_is_landing_page() ) { $section_body .='landing-page';}
 
 	<?php if( houzez_container_needed() && 
         !is_page_template('template-user-dashboard-properties.php') &&
-        !is_page_template('template-advanced-package.php') ) { ?>
+        !is_page_template('template-advanced-package.php') &&
+        !is_page_template('template-document-upload.php') ) { ?>
 	<div class="container">
 	<?php } ?>
 

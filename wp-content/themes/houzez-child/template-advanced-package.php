@@ -6,17 +6,9 @@ global $houzez_local, $current_user;
 
 wp_get_current_user();
 
-$paid_submission_type = esc_html ( houzez_option('enable_paid_submission','') );
-if( $paid_submission_type != 'membership' ) {
-    wp_redirect( home_url() );
-}
-if ( !is_user_logged_in() ) {
-    wp_redirect( home_url() );
-}
-
 get_header();
 
-$payment_page_link = houzez_get_template_link('template/template-payment.php');
+$upload_page_link = houzez_get_template_link('template-document-upload.php');
 
 get_template_part( 'template-parts/dashboard', 'menu' ); ?>
 
@@ -27,20 +19,7 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
     <div class="dashboard-content-area">
         <div class="container">
 
-            <ol class="pay-step-bar">
-                <li class="pay-step-block">
-                    <span><?php esc_html_e( 'Create Listing', 'houzez' ); ?></span>
-                </li>
-                <li class="pay-step-block active">
-                    <span><?php echo sprintf(esc_html__( '%s Select a %s Package', 'houzez' ),'<span class="hidden-xs">','</span>'); ?></span>
-                </li>
-                <li class="pay-step-block">
-                    <span><?php esc_html_e( 'Payment', 'houzez' ); ?></span>
-                </li>
-                <li class="pay-step-block">
-                    <span><?php esc_html_e( 'Done', 'houzez' ); ?></span>
-                </li>
-            </ol>
+            <?php get_template_part('template-parts/create-listing-top'); ?>
 
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -52,6 +31,7 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                                 $content = get_the_content();
                             endwhile;
                         endif;
+                        
                         wp_reset_postdata();
 
                         if( !empty($content) ) {
@@ -98,9 +78,7 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                                 $pack_payment_option3 = get_post_meta( get_the_ID(), 'fave_payment_option3', true );
                                 $pack_payment_option4 = get_post_meta( get_the_ID(), 'fave_payment_option4', true );
                                 
-                                $package_custom_link    = get_post_meta( get_the_ID(), 'fave_package_custom_link', true );
-
-                                $payment_process_link = add_query_arg( 'selected_package', get_the_ID(), $payment_page_link );
+                                $upload_process_link = add_query_arg( 'selected_package', get_the_ID(), $upload_page_link );
 
                                 if( $i == 1 && $total_packages == 2 ) {
                                     $first_pkg_column = 'col-md-offset-2 col-sm-offset-0';
@@ -108,10 +86,6 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                                     $first_pkg_column = 'col-md-offset-4 col-sm-offset-0';
                                 } else {
                                     $first_pkg_column = '';
-                                }
-
-                                if(!empty($package_custom_link)) {
-                                    $payment_process_link = $package_custom_link;
                                 }
 
                                 ?>
@@ -181,7 +155,8 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                                             </p>
                                             <?php } ?>
 
-                                            <a href="<?php echo esc_url($payment_process_link); ?>" class="btn btn-primary btn-lg"><?php echo $houzez_local['get_started']; ?></a>
+                                            <a href="<?php echo esc_url($upload_process_link); ?>" class="btn btn-primary btn-lg"><?php echo $houzez_local['get_started']; ?></a>
+
                                         </div>
                                     </div>
                                 </div>

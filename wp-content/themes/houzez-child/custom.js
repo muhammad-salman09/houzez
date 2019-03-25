@@ -19,7 +19,11 @@ $(document).ready(function() {
 
 	$('.main-nav').css('margin-left', val + 'px');
 
-    $('.bootstrap-select button').mouseover(function() {
+    $('.advanced-search .bootstrap-select').prev().change(function() {
+        $(this).closest('form').submit();
+    });
+
+    $('.advanced-search .bootstrap-select button').mouseover(function() {
         $(this).find('.filter-option').css('color', '#55d2d8');
         $(this).find('.filter-option').css('cursor', 'pointer');
         $(this).find('.filter-option').css('font-style', 'italic');
@@ -27,7 +31,7 @@ $(document).ready(function() {
         $(this).find('.fa-sort').css('border-width', '0 2px 2px 0');
     });
 
-    $('.bootstrap-select button').mouseout(function() {
+    $('.advanced-search .bootstrap-select button').mouseout(function() {
         var color = '#001489';
 
         if ($(this).closest('.advanced-search').hasClass('front'))
@@ -252,4 +256,62 @@ $(document).ready(function() {
             }
         });
     }
+
+    $('.btn-upload').click(function() {
+        var data = new FormData();
+
+        var count = $('.doc_content div').children().length;
+
+        var title = $('#doc_title').val();
+        var file = $('#doc_file');
+        var fileObject = file[0].files[0];
+
+        if (count < 5 && title != '' && typeof(fileObject) !== 'undefined') {
+            var doc_size = Math.ceil(fileObject['size'] / 1024 / 1024);
+            var doc_type = fileObject['type'];
+
+            if (doc_size < 10 && doc_type == 'application/pdf') {
+                var ajaxurl = HOUZEZ_ajaxcalls_vars.admin_url + 'admin-ajax.php';
+
+                data.append('file', fileObject);
+                data.append('action', 'houzez_doc_upload');
+                
+                $.ajax({
+                    type: 'POST',
+                    url: ajaxurl,
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    success: function(result) {
+                        result = JSON.parse(result.substring(0, result.length - 1));
+
+                        count++;
+
+                        $('.doc_content p').text('List Encrypted files (' + count + ' of 5)');
+
+                        var url = result['url'];
+                        var link = ' ( <a href="' + url + '">View</a> )'
+                        $('.doc_content div').append('<p>' + title + link + '</p>');
+
+                        $('#doc_title').val('');
+                        file.val('');
+                    }
+                });
+            } else {
+                alert('The uploaded file must be PDF type under 10MB.');
+                file.val('');
+            }
+        }
+    });
+
+    /*var geocoder = new google.maps.Geocoder();
+    var address = "new york";
+
+    geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            var latitude = results[0].geometry.location.lat();
+            var longitude = results[0].geometry.location.lng();
+            alert(latitude);
+        } 
+    });*/
 });

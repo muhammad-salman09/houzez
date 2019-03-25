@@ -37,8 +37,7 @@ if( is_page_template( 'template/submit_property.php' ) ) {
         }
     } else { ?>
 
-        <form autocomplete="off" id="submit_property_form" name="new_post" method="post" action="#" enctype="multipart/form-data"
-              class="add-frontend-property">
+        <form autocomplete="off" id="submit_property_form" name="new_post" method="post" action="#" enctype="multipart/form-data" class="add-frontend-property">
 
             <div class="validate-errors alert alert-danger alert-dismissible" role="alert">
                 <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

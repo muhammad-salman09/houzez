@@ -71,6 +71,10 @@ if ($layout): foreach ($layout as $key=>$value) {
             };
             break;
 
+        case 'solar_perspective':
+                get_template_part('property-details/solar', 'perspective');
+            break;
+
         case 'video':
             get_template_part( 'property-details/property', 'video' );
             break;

@@ -67,12 +67,34 @@ if (is_admin() ){
 }
 
 /**
+ * Override function to display price with currency symbol
+ */
+function houzez_listing_price_v1() {
+    global $wpdb;
+
+    $currency_code = get_post_meta( get_the_ID(), 'fave_currency', true);
+
+    $result = $wpdb->get_results(" SELECT currency_symbol FROM " . $wpdb->prefix . "houzez_currencies where currency_code='$currency_code'");
+
+    if (sizeof($result) > 0)
+        $symbol = $result[0]->currency_symbol;
+    else
+        $symbol = '€';
+
+    $sale_price = get_post_meta( get_the_ID(), 'fave_property_price', true );
+    $sale_price = number_format ( $sale_price , 0, '', ',' );
+    
+    echo $symbol . $sale_price;
+}
+
+/**
  * Theme Option Update for Redux options
  */
 add_filter("redux/options/houzez_options/sections", 'update_redux_options');
 function update_redux_options($sections){
     $search_field = 0;
     $search_index = 0;
+    $property_section = 0;
 
     for ($i = 0; $i < sizeof($sections); $i++) {
         if ($sections[$i]['id'] == 'adv-search-fields') {
@@ -86,6 +108,10 @@ function update_redux_options($sections){
                     $search_index = $j;
                 }
             }
+        }
+
+        if ($sections[$i]['id'] == 'property-section') {
+            $property_section = $i;
         }
     }
 
@@ -107,6 +133,13 @@ function update_redux_options($sections){
     unset($sections[$search_field]['fields'][$search_index]['options']['label']);
     unset($sections[$search_field]['fields'][$search_index]['default']['label']);
 
+    $key_arr = array_keys($sections[$property_section]['fields']);
+    $property_field_id = $key_arr[0];
+
+    $sections[$property_section]['fields'][$property_field_id]['options']['enabled'] =
+        array_insert_after($sections[$property_section]['fields'][$property_field_id]['options']['enabled'], 
+            'floor_plans', array('solar_perspective' => 'Solar Perstpective')); 
+                
     return $sections;
 }
 
@@ -130,6 +163,7 @@ function update_custom_metabox($meta_boxes) {
     );
 
     for ($j = 0; $j < sizeof($meta_boxes); $j++) {
+        // Package Creation
         if ($meta_boxes[$j]['pages'][0] == 'houzez_packages') {
             for ($i = sizeof($meta_boxes[$j]['fields']) + 12; $i > 2; $i--) {
                 if ($i > 14) {
@@ -211,8 +245,45 @@ function update_custom_metabox($meta_boxes) {
                 'columns' => 6
             );
         }
+
+        // Solar Perspective Creation
+        if ($meta_boxes[$j]['pages'][0] == 'property' && $meta_boxes[$j]['tabs']) {
+            $perspective = array(
+                'id' => 'fave_perspective',
+                'name' => 'What direction does the front of the house face?',
+                'type' => 'select',
+                'options' => array(
+                    '' => '',
+                    'north' => 'North',
+                    'northeast' => 'Northeast',
+                    'east' => 'East',
+                    'southeast' => 'Southeast',
+                    'south' => 'South',
+                    'southwest' => 'Southwest',
+                    'west' => 'West',
+                    'northwest' => 'Northwest'
+                ),
+                'std' => '',
+                'columns' => 6,
+                'tab' => 'property_details'
+            );
+
+            $k = 0;
+            $fields = array();
+            foreach ($meta_boxes[$j]['fields'] as $field) {
+                $fields[$k++] = $field;
+            }
+
+            $meta_boxes[$j]['fields'] = $fields;
+
+            for ($k = sizeof($meta_boxes[$j]['fields']); $k > 14; $k-- ) {
+                $meta_boxes[$j]['fields'][$k] = $meta_boxes[$j]['fields'][$k - 1];
+            }
+
+            $meta_boxes[$j]['fields'][15] = $perspective;
+        }
     }
-    
+
     return $meta_boxes;
 }
 
@@ -1416,7 +1487,6 @@ endif;
  */
 
 // Use update_custom_metabox
-
 add_action( 'wp_ajax_nopriv_houzez_remove_payment_option', 'houzez_remove_payment_option');
 add_action( 'wp_ajax_houzez_remove_payment_option', 'houzez_remove_payment_option' );
 
@@ -1431,4 +1501,27 @@ if( !function_exists('houzez_remove_payment_option') ):
     }
 endif;
 
+/**
+ * Encrypt Document Upload
+ */
+add_action( 'wp_ajax_nopriv_houzez_doc_upload', 'houzez_doc_upload');
+add_action( 'wp_ajax_houzez_doc_upload', 'houzez_doc_upload' );
+
+function houzez_doc_upload() {
+    if ( ! function_exists( 'wp_handle_upload' ) ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+    }
+
+    $uploadedfile = $_FILES['file'];
+
+    $upload_overrides = array( 'test_form' => false );
+
+    $movefile = wp_handle_upload( $uploadedfile, $upload_overrides );
+
+    if ( $movefile && ! isset( $movefile['error'] ) ) {
+        echo json_encode($movefile);
+    } else {
+        echo $movefile['error'];
+    }
+}
 ?>

@@ -100,7 +100,7 @@ houzez_count_property_views( $post->ID );
         </div><!-- .row --> 
 
     <?php
-    } else { 
+    } else {
     ?>
 
     <?php

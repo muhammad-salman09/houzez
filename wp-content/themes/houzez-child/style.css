@@ -19,6 +19,9 @@ Template: houzez
   font-family: TiemposBold;
   src: url('fonts/TiemposText-Bold.otf');
 }
+#section-body {
+	padding-bottom: 0;
+}
 /* Header Style Start */
 .header-section-4 .header-left .navi > ul > li > a {
 	font-size: 18px;
@@ -375,6 +378,9 @@ Template: houzez
 /* Featured Listing/Property of the Week Style End */
 
 /* Package Style Start */
+.houzez-module.package-table-module {
+	padding-top: 0;
+}
 .houzez-module>div {
 	margin-top: 20px;
 }
@@ -396,6 +402,22 @@ Template: houzez
     left: 30%;
 	position: absolute;
 }
+.houzez-module .container>div {
+	padding-right: 20px;
+}
+.houzez-module .btn-upload {
+	margin-top: 30px;
+	padding: 10px 50px;
+}
+.doc_content {
+	min-height: 300px;
+}
+.doc_content div p {
+	margin: 0;
+}
+.step {
+	float: right;
+}
 /* Package Style End */
 
 /* Listing Content/Sidebar Style Start */
@@ -409,8 +431,11 @@ Template: houzez
     margin-right: 10px;
 	padding: 5px 15px;
 }
-.property-description * {
+.detail-block * {
 	font-family: sans-serif;
+}
+.detail-block .detail-title h2.title-left {
+	font-weight: bold;
 }
 .property-plans .nav-tabs {
 	border-bottom: 1px solid #000000;
