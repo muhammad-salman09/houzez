@@ -69,7 +69,7 @@ if (is_admin() ){
 /**
  * Override function to display price with currency symbol
  */
-function houzez_listing_price_v1() {
+function houzez_listing_price() {
     global $wpdb;
 
     $currency_code = get_post_meta( get_the_ID(), 'fave_currency', true);
@@ -87,6 +87,10 @@ function houzez_listing_price_v1() {
     echo $symbol . $sale_price;
 }
 
+function houzez_listing_price_v1() {
+    houzez_listing_price();
+}
+
 /**
  * Theme Option Update for Redux options
  */
@@ -96,7 +100,85 @@ function update_redux_options($sections){
     $search_index = 0;
     $property_section = 0;
 
-    for ($i = 0; $i < sizeof($sections); $i++) {
+    $i = 1;
+    $index = 0;
+    while ($index == 0) {
+        if ($sections[$i]['id'] == 'mem-wire-payment') {
+            $index = $i;
+        }
+
+        $i++;
+    }
+
+    for ($i = sizeof($sections); $i > $index; $i--) {
+        $sections[$i + 3] = $sections[$i];
+    }
+
+    $sections[$index + 1] = array(
+        'title' => 'Bitcoin',
+        'id' => 'mem-bitcoin-payment',
+        'desc' => '',
+        'subsection' => true,
+        'priority' => $index + 1,
+        'fields' => array(
+            array(
+                'id' => 'enable_bitcoin',
+                'type' => 'switch',
+                'title' => 'Enable Bitcoin',
+                'required' => array('enable_paid_submission', '!=', 'no'),
+                'desc' => '',
+                'subtitle' => '',
+                'default' => 0,
+                'on' => 'Enabled',
+                'off' => 'Disabled',
+                'section_id' => 'mem-bitcoin-payment'
+            )
+        )
+    );
+    $sections[$index + 2] = array(
+        'title' => 'Apple Pay',
+        'id' => 'mem-apple-payment',
+        'desc' => '',
+        'subsection' => true,
+        'priority' => $index + 2,
+        'fields' => array(
+            array(
+                'id' => 'enable_applepay',
+                'type' => 'switch',
+                'title' => 'Enable Apple Pay',
+                'required' => array('enable_paid_submission', '!=', 'no'),
+                'desc' => '',
+                'subtitle' => '',
+                'default' => 0,
+                'on' => 'Enabled',
+                'off' => 'Disabled',
+                'section_id' => 'mem-apple-payment'
+            )
+        )
+    );
+    $sections[$index + 3] = array(
+        'title' => 'Google Pay',
+        'id' => 'mem-google-payment',
+        'desc' => '',
+        'subsection' => true,
+        'priority' => $index + 3,
+        'fields' => array(
+            array(
+                'id' => 'enable_googlepay',
+                'type' => 'switch',
+                'title' => 'Enable Google Pay',
+                'required' => array('enable_paid_submission', '!=', 'no'),
+                'desc' => '',
+                'subtitle' => '',
+                'default' => 0,
+                'on' => 'Enabled',
+                'off' => 'Disabled',
+                'section_id' => 'mem-google-payment'
+            )
+        )
+    );
+
+    for ($i = 1; $i < sizeof($sections) + 1; $i++) {
         if ($sections[$i]['id'] == 'adv-search-fields') {
             $search_field = $i;
 
@@ -139,7 +221,7 @@ function update_redux_options($sections){
     $sections[$property_section]['fields'][$property_field_id]['options']['enabled'] =
         array_insert_after($sections[$property_section]['fields'][$property_field_id]['options']['enabled'], 
             'floor_plans', array('solar_perspective' => 'Solar Perstpective')); 
-                
+
     return $sections;
 }
 
@@ -1508,20 +1590,31 @@ add_action( 'wp_ajax_nopriv_houzez_doc_upload', 'houzez_doc_upload');
 add_action( 'wp_ajax_houzez_doc_upload', 'houzez_doc_upload' );
 
 function houzez_doc_upload() {
-    if ( ! function_exists( 'wp_handle_upload' ) ) {
-        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+    $filename = $_FILES['file']['name'];
+
+    $name = pathinfo($filename, PATHINFO_FILENAME);
+    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+
+    $increment = '';
+
+    $basename = '';
+
+    if (file_exists('../Documents/' . $filename)) {
+        $increment = 1;
+
+        while(file_exists('../Documents/' . $name . '_' . $increment . '.' . $extension)) {
+            $increment++;
+        }
+
+        $basename = '../Documents/' . $name . '_' . $increment . '.' . $extension;
+    } else {
+        $basename = '../Documents/' . $filename;
     }
 
-    $uploadedfile = $_FILES['file'];
-
-    $upload_overrides = array( 'test_form' => false );
-
-    $movefile = wp_handle_upload( $uploadedfile, $upload_overrides );
-
-    if ( $movefile && ! isset( $movefile['error'] ) ) {
-        echo json_encode($movefile);
+    if (move_uploaded_file($_FILES['file']['tmp_name'], $basename)) {
+        echo "success";
     } else {
-        echo $movefile['error'];
+        echo "fail";
     }
 }
 ?>

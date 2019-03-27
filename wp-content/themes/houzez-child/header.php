@@ -337,7 +337,8 @@ if( houzez_is_landing_page() ) { $section_body .='landing-page';}
 	<?php if( houzez_container_needed() && 
         !is_page_template('template-user-dashboard-properties.php') &&
         !is_page_template('template-advanced-package.php') &&
-        !is_page_template('template-document-upload.php') ) { ?>
+        !is_page_template('template-document-upload.php') &&
+        !is_page_template('template-advanced-search.php') ) { ?>
 	<div class="container">
 	<?php } ?>
 

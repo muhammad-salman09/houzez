@@ -283,7 +283,19 @@ $(document).ready(function() {
                     contentType: false,
                     processData: false,
                     success: function(result) {
-                        result = JSON.parse(result.substring(0, result.length - 1));
+                        result = result.substring(0, result.length - 1);
+                        
+                        if (result == 'success') {
+                            count++;
+
+                            $('.doc_content>p').text('List Encrypted files (' + count + ' of 5)');
+
+                            $('.doc_content div').append('<p>' + title + '</p>');
+
+                            $('#doc_title').val('');
+                            file.val('');
+                        }
+                        /*result = JSON.parse(result.substring(0, result.length - 1));
 
                         count++;
 
@@ -294,7 +306,10 @@ $(document).ready(function() {
                         $('.doc_content div').append('<p>' + title + link + '</p>');
 
                         $('#doc_title').val('');
-                        file.val('');
+                        file.val('');*/
+                    },
+                    error: function(err) {
+                        console.log(err);
                     }
                 });
             } else {
@@ -304,14 +319,43 @@ $(document).ready(function() {
         }
     });
 
-    /*var geocoder = new google.maps.Geocoder();
-    var address = "new york";
 
-    geocoder.geocode( { 'address': address}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            var latitude = results[0].geometry.location.lat();
-            var longitude = results[0].geometry.location.lng();
-            alert(latitude);
-        } 
-    });*/
+    var latitude = 0;
+    var longitude = 0;
+    var elevation = 0;
+
+    if ($('#singlePropertyMapSection').children().length > 0) {
+
+        var geocoder = new google.maps.Geocoder();
+        var address = $('.map-address').val();
+
+        geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                latitude = results[0].geometry.location.lat();
+                longitude = results[0].geometry.location.lng();
+
+                console.log(latitude + ',' + longitude);
+            } 
+        });
+
+        var elevator = new google.maps.ElevationService();
+        var places = [{lat: latitude, lng: longitude}];
+
+        var locations = [];
+        for (var i = 0; i < places.length; i++) {
+          locations.push( new google.maps.LatLng(places[i].lat, places[i].lng) );
+        }
+
+        var positionalRequest = {
+          'locations': locations
+        }
+
+        elevator.getElevationForLocations(positionalRequest, function(results, status) {
+            if (status == google.maps.ElevationStatus.OK) {
+                if (results[0]) {
+                    elevation = results[0].elevation.toFixed(2);
+                }
+            }
+        });
+    }
 });
