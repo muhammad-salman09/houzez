@@ -35,7 +35,9 @@ function custom_styles() {
 
 add_action( 'wp_enqueue_scripts', 'my_scripts' );
 function my_scripts() {
-    wp_enqueue_script( 'custom', get_stylesheet_directory_uri() . '/custom.js', array('jquery') );
+    wp_enqueue_script( 'numeric', get_stylesheet_directory_uri() . '/js//numeric-1.2.6.js', array('jquery') );
+    wp_enqueue_script( 'solar', get_stylesheet_directory_uri() . '/js/solar.js', array('jquery') );
+    wp_enqueue_script( 'custom', get_stylesheet_directory_uri() . '/js/custom.js', array('jquery') );
 
     if (is_page_template( 'template-map-search.php' )) {
         $googlemap_api_key = houzez_option('googlemap_api_key');
@@ -52,9 +54,9 @@ function my_scripts() {
         wp_enqueue_script('google-map-marker-clusterer', get_template_directory_uri() . '/js/markerclusterer' . $js_minify_prefix . '.js', array('google-map'), '2.1.1', false);
         wp_enqueue_script('oms.min.js', get_template_directory_uri() . '/js/oms.min.js', array('google-map'), '1.12.2', false);
 
-        wp_enqueue_script( 'richmarker', get_stylesheet_directory_uri() . '/richmarker.js', array('jquery') );
+        wp_enqueue_script( 'richmarker', get_stylesheet_directory_uri() . '/js/richmarker.js', array('jquery') );
         
-        wp_enqueue_script( 'map', get_stylesheet_directory_uri() . '/map.js', array('jquery') );
+        wp_enqueue_script( 'map', get_stylesheet_directory_uri() . '/js/map.js', array('jquery') );
     }
 }
 
@@ -67,7 +69,7 @@ if (is_admin() ){
         wp_enqueue_style( 'houzez-admin.css', get_template_directory_uri(). '/css/admin/admin.css', array(), HOUZEZ_THEME_VERSION, 'all' );
 
         wp_enqueue_script('houzez-admin-ajax', get_template_directory_uri() .'/js/admin/houzez-admin-ajax.js', array('jquery'));
-        wp_enqueue_script( 'custom', get_stylesheet_directory_uri() . '/admin.js', array('jquery') );
+        wp_enqueue_script( 'custom', get_stylesheet_directory_uri() . '/js/admin.js', array('jquery') );
         wp_localize_script('houzez-admin-ajax', 'houzez_admin_vars',
             array( 'ajaxurl'            => admin_url('admin-ajax.php'),
                 'paid_status'        =>  __('Paid','houzez')

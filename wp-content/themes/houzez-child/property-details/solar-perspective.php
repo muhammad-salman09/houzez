@@ -15,13 +15,13 @@ $property_location    = get_post_meta( get_the_ID(), 'fave_property_location',tr
     	<div class="col-md-6">
     		<h3 class="text-center">12:00 PM</h3>
             <div class="text-center">
-                <img src="<?php echo get_stylesheet_directory_uri(); ?>/NE-Solar.png" />
+                <img class="solar12" src="<?php echo get_stylesheet_directory_uri(); ?>/solar/" />
             </div>
     	</div>
     	<div class="col-md-6">
     		<h3 class="text-center">16:00 PM</h3>
             <div class="text-center">
-                <img src="<?php echo get_stylesheet_directory_uri(); ?>/NW-Solar.png" />
+                <img class="solar16" src="<?php echo get_stylesheet_directory_uri(); ?>/solar/" />
             </div>
     	</div>
     </div>

@@ -126,8 +126,8 @@ $(document).ready(function() {
         totalPrice = $('#mc_total_amount').val().replace(/,/g, '');
         down_payment = $('#mc_down_payment').val().replace(/,/g, '');
         amount_financed = totalPrice - down_payment;
-        term_years =  parseInt ($('#mc_term_years').val(),10) * payment_period;
-        interest_rate = parseFloat ($('#mc_interest_rate').val(),10);
+        term_years =  parseInt ($('#mc_term_years').val(), 10) * payment_period;
+        interest_rate = parseFloat ($('#mc_interest_rate').val(), 10);
         monthInterest = interest_rate / (payment_period * 100);
         intVal = Math.pow( 1 + monthInterest, -term_years );
         mortgage_pay = amount_financed * (monthInterest / (1 - intVal));
@@ -300,26 +300,18 @@ $(document).ready(function() {
 
     if ($('#singlePropertyMapSection').children().length > 0) {
         var LatLng = $('.map-location').val();
+
         LatLng = LatLng.split(',');
 
-        var latitude = LatLng[0];
-        var longitude = LatLng[1];
+        var latitude = parseFloat(LatLng[0]);
+        var longitude = parseFloat(LatLng[1]);
 
-        var locations = [];
-        locations.push(new google.maps.LatLng(latitude, longitude));
-
-        var positionalRequest = {
-          'locations': locations
-        }
-
-        var elevator = new google.maps.ElevationService();
-
-        elevator.getElevationForLocations(positionalRequest, function(results, status) {
-            if (status == google.maps.ElevationStatus.OK) {
-                if (results[0]) {
-                    var elevation = results[0].elevation.toFixed(2);
-                }
-            }
-        });
+        var m12 = new Model(12, latitude, longitude);
+        var m16 = new Model(16, latitude, longitude);
+        
+        $('.solar12').attr('src', $('.solar12').attr('src') + m12.azimuth + '.png');
+        $('.solar16').attr('src', $('.solar16').attr('src') + m16.azimuth + '.png');
     }
+
+    
 });
