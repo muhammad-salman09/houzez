@@ -69,7 +69,7 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                         	</div>
                         </div>
 
-                        <div class="doc_content">
+                        <div class="doc_content container">
                         	<p></p>
                         	<div></div>
                         </div>
@@ -87,5 +87,3 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
         </div>
     </div>
 </div>
-
-<?php get_footer(); ?>

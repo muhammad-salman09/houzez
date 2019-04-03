@@ -129,11 +129,12 @@ $houzez_local = houzez_get_localization();
 	</header>
 
 	<?php if (!is_front_page() &&
-            get_page_template_slug() != 'template/user_dashboard_profile.php' &&
-            get_page_template_slug() != 'template-user-dashboard-properties.php' &&
             get_page_template_slug() != 'template/submit_property.php' &&
+            get_page_template_slug() != 'template/template-payment.php' &&
+            get_page_template_slug() != 'template/user_dashboard_profile.php' &&
             get_page_template_slug() != 'template-document-upload.php' &&
             get_page_template_slug() != 'template-advanced-package.php' &&
+            get_page_template_slug() != 'template-user-dashboard-properties.php' &&
             get_page_template_slug() != 'template/user_dashboard_favorites.php' &&
             get_page_template_slug() != 'template/user_dashboard_saved_search.php' &&
             get_page_template_slug() != 'template/user_dashboard_invoices.php' &&
@@ -324,7 +325,11 @@ $houzez_local = houzez_get_localization();
 
 <?php
 get_template_part( '../houzez/inc/header/mobile-header' );
-if ( is_page_template( '../houzez/template/property-listings-map.php' ) ) { $section_body .= 'houzez-body-half '; }
+
+if ( is_page_template( '../houzez/template/property-listings-map.php' ) ||
+     is_page_template( 'template-map-search.php' ) ) {
+    $section_body .= 'houzez-body-half ';
+}
 if( houzez_is_landing_page() ) { $section_body .='landing-page';}
 ?>
 
@@ -338,7 +343,7 @@ if( houzez_is_landing_page() ) { $section_body .='landing-page';}
         !is_page_template('template-user-dashboard-properties.php') &&
         !is_page_template('template-advanced-package.php') &&
         !is_page_template('template-document-upload.php') &&
-        !is_page_template('template-advanced-search.php') ) { ?>
+        !is_page_template('template-map-search.php') ) { ?>
 	<div class="container">
 	<?php } ?>
 

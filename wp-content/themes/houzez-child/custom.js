@@ -19,9 +19,9 @@ $(document).ready(function() {
 
 	$('.main-nav').css('margin-left', val + 'px');
 
-    $('.advanced-search .bootstrap-select').prev().change(function() {
+    /*$('.advanced-search .bootstrap-select').prev().change(function() {
         $(this).closest('form').submit();
-    });
+    });*/
 
     $('.advanced-search .bootstrap-select button').mouseover(function() {
         $(this).find('.filter-option').css('color', '#55d2d8');
@@ -78,15 +78,6 @@ $(document).ready(function() {
 
             $(".min-price-range").text( min_price_range );
             $(".max-price-range").text( max_price_range );
-        },
-        stop: function( event, ui ) {
-
-            if($("#houzez-listing-map").length > 0 || $('#mapViewHalfListings').length > 0 ) {
-                var current_page = 0;
-                var current_form = $(this).parents('form');
-                var form_widget = $(this).parents('form');
-                houzez_search_on_change(current_form, form_widget, current_page);
-            }
         }
     });
 
@@ -295,18 +286,6 @@ $(document).ready(function() {
                             $('#doc_title').val('');
                             file.val('');
                         }
-                        /*result = JSON.parse(result.substring(0, result.length - 1));
-
-                        count++;
-
-                        $('.doc_content p').text('List Encrypted files (' + count + ' of 5)');
-
-                        var url = result['url'];
-                        var link = ' ( <a href="' + url + '">View</a> )'
-                        $('.doc_content div').append('<p>' + title + link + '</p>');
-
-                        $('#doc_title').val('');
-                        file.val('');*/
                     },
                     error: function(err) {
                         console.log(err);
@@ -320,7 +299,7 @@ $(document).ready(function() {
     });
 
 
-    var latitude = 0;
+    /*var latitude = 0;
     var longitude = 0;
     var elevation = 0;
 
@@ -357,5 +336,5 @@ $(document).ready(function() {
                 }
             }
         });
-    }
+    }*/
 });

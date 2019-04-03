@@ -1,4 +1,4 @@
-/*
+
 Theme Name: Houzez Child
 Theme URI: http://www.favethemes.com/
 Author: Favethemes
@@ -22,6 +22,37 @@ Template: houzez
 #section-body {
 	padding-bottom: 0;
 }
+/* Widget Style Start */
+#sidebar .widget-title {
+	color: #001489;
+}
+.widget .widget-body .item-wrap.prop_addon .item-body a.btn {
+	background-color: #009da5;
+	border: none;
+	color: #ffffff;
+}
+.widget .widget-body .item-wrap.prop_addon .item-info {
+	height: 60px;
+}
+.widget .widget-body .item-wrap.prop_addon .item-info .item-amenities li {
+	min-width: 50px;
+}
+.widget .widget-body .item-wrap.prop_addon .item-info .item-amenities li img {
+	height: 50%;
+	width: 50%;
+}
+.widget .widget-body .item-wrap.prop_addon .item-info .item-amenities li span {
+	font-size: 12px;
+}
+.widget .widget-body .item-wrap.prop_addon .item-info .item-amenities li:last-child {
+	margin: 0;
+}
+.widget .widget-body .item-wrap.prop_addon .item-price-block .item-price {
+	border-bottom: none; 
+	border-top: 1px solid #777;
+}
+/* Widget Style End */
+
 /* Header Style Start */
 .header-section-4 .header-left .navi > ul > li > a {
 	font-size: 18px;
@@ -185,6 +216,82 @@ Template: houzez
 }
 /* Advanced Search Style End */
 
+/* Draw Map Search Style Start */
+.page-template-template-map-search .advanced-search {
+	width: 100%;
+}
+.page-template-template-map-search .advanced-search h3.advance-title {
+	margin-left: 12.5%;
+}
+.page-template-template-map-search .advanced-search form {
+	margin: 0 auto;
+	width: 75%;
+}
+.draw-search>div {
+	height: 640px;
+}
+#section-body.houzez-body-half .draw-search .houzez-module.property-item-module {
+	height: 540px;
+	overflow: auto;
+	padding: 0;
+}
+.draw-search .prop_addon {	
+	border: 2px solid #ffffff;
+	border-radius: 5px;
+}
+.draw-search .prop_addon:hover {
+	border-color: #777;
+	cursor: pointer;
+}
+.draw-search .draw-search-result {
+    margin: 0;
+    padding: 15px 5px;
+}
+.draw-search .draw-search-result h2 {
+	color: #001489;
+    font-size: 30px;
+}
+.draw-search .houzez-module>div {
+	margin: 0;
+}
+.draw-search .item-detail {
+	min-height: 100px;
+}
+.draw-search .item-wrap.prop_addon .item-body .property-title, .item-body h2 {
+	font-size: 16px;
+	text-overflow: ellipsis;
+    white-space: normal;
+}
+.draw-search .property-listing .not-found {
+	background-color: transparent;
+}
+.label_content{
+	background-color: #009da5;
+	color:#ffffff;
+	font-size: 16px;
+	line-height: 16px;
+	padding:5px;
+	position:relative;
+	text-align: center;
+	width: 100%;
+}
+.label_content:after {
+	border-left: solid 5px transparent;
+	border-right: solid 5px transparent;
+	border-top: solid 10px #009da5;
+	content:'';
+	height: 0;
+	left: 50%;
+	margin-left: -10px;
+	position: absolute;
+	top: 100%;
+	width: 0;
+}
+.gmnoprint a, .gmnoprint span, .gm-style-cc {
+    display:none;
+}
+/* Draw Map Search Style End */
+
 /* Homepage Property Addon Style Start */
 .item-wrap.prop_addon .property-item>div {
 	display: block;
@@ -224,6 +331,9 @@ Template: houzez
 }
 .item-wrap.prop_addon .property-item .item-body .property-title {
 	color: #777;
+}
+.item-wrap.prop_addon .property-item .item-body .property-title,
+.item-wrap.prop_addon .property-item-v2 .item-body .property-title {
     text-overflow: ellipsis;
 	white-space: normal;
 }
@@ -355,6 +465,26 @@ Template: houzez
 	color: #ffffff;
 	font-size: 20px;
 }
+.widget-calculate label {
+	font-size: 12px;
+}
+.widget-calculate #cCalculate {
+	margin-top: 10px;
+}
+.widget-calculate .morg-detail span {
+	color: #000000;
+	font-size: 16px;
+	font-weight: 300;
+}
+.widget-calculate .morg-result h2 {
+	color: #000000;
+	font-size: 20px;
+	line-height: 40px;
+	margin: 0;
+}
+.widget-calculate .morg-summery {
+	display: block;
+}
 /* Mortgage Calculator Style End */
 
 /* Featured Listing/Property of the Week Style Start */
@@ -379,6 +509,8 @@ Template: houzez
 
 /* Package Style Start */
 .houzez-module.package-table-module {
+	display: flex;
+	flex-wrap: 	wrap;
 	padding-top: 0;
 }
 .houzez-module>div {
@@ -386,21 +518,20 @@ Template: houzez
 }
 .houzez-module .package-block {
 	box-shadow: 0 0 0 1px #dddddd;
-	height: 540px;
+	height: 100%;
+}
+.houzez-module .package-block .package-content {
+	padding: 0 10px 20px;
+	margin-bottom: 20px;
+}
+.houzez-module .package-block .package-content p:first-child {
+    text-align: center;
 }
 .houzez-module .package-block .package-link {
-	margin: 0 20px;
-}
-.houzez-module .package-block .package-link p {
-	text-align: left;
-}
-.houzez-module .package-block .package-link p:first-child {
-	text-align: center;
-}
-.houzez-module .package-block .package-link a {
-    bottom: 40px;
-    left: 30%;
+	bottom: 20px;
+    margin: 0;
 	position: absolute;
+	width: 100%;
 }
 .houzez-module .container>div {
 	padding-right: 20px;
@@ -410,7 +541,7 @@ Template: houzez
 	padding: 10px 50px;
 }
 .doc_content {
-	min-height: 300px;
+	min-height: 400px;
 }
 .doc_content div p {
 	margin: 0;
@@ -421,10 +552,14 @@ Template: houzez
 /* Package Style End */
 
 /* Listing Content/Sidebar Style Start */
-.lifestyle {
+.detail-bar .lifestyle {
 	margin-bottom: 20px;
 }
-.lifestyle span {
+.detail-bar .lifestyle a:hover {
+	background-color: #009da5;
+	color: white;
+}
+.detail-bar .lifestyle a {
     border: 1px solid #009da5;
     border-radius: 10px;
     color: #009da5;
@@ -435,6 +570,7 @@ Template: houzez
 	font-family: sans-serif;
 }
 .detail-block .detail-title h2.title-left {
+	font-size: 22px;
 	font-weight: bold;
 }
 .property-plans .nav-tabs {
@@ -479,4 +615,48 @@ Template: houzez
 	float: right;
 	font-size: 12px;
 }
+.property-details .detail-content {
+	background-color: #efefef;
+	padding: 10px;
+}
+.property-details .detail-title-inner .title-inner {
+	font-size: 18px;
+	font-weight: bold;
+}
 /* Listing Content/Sidebar Style End */
+
+/* Lifestyle Tag Sort Style Start */
+.lifestyle-tag {
+	color: #001489;
+}
+.property-listing.lifestyle .item-title,
+.property-listing.lifestyle .item-price-block {
+	padding: 0;
+}
+.property-listing.lifestyle .item-title .property-title,
+.property-listing.lifestyle .item-price-block .item-price {
+	color: #009da5;
+	font-size: 18px;
+}
+.property-listing.lifestyle .item-amenities li {
+	border: none;
+	padding: 0 20px 0 0;
+}
+.property-listing.lifestyle .item-amenities li:last-child {
+	float: right;
+	margin-top: 10px;
+	padding: 0;
+}
+.property-listing.lifestyle .item-amenities li span {
+	text-align: center;
+}
+.property-listing.lifestyle .item-amenities li:last-child a {
+	color: #009da5;
+    background-color: #ffffff;
+    border-color: #009da5;
+}
+.property-listing.lifestyle .item-amenities li:last-child a:hover {
+	color: #ffffff;
+    background-color: #009da5;
+}
+/* Lifestyle Tag Sort Style End */

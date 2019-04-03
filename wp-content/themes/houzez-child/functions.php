@@ -36,6 +36,27 @@ function custom_styles() {
 add_action( 'wp_enqueue_scripts', 'my_scripts' );
 function my_scripts() {
     wp_enqueue_script( 'custom', get_stylesheet_directory_uri() . '/custom.js', array('jquery') );
+
+
+    if (is_page_template( 'template-map-search.php' )) {
+        $googlemap_api_key = houzez_option('googlemap_api_key');
+
+        $minify_js = houzez_option('minify_js');
+        $js_minify_prefix = '';
+
+        if ($minify_js != 0) {
+            $js_minify_prefix = '.min';
+        }
+
+        wp_enqueue_script('google-map', 'https://maps.googleapis.com/maps/api/js?libraries=places&language=' . get_locale() . '&key=' . esc_html($googlemap_api_key), array('jquery'), '1.0', false);
+        wp_enqueue_script('google-map-info-box', get_template_directory_uri() . '/js/infobox' . $js_minify_prefix . '.js', array('google-map'), '1.1.9', false);
+        wp_enqueue_script('google-map-marker-clusterer', get_template_directory_uri() . '/js/markerclusterer' . $js_minify_prefix . '.js', array('google-map'), '2.1.1', false);
+        wp_enqueue_script('oms.min.js', get_template_directory_uri() . '/js/oms.min.js', array('google-map'), '1.12.2', false);
+
+        wp_enqueue_script( 'richmarker', get_stylesheet_directory_uri() . '/richmarker.js', array('jquery') );
+        
+        wp_enqueue_script( 'map', get_stylesheet_directory_uri() . '/map.js', array('jquery') );
+    }
 }
 
 add_action('admin_enqueue_scripts', 'custom_scripts');
@@ -83,12 +104,36 @@ function houzez_listing_price() {
 
     $sale_price = get_post_meta( get_the_ID(), 'fave_property_price', true );
     $sale_price = number_format ( $sale_price , 0, '', ',' );
-    
-    echo $symbol . $sale_price;
+
+    $status = get_the_terms( get_the_ID(), 'property_status' );
+
+    if ($status[0]->slug == 'for-rent')
+        echo $symbol . $sale_price . '/mo';
+    else
+        echo $symbol . $sale_price;
 }
 
 function houzez_listing_price_v1() {
-    houzez_listing_price();
+    global $wpdb;
+
+    $currency_code = get_post_meta( get_the_ID(), 'fave_currency', true);
+
+    $result = $wpdb->get_results(" SELECT currency_symbol FROM " . $wpdb->prefix . "houzez_currencies where currency_code='$currency_code'");
+
+    if (sizeof($result) > 0)
+        $symbol = $result[0]->currency_symbol;
+    else
+        $symbol = '€';
+
+    $sale_price = get_post_meta( get_the_ID(), 'fave_property_price', true );
+    $sale_price = number_format ( $sale_price , 0, '', ',' );
+    
+    $status = get_the_terms( get_the_ID(), 'property_status' );
+    
+    if ($status[0]->slug == 'for-rent')
+        return $symbol . $sale_price . '/mo';
+    else
+        return $symbol . $sale_price;
 }
 
 /**
@@ -374,7 +419,6 @@ function update_custom_metabox($meta_boxes) {
  */
 function houzez_remove_page_templates( $templates ) {
     unset( $templates['template/template-packages.php'] );
-    unset( $templates['template/template-search.php'] );
     unset( $templates['template/user_dashboard_properties.php'] );
     return $templates;
 }
@@ -551,17 +595,292 @@ vc_map( array(
 ) );
 
 /**
+ * Draw Map Search
+ */
+add_action('rest_api_init', 'register_api');
+function register_api() {
+    register_rest_route( 'v1', '/houzez_map_search', array(
+      'methods' => 'GET',
+      'callback' => 'houzez_map_search',
+    ));
+
+    register_rest_route( 'v1', '/houzez_map_listing', array(
+      'methods' => 'POST',
+      'callback' => 'houzez_map_listing',
+    ));
+}
+
+function houzez_map_search() {
+    global $wp_query;
+
+    $status = $_GET['status'];
+    $city = $_GET['city'];
+    $lifestyle = $_GET['lifestyle'];
+    $region = $_GET['region'];
+    $type = $_GET['type'];
+    $currency = $_GET['currency'];
+    $min_price = $_GET['min_price'];
+    $max_price = $_GET['max_price'];
+    $target = $_GET['target'];
+
+    $search_query = array(
+        'post_type' => 'property',
+        'posts_per_page' => -1,
+        'post_status' => 'publish'
+    );
+
+    if ( !empty($status) ) {
+        $tax_query[] = array(
+            'taxonomy' => 'property_status',
+            'field' => 'slug',
+            'terms' => $status
+        );
+    }
+
+    if ( !empty($city) ) {
+        $tax_query[] = array(
+            'taxonomy' => 'property_city',
+            'field' => 'slug',
+            'terms' => $city
+        );
+    }
+
+    if ( !empty($lifestyle) ) {
+        $tax_query[] = array(
+            'taxonomy' => 'property_lifestyle',
+            'field' => 'slug',
+            'terms' => $lifestyle
+        );
+    }
+
+    if ( !empty($region) ) {
+        $tax_query[] = array(
+            'taxonomy' => 'property_region',
+            'field' => 'slug',
+            'terms' => $region
+        );
+    }
+
+    if ( !empty($type) ) {
+        $tax_query[] = array(
+            'taxonomy' => 'property_type',
+            'field' => 'slug',
+            'terms' => $type
+        );
+    }
+
+    $tax_count = count($tax_query);
+
+    if ($tax_count > 0) {
+        $tax_query['relation'] = 'AND';
+
+        $search_query['tax_query'] = $tax_query;
+    }
+
+    if ( !empty($currency) ) {
+        $meta_query[] = array(
+            'key' => 'fave_currency',
+            'value' => $currency,
+            'type' => 'CHAR',
+            'compare' => '=',
+        );
+    }
+
+    if ( !empty($min_price) && !empty($min_price) ) {
+        $min_price = doubleval( houzez_clean( $min_price ) );
+        $max_price = doubleval( houzez_clean( $max_price ) );
+
+        if ( $min_price > 0 && $max_price > $min_price ) {
+            $meta_query[] = array(
+                'key' => 'fave_property_price',
+                'value' => array($min_price, $max_price),
+                'type' => 'NUMERIC',
+                'compare' => 'BETWEEN',
+            );
+        }
+    }
+
+    $meta_count = count($meta_query);
+
+    if ($meta_count > 0) {
+        $meta_query['relation'] = 'AND';
+
+        $search_query['meta_query'] = $meta_query;
+    }
+
+    $location_arr = array();
+    $price_arr = array();
+    $id_arr = array();
+
+    $wp_query = new WP_Query( $search_query );
+
+    if ( $wp_query->have_posts() ) {
+        while ( $wp_query->have_posts() ) : $wp_query->the_post();            
+            $location = get_post_meta(get_the_ID(), 'fave_property_location', true);
+            array_push($location_arr, $location);
+
+            $price = get_post_meta(get_the_ID(), 'fave_property_price', true);
+            $price = number_format ( $price , 0, '', ',' );
+
+            $currency = get_post_meta(get_the_ID(), 'fave_currency', true);
+
+            switch ($currency) {
+                case 'EUR':
+                    $price = '€' . $price;
+                    break;
+                case 'USD':
+                    $price = '$' . $price;
+                    break;
+                case 'GBP':
+                    $price = '£' . $price;
+                    break;
+                case 'XBT':
+                    $price = '฿' . $price;
+                    break;
+                case '':
+                    $price = '€' . $price;
+                    break;
+            }
+
+            array_push($price_arr, $price);
+            array_push($id_arr, get_the_ID());
+        endwhile;
+        wp_reset_postdata();
+    } else {
+       
+    }
+
+    $result = array(
+        'location' => $location_arr,
+        'price' => $price_arr,
+        'id' => $id_arr
+    );
+
+    return $result;
+}
+
+function houzez_map_listing() {
+    $result = array();
+
+    $id_arr = $_POST['ids'];
+
+    if (sizeof($id_arr) > 0) {
+        for ($i = 0; $i < sizeof($id_arr); $i++) {
+            $content = '';
+
+            $content .= '<div id="ID-' . $id_arr[$i] .'" class="item-wrap infobox_trigger prop_addon">';
+            $content .= '<div class="property-item-v2">';
+
+            $content .= '<div class="figure-block">';
+            $content .= '<figure class="item-thumb">';
+
+            $week = get_post_meta($id_arr[$i], 'fave_week', true);
+            if ($week == '1')
+                $content .= '<span class="label-week label">Property of the Week</span>';
+
+            $featured = get_post_meta($id_arr[$i], 'fave_featured', true);
+            if ($featured == '1')
+                $content .= '<span class="label-featured label">Featured</span>';
+
+            $content .= get_the_post_thumbnail($id_arr[$i], 150, 120);
+            $content .= '<ul class="actions">';
+            $content .= '<li><span class="add_fav" data-placement="top" data-toggle="tooltip"';
+            $content .= ' data-original-title="Favorite" data-propid="' . $id_arr[$i] . '">';
+            $content .= '<i class="fa fa-heart"></i></span></li>';
+            $content .= '<li><span data-toggle="tooltip" data-placement="top" title=""';
+            $content .= ' data-original-title="(' . sizeof(get_post_meta($id_arr[$i], 'fave_property_images')) . ')">';
+            $content .= '<i class="fa fa-camera"></i></span></li>';
+            $content .= '</ul>';
+            $content .= '</figure>';
+            $content .= '</div>';
+
+            $content .= '<div class="item-body">';
+            $content .= '<div class="item-detail"><p>';
+            $content .= wp_trim_words(get_post_field('post_content', $id_arr[$i]), 20);
+            $content .= '</p></div>';
+            $content .= '<div class="item-title"><h2 class="property-title">' . get_the_title($id_arr[$i]) .'</h2></div>';
+            $content .= '<div class="item-info">';
+            $content .= '<ul class="item-amenities">';
+
+            $bed = get_post_meta($id_arr[$i], 'fave_property_bedrooms', true);
+            $content .= '<li>';
+            $content .= '<img src="' . get_stylesheet_directory_uri() . '/icons/rooms.png">';
+            $content .= '<span>' . $bed . '</span>';
+            $content .= '</li>';
+
+            $bath = get_post_meta($id_arr[$i], 'fave_property_bathrooms', true);
+            $content .= '<li>';
+            $content .= '<img src="' . get_stylesheet_directory_uri() . '/icons/bathtub.png">';
+            $content .= '<span>' . $bath . '</span>';
+            $content .= '</li>';
+
+            $size = get_post_meta($id_arr[$i], 'fave_property_size', true);
+            $content .= '<li>';
+            $content .= '<img src="' . get_stylesheet_directory_uri() . '/icons/house.png">';
+            $content .= '<span>' . $size . ' m²</span>';
+            $content .= '</li>';
+
+            $content .= '<li><a target="_blank" href="' . get_the_permalink($id_arr[$i]) . '" class="btn btn btn-primary">';
+            $content .= 'Details &gt;</a></li>';
+
+            $content .= '</ul>';
+            $content .= '</div>';
+            $content .= '<div class="item-price-block"><span class="item-price">';
+
+            $price = get_post_meta($id_arr[$i], 'fave_property_price', true);
+            $price = number_format ( $price , 0, '', ',' );
+
+            $currency = get_post_meta($id_arr[$i], 'fave_currency', true);
+
+            switch ($currency) {
+                case 'EUR':
+                    $price = '€' . $price;
+                    break;
+                case 'USD':
+                    $price = '$' . $price;
+                    break;
+                case 'GBP':
+                    $price = '£' . $price;
+                    break;
+                case 'XBT':
+                    $price = '฿' . $price;
+                    break;
+                case '':
+                    $price = '€' . $price;
+                    break;
+            }
+
+            $status = wp_get_post_terms($id_arr[$i], 'property_status', array('fields' => 'slugs'));
+            $status = $status[0];
+
+            if ($status == 'for-rent')
+                $status = '/mo';
+            else
+                $status = '';
+
+            $content .= $price . $status . '</span></div>';
+            $content .= '</div>';
+
+            $content .= '</div></div>';
+
+            array_push($result, $content);
+        }
+    }
+
+    return $result;
+}
+
+/**
  * Custom taxonomy for custom post type 'Property'
  */
 add_action( 'admin_menu', 'remove_label_taxonomy', 999 );
 function remove_label_taxonomy() {
-    remove_submenu_page( 'edit.php?post_type=property', 'edit-tags.php?taxonomy=property_label&amp;post_type=property' );
+    remove_submenu_page('edit.php?post_type=property', 'edit-tags.php?taxonomy=property_label&amp;post_type=property');
+    remove_meta_box('property_labeldiv', 'property', 'normal');
 }
 
 add_action('init', 'overwrite_theme_post_types', 1000);
 function overwrite_theme_post_types() {
-	//unregister_taxonomy( 'property_label' );
-
     $labels_lifestyle = array(
         'name' => __( 'Lifestyles', 'read' ),
         'singular_name' => __( 'Lifestyle', 'read' ),
@@ -577,8 +896,7 @@ function overwrite_theme_post_types() {
     );
 
     register_taxonomy(
-        'property_lifestyle',
-        array( 'property' ),
+        'property_lifestyle', 'property',
         array(
             'hierarchical' => true,
             'labels' => $labels_lifestyle,
@@ -606,8 +924,7 @@ function overwrite_theme_post_types() {
     );
 
     register_taxonomy(
-        'property_region',
-        array( 'property' ),
+        'property_region', 'property',
         array(
             'hierarchical' => true,
             'labels' => $labels_region,
@@ -619,6 +936,35 @@ function overwrite_theme_post_types() {
             )
         )
     );
+
+    $prop_city = array(
+        'id' => 'fave_prop_region_meta',
+        'title' => 'Property Region',
+        'pages' => array('property_region'),
+        'context' => 'normal',
+        'fields' => array(),
+        'local_images' => false,
+        'use_with_theme' => false
+    );
+
+    $taxnow = isset($_REQUEST['taxonomy'])? $_REQUEST['taxonomy'] : '';
+
+    $prop_city_meta =  new Tax_Meta_Class( $prop_city );
+    $prop_city_meta->addImage('fave_prop_type_image',array('name'=> __('Thumbnail ','houzez')));
+
+    if ($taxnow == 'property_region') {  
+        $prop_city_meta->check_field_upload();
+        $prop_city_meta->check_field_color();
+        $prop_city_meta->check_field_date();
+        $prop_city_meta->check_field_time();
+
+        $plugin_path = plugins_url('houzez-theme-functionality/extensions/Tax-meta-class');
+      
+        wp_enqueue_style( 'tax-meta-clss', $plugin_path . '/css/Tax-meta-class.css' );
+
+        wp_enqueue_script( 'tax-meta-clss', $plugin_path . '/js/tax-meta-clss.js', array( 'jquery' ), null, true );
+
+    }
 }
 
 if ( !function_exists( 'houzez_get_property_lifestyle_meta' ) ):
@@ -665,8 +1011,6 @@ if ( !function_exists( 'houzez_property_lifestyle_add_meta_fields' ) ) :
             <div class="clear"></div>
             <p class="howto"><?php _e( 'Choose color', 'houzez' ); ?></p>
         </div>
-
-
 
         <?php
     }
@@ -812,8 +1156,6 @@ if ( !function_exists( 'houzez_property_region_add_meta_fields' ) ) :
             <p class="howto"><?php _e( 'Choose color', 'houzez' ); ?></p>
         </div>
 
-
-
         <?php
     }
 endif;
@@ -921,6 +1263,40 @@ if ( ! function_exists( 'HOUZEZ_property_taxonomies_remove' ) ) {
 
     require_once( get_stylesheet_directory(). '/houzez-property-taxonomies.php' );
 }
+
+function houzez_custom_menu_order() {
+    global $submenu;
+
+    $i = 0;
+    $features = 0;
+    $lifestyles = 0;
+    $order = array();
+
+    foreach ($submenu['edit.php?post_type=property'] as $item) {
+        array_push($order, $item);
+
+        if ($item[0] == 'Features')
+            $features = $i;
+
+        if ($item[0] == 'Lifestyles')
+            $lifestyles = $i;
+
+        $i++;
+    }
+
+    $lifestyle = $order[$lifestyles];
+
+    for ($i = $lifestyles; $i > $features; $i--) {
+        $order[$i] = $order[$i - 1];
+    }
+
+    $order[$features + 1] = $lifestyle;
+    
+    $submenu['edit.php?post_type=property'] = $order;
+}
+
+add_filter( 'custom_menu_order', 'houzez_custom_menu_order' );
+add_filter( 'menu_order', 'houzez_custom_menu_order' );
 
 /**
  *  Property Addon
@@ -1318,6 +1694,195 @@ vc_map( array(
 /*
  * Widget Name: Property Add On: Property of the week
  */
+
+function widget_content($args, $instance, $type) {
+    global $before_widget, $after_widget, $before_title, $after_title, $post;
+    extract( $args );
+
+    $allowed_html_array = array(
+        'div' => array(
+            'id' => array(),
+            'class' => array()
+        ),
+        'h3' => array(
+            'class' => array()
+        )
+    );
+
+    $title = apply_filters('widget_title', $instance['title'] );
+    $items_num = $instance['items_num'];
+    $widget_type = $instance['widget_type'];
+    
+    echo wp_kses( $before_widget, $allowed_html_array );
+
+    if ($title) 
+        echo wp_kses( $before_title, $allowed_html_array ) . $title . wp_kses( $after_title, $allowed_html_array );
+
+    $wp_qry = new WP_Query(
+        array(
+            'post_type' => 'property',
+            'posts_per_page' => $items_num,
+            'meta_key' => $type,
+            'meta_value' => '1',
+            'ignore_sticky_posts' => 1,
+            'post_status' => 'publish'
+        )
+    );
+    ?>
+    
+    <div class="widget-body">
+
+        <?php if( $widget_type == "slider" ) { ?>
+        <div class="property-widget-slider slide-animated owl-carousel owl-theme">
+        <?php } else { ?>
+        <div class="item-wrap infobox_trigger prop_addon">
+        <?php } ?>
+
+        <?php if ($wp_qry->have_posts()): while($wp_qry->have_posts()): $wp_qry->the_post(); ?>
+            <?php $prop_featured = get_post_meta( get_the_ID(), 'fave_featured', true ); ?>
+            <?php $prop_week = get_post_meta( get_the_ID(), 'fave_week', true ); ?>            
+            <?php $prop_images = get_post_meta( get_the_ID(), 'fave_property_images', false ); ?>
+
+            <?php if( $widget_type == "slider" ) { ?>
+                <div class="item">
+                    <div class="figure-block">
+                        <figure class="item-thumb">
+                            <?php if( $prop_featured != 0 ) { ?>
+                                <span class="label-featured label label-success">
+                                    <?php esc_html_e( 'Featured', 'houzez' ); ?>
+                                </span>
+                            <?php } ?>
+                            <?php if( $prop_week == 1 ) { ?>
+                                <span class="label-week label">
+                                    <?php echo esc_html__( 'Property of the Week', 'houzez' ); ?>
+                                </span>
+                            <?php } ?>
+                            <div class="label-wrap label-right">
+                                <?php get_template_part('template-parts/listing', 'status' ); ?>
+                            </div>
+
+                            <a href="<?php the_permalink() ?>" class="hover-effect">
+                                <?php
+                                if( has_post_thumbnail( $post->ID ) ) {
+                                    the_post_thumbnail( 'houzez-property-thumb-image' );
+                                }else{
+                                    houzez_image_placeholder( 'houzez-property-thumb-image' );
+                                }
+                                ?>
+                            </a>
+                            <figcaption class="thumb-caption">
+                                <div class="cap-price pull-left"><?php echo houzez_listing_price(); ?></div>
+                                <ul class="list-unstyled actions pull-right">
+                                    <li>
+                                        <span title="" data-placement="top" data-toggle="tooltip" data-original-title="<?php echo count($prop_images); ?> <?php echo esc_html__('Photos', 'houzez'); ?>">
+                                            <i class="fa fa-camera"></i>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+            <?php } else { ?>
+                <div class="figure-block">
+                    <figure class="item-thumb">
+                        <?php if( $prop_featured != 0 ) { ?>
+                                <span class="label-featured label label-success">
+                                    <?php esc_html_e( 'Featured', 'houzez' ); ?>
+                                </span>
+                            <?php } ?>
+                            <?php if( $prop_week == 1 ) { ?>
+                                <span class="label-week label">
+                                    <?php echo esc_html__( 'Property of the Week', 'houzez' ); ?>
+                                </span>
+                            <?php } ?>
+                        <div class="label-wrap label-right">
+                            <?php get_template_part('template-parts/listing', 'status' ); ?>
+                        </div>
+
+                        <a href="<?php the_permalink() ?>" class="hover-effect">
+                            <?php
+                            if( has_post_thumbnail( $post->ID ) ) {
+                                the_post_thumbnail( 'houzez-property-thumb-image' );
+                            }else {
+                                houzez_image_placeholder( 'houzez-property-thumb-image' );
+                            }
+                            ?>
+                        </a>
+                        <figcaption class="thumb-caption clearfix">
+                            <div class="cap-price pull-left"><?php echo houzez_listing_price(); ?></div>
+
+                            <ul class="list-unstyled actions pull-right">
+                                <li>
+                                    <span title="" data-placement="top" data-toggle="tooltip" data-original-title="<?php echo count($prop_images); ?> <?php echo esc_html__('Photos', 'houzez'); ?>">
+                                        <i class="fa fa-camera"></i>
+                                    </span>
+                                </li>
+                            </ul>
+                        </figcaption>
+                    </figure>
+                </div>
+                <div class="item-body">
+                    <div class="item-detail">
+                        <p><?php echo wp_trim_words( get_the_content(), 20 ); ?></p>
+                    </div>
+
+                    <div class="item-title">
+                        <?php
+                            echo '<h2 class="property-title">'. esc_attr( get_the_title() ). '</h2>';
+                        ?>
+                    </div>
+
+                    <div class="item-info">
+                        <?php 
+                            $propID = get_the_ID();
+                            $prop_bed     = get_post_meta( get_the_ID(), 'fave_property_bedrooms', true );
+                            $prop_bath     = get_post_meta( get_the_ID(), 'fave_property_bathrooms', true );
+                            $prop_size     = get_post_meta( $propID, 'fave_property_size', true );
+
+                            if (empty($prop_bed)) $prop_bed = 0;
+                            if (empty($prop_bath)) $prop_bath = 0;
+                            if (empty($prop_size)) $prop_size = 0;
+                        ?>
+                        <ul class="item-amenities">
+                            <li>
+                                <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/rooms.png">
+                                <span><?php echo $prop_bed; ?></span>
+                            </li>
+                            <li>
+                                <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/bathtub.png">
+                                <span><?php echo $prop_bath; ?></span>
+                            </li>
+                            <li>
+                                <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/house.png">
+                                <span><?php echo $prop_size; ?> m²</span>
+                            </li>
+                            <li>
+                                <a href="<?php echo esc_url( get_permalink() ); ?>" class="btn btn-primary btn-block">
+                                    <?php echo esc_html__( 'Details >', 'houzez' ); ?>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                     <div class="item-price-block">
+                        <span class="item-price">
+                            <?php echo houzez_listing_price_v1(); ?>
+                        </span>
+                    </div>
+                </div>
+            <?php } ?>
+        <?php endwhile; endif; ?>
+
+        </div>
+        <?php wp_reset_postdata(); ?>
+        
+    </div>
+
+
+<?php 
+    echo wp_kses( $after_widget, $allowed_html_array );
+}
  
 class HOUZEZ_property_week extends WP_Widget {
     /**
@@ -1336,7 +1901,7 @@ class HOUZEZ_property_week extends WP_Widget {
      * Front-end display of widget
     **/
     public function widget( $args, $instance ) {
-        
+        widget_content($args, $instance, 'fave_week');
     }
     /**
      * Sanitize widget form values as they are saved
@@ -1413,7 +1978,7 @@ class HOUZEZ_featured_listing extends WP_Widget {
      * Front-end display of widget
     **/
     public function widget( $args, $instance ) {
-
+        widget_content($args, $instance, 'fave_featured');
     }
     /**
      * Sanitize widget form values as they are saved

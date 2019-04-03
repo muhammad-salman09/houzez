@@ -178,7 +178,9 @@ houzez_count_property_views( $post->ID );
                     	<div class="lifestyle">
                 		<?php
                 			foreach ($terms as $term) {
+                                echo '<a href="' . site_url() . '/' . $term->taxonomy . '/' . $term->slug . '">';
                 				echo '<span>' . $term->name . '</span>';
+                                echo '</a>';
                 			}
                 		?>
                     	</div>

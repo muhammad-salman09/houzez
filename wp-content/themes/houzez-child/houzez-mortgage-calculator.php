@@ -103,6 +103,7 @@ if( ! function_exists('houzez_mortgage_calculator_widget2') ) {
     ?>
 
         <div class="widget-body">
+        <?php if (is_front_page()) { ?>
             <div class="row">
                 <div class="col-md-6">
                     <label class="white" for="mc_total_amount"><?php esc_html_e('Total Amount', 'houzez'); ?></label>
@@ -153,6 +154,54 @@ if( ! function_exists('houzez_mortgage_calculator_widget2') ) {
                     </button>
                 </div>
             </div>
+        <?php } else { ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="white" for="mc_total_amount"><?php esc_html_e('Total Amount', 'houzez'); ?></label>
+                    <input class="form-control" id="mc_total_amount" type="text">
+                </div>
+                <div class="col-md-12">
+                    <label class="white" for="mc_down_payment"><?php esc_html_e('Down Payment', 'houzez'); ?></label>
+                    <input class="form-control" id="mc_down_payment" type="text">
+                </div>
+                <div class="col-md-12">
+                    <label class="white" for="mc_interest_rate"><?php esc_html_e('Interest Rate', 'houzez'); ?></label>
+                    <input class="form-control" id="mc_interest_rate" type="text">
+                </div>
+                <div class="col-md-12">
+                    <label class="white" for="mc_term_years">
+                        <?php esc_html_e('Loan Length (years)', 'houzez'); ?>
+                    </label>
+                    <input class="form-control" id="mc_term_years" type="text">
+                </div>
+                <div class="col-md-12">
+                    <label class="white" for="mc_currency"><?php esc_html_e('Select Currency', 'houzez'); ?></label>
+                    <select class="form-control" id="mc_currency">
+                        <option value="eur">EUR</option>
+                        <option value="usd">USD</option>
+                        <option value="gbp">GBP</option>
+                        <option value="btc">BTC</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label class="white" for="mc_payment_period">
+                        <?php esc_html_e('Payment Frequency', 'houzez'); ?>
+                    </label>
+                    <select class="form-control" id="mc_payment_period">
+                        <option value="12"><?php esc_html_e('Monthly', 'houzez'); ?></option>
+                        <option value="26"><?php esc_html_e('Bi-Weekly', 'houzez'); ?></option>
+                        <option value="52"><?php esc_html_e('Weekly', 'houzez'); ?></option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <button id="cCalculate" class="btn btn-primary btn-block">
+                        <?php esc_html_e('Calculator', 'houzez');?>
+                    </button>
+                </div>
+            </div>
+        <?php } ?>
 
             <div class="morg-detail">
                 <div class="morg-result">
