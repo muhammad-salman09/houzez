@@ -141,10 +141,6 @@ function houzez_listing_price_v1() {
  */
 add_filter("redux/options/houzez_options/sections", 'update_redux_options');
 function update_redux_options($sections){
-    $search_field = 0;
-    $search_index = 0;
-    $property_section = 0;
-
     $i = 1;
     $index = 0;
     while ($index == 0) {
@@ -180,6 +176,7 @@ function update_redux_options($sections){
             )
         )
     );
+
     $sections[$index + 2] = array(
         'title' => 'Apple Pay',
         'id' => 'mem-apple-payment',
@@ -201,6 +198,7 @@ function update_redux_options($sections){
             )
         )
     );
+
     $sections[$index + 3] = array(
         'title' => 'Google Pay',
         'id' => 'mem-google-payment',
@@ -223,6 +221,12 @@ function update_redux_options($sections){
         )
     );
 
+    $search_field = 0;
+    $search_index = 0;
+    $property_section = 0;
+    $footer_section = 0;
+    $footer_cols = 0;
+
     for ($i = 1; $i < sizeof($sections) + 1; $i++) {
         if ($sections[$i]['id'] == 'adv-search-fields') {
             $search_field = $i;
@@ -239,6 +243,16 @@ function update_redux_options($sections){
 
         if ($sections[$i]['id'] == 'property-section') {
             $property_section = $i;
+        }
+
+        if($sections[$i]['id'] == 'footer') {
+            $footer_section = $i;
+
+            foreach ($sections[$footer_section]['fields'] as $fields) {
+                if ($fields['id'] == 'footer_cols') {
+                    $footer_cols = $fields['priority'];
+                }
+            }
         }
     }
 
@@ -265,8 +279,15 @@ function update_redux_options($sections){
 
     $sections[$property_section]['fields'][$property_field_id]['options']['enabled'] =
         array_insert_after($sections[$property_section]['fields'][$property_field_id]['options']['enabled'], 
-            'floor_plans', array('solar_perspective' => 'Solar Perstpective')); 
+            'floor_plans', array('solar_perspective' => 'Solar Perstpective'));
 
+    $six_cols = array(
+        'alt' => '6 Column',
+        'img' => ReduxFramework::$_url . 'assets/img/4cl.png'
+    );
+
+    $sections[$footer_section]['fields'][$footer_cols]['options']['six_cols'] = $six_cols;
+    
     return $sections;
 }
 
