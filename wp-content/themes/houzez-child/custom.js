@@ -298,43 +298,28 @@ $(document).ready(function() {
         }
     });
 
-
-    /*var latitude = 0;
-    var longitude = 0;
-    var elevation = 0;
-
     if ($('#singlePropertyMapSection').children().length > 0) {
+        var LatLng = $('.map-location').val();
+        LatLng = LatLng.split(',');
 
-        var geocoder = new google.maps.Geocoder();
-        var address = $('.map-address').val();
-
-        geocoder.geocode( { 'address': address}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                latitude = results[0].geometry.location.lat();
-                longitude = results[0].geometry.location.lng();
-
-                console.log(latitude + ',' + longitude);
-            } 
-        });
-
-        var elevator = new google.maps.ElevationService();
-        var places = [{lat: latitude, lng: longitude}];
+        var latitude = LatLng[0];
+        var longitude = LatLng[1];
 
         var locations = [];
-        for (var i = 0; i < places.length; i++) {
-          locations.push( new google.maps.LatLng(places[i].lat, places[i].lng) );
-        }
+        locations.push(new google.maps.LatLng(latitude, longitude));
 
         var positionalRequest = {
           'locations': locations
         }
 
+        var elevator = new google.maps.ElevationService();
+
         elevator.getElevationForLocations(positionalRequest, function(results, status) {
             if (status == google.maps.ElevationStatus.OK) {
                 if (results[0]) {
-                    elevation = results[0].elevation.toFixed(2);
+                    var elevation = results[0].elevation.toFixed(2);
                 }
             }
         });
-    }*/
+    }
 });

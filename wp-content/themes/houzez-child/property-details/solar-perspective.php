@@ -2,12 +2,14 @@
 
 $google_map_address = get_post_meta( get_the_ID(), 'fave_property_map_address', true );
 
+$property_location    = get_post_meta( get_the_ID(), 'fave_property_location',true);
+
 ?>
 
 <div id="solar" class="property-solar detail-block target-block">
 	<div class="detail-title">
         <h2 class="title-left"><?php esc_html_e( 'Solar Perspective', 'houzez' ); ?></h2>
-        <input type="hidden" class="map-address" value="<?php echo $google_map_address; ?>" />
+        <input type="hidden" class="map-location" value="<?php echo $property_location; ?>" />
     </div>
     <div class="block row">
     	<div class="col-md-6">

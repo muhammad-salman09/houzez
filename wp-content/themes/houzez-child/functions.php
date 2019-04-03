@@ -37,7 +37,6 @@ add_action( 'wp_enqueue_scripts', 'my_scripts' );
 function my_scripts() {
     wp_enqueue_script( 'custom', get_stylesheet_directory_uri() . '/custom.js', array('jquery') );
 
-
     if (is_page_template( 'template-map-search.php' )) {
         $googlemap_api_key = houzez_option('googlemap_api_key');
 

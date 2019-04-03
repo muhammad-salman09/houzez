@@ -102,15 +102,16 @@ function drawFreeHand(locations)
     google.maps.event.addListenerOnce(map, 'mouseup', function(e){
         google.maps.event.removeListener(move);
         var path = poly.getPath();
+
         poly.setMap(null);
 
         poly = new google.maps.Polygon({
-        		map: map,
-        		path: path,
-        		fillColor: 'transparent',
-				strokeColor: '#ff0000',
-				strokeWeight: 2
-        	});      
+    		map: map,
+    		path: path,
+    		fillColor: 'transparent',
+			strokeColor: '#ff0000',
+			strokeWeight: 2
+    	});
         
         google.maps.event.clearListeners(map.getDiv(), 'mousedown');
 
@@ -194,8 +195,8 @@ function initMap(locations) {
 	var city = url.searchParams.get('city');
   
 	map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 6,
-		center: new google.maps.LatLng(40, 1.01),
+		zoom: 10,
+		center: new google.maps.LatLng(39.6, 2.95),
 		gestureHandling: 'greedy',
 		fullscreenControl: false,
 		streetViewControl: false,
@@ -209,6 +210,31 @@ function initMap(locations) {
 			position: google.maps.ControlPosition.TOP_RIGHT,
 			style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
 		}
+	});
+
+	var geoArr = [];
+	var geoURL = 'https://nominatim.openstreetmap.org/search.php?q=New+York&polygon_geojson=1&format=json';
+
+	$.getJSON(geoURL, function(data) {
+		var geojson = data[0]['geojson']['coordinates'][0][0];
+
+		var geoArr = [];
+
+		for (var i = 0; i < geojson.length; i++) {
+			geoArr.push({
+				lat: geojson[i][1],
+				lng: geojson[i][0]
+			});
+		}
+
+		poly = new google.maps.Polygon({
+			paths: geoArr,
+			fillColor: 'transparent',
+			strokeColor: '#ff0000',
+			strokeWeight: 2
+        });
+
+        poly.setMap(map);
 	});
 
 	var markers = [];
@@ -246,35 +272,6 @@ function initMap(locations) {
 
 	var markerCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-
-	if (city == '')
-		city = 'Mallorca';
-
-	var geoArr = [];
-	var geoURL = 'https://nominatim.openstreetmap.org/search.php?q=' + city + '&polygon_geojson=1&format=json';
-
-	$.getJSON(geoURL, function(data) {
-		var geojson = data[0]['geojson']['coordinates'][0];
-		
-		var geoArr = [];
-
-		for (var i = 0; i < geojson.length; i++) {
-			geoArr.push({
-				lat: geojson[i][1],
-				lng: geojson[i][0]
-			});
-		}
-
-		poly = new google.maps.Polygon({
-			paths: geoArr,
-			fillColor: 'transparent',
-			strokeColor: '#ff0000',
-			strokeWeight: 2
-        });
-
-        poly.setMap(map);
-	});
-
 
 	var drawControlDiv = document.createElement('div');
     var drawControl = new DrawControl(drawControlDiv, map, locations);
