@@ -630,6 +630,21 @@ function register_api() {
       'methods' => 'POST',
       'callback' => 'houzez_map_listing',
     ));
+
+    register_rest_route( 'v1', '/houzez_make_prop_week', array(
+      'methods' => 'POST',
+      'callback' => 'houzez_make_prop_week',
+    ));
+
+    register_rest_route( 'v1', '/houzez_remove_prop_week', array(
+      'methods' => 'POST',
+      'callback' => 'houzez_remove_prop_week',
+    ));
+
+    register_rest_route( 'v1', '/houzez_doc_upload', array(
+      'methods' => 'POST',
+      'callback' => 'houzez_doc_upload',
+    ));
 }
 
 function houzez_map_search() {
@@ -2104,50 +2119,42 @@ if( !function_exists('houzez_add_widget') ) {
 /* -----------------------------------------------------------------------------------------------------------
  *  Make Property of the Week
  -------------------------------------------------------------------------------------------------------------*/
-add_action( 'wp_ajax_nopriv_houzez_make_prop_week', 'houzez_make_prop_week');
-add_action( 'wp_ajax_houzez_make_prop_week', 'houzez_make_prop_week' );
-
-if( !function_exists('houzez_make_prop_week') ):
+ if( !function_exists('houzez_make_prop_week') ):
     function  houzez_make_prop_week(){
         global $current_user;
+
         wp_get_current_user();
         $userID =   $current_user->ID;
 
         $prop_id = intval( $_POST['propid'] );
         $post = get_post( $prop_id );
 
-        if( $post->post_author != $userID ) {
-            wp_die();
-        } else {
+        if( $post->post_author == $userID ) {
             update_post_meta($prop_id, 'fave_week', 1);
-            wp_die();
         }
 
+        return ($post->post_author == $userID);
     }
 endif;
 
 /* -----------------------------------------------------------------------------------------------------------
  *  Remove Property of the Week
  -------------------------------------------------------------------------------------------------------------*/
-add_action( 'wp_ajax_nopriv_houzez_remove_prop_week', 'houzez_remove_prop_week');
-add_action( 'wp_ajax_houzez_remove_prop_week', 'houzez_remove_prop_week' );
-
 if( !function_exists('houzez_remove_prop_week') ):
     function  houzez_remove_prop_week(){
         global $current_user;
+
         wp_get_current_user();
         $userID =   $current_user->ID;
 
         $prop_id = intval( $_POST['propid'] );
         $post = get_post( $prop_id );
 
-        if( $post->post_author != $userID ) {
-            wp_die();
-        } else {
+        if( $post->post_author == $userID ) {
             update_post_meta($prop_id, 'fave_week', 0);
-            wp_die();
         }
-        wp_die();
+
+        return ($post->post_author == $userID);
     }
 endif;
 
@@ -2173,8 +2180,7 @@ endif;
 /**
  * Encrypt Document Upload
  */
-add_action( 'wp_ajax_nopriv_houzez_doc_upload', 'houzez_doc_upload');
-add_action( 'wp_ajax_houzez_doc_upload', 'houzez_doc_upload' );
+
 
 function houzez_doc_upload() {
     $filename = $_FILES['file']['name'];
@@ -2186,22 +2192,25 @@ function houzez_doc_upload() {
 
     $basename = '';
 
-    if (file_exists('../Documents/' . $filename)) {
+    $upload = wp_upload_dir();
+    $dir = $upload['basedir'] . '/../../Documents/';
+
+    if (file_exists($dir . $filename)) {
         $increment = 1;
 
-        while(file_exists('../Documents/' . $name . '_' . $increment . '.' . $extension)) {
+        while(file_exists($dir . $name . '_' . $increment . '.' . $extension)) {
             $increment++;
         }
 
-        $basename = '../Documents/' . $name . '_' . $increment . '.' . $extension;
+        $basename = $dir . $name . '_' . $increment . '.' . $extension;
     } else {
-        $basename = '../Documents/' . $filename;
+        $basename = $dir . $filename;
     }
 
     if (move_uploaded_file($_FILES['file']['tmp_name'], $basename)) {
-        echo "success";
+        return "success";
     } else {
-        echo "fail";
+        return "fail";
     }
 }
 ?>

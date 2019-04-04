@@ -56,10 +56,9 @@ $(document).ready(function() {
 	});
 
 	$('#cCalculate').click(function() {
-        var monthly_payment = HOUZEZ_ajaxcalls_vars.monthly_payment;
-        var weekly_payment = HOUZEZ_ajaxcalls_vars.weekly_payment;
-        var bi_weekly_payment = HOUZEZ_ajaxcalls_vars.bi_weekly_payment;
-        var currency_symb = HOUZEZ_ajaxcalls_vars.currency_symbol;
+        var monthly_payment = 'Monthly Payment';
+        var weekly_payment = 'Weekly Payment';
+        var bi_weekly_payment = 'Bi-Weekly Payment';
 
         var totalPrice  = 0;
         var down_payment = 0;
@@ -72,7 +71,6 @@ $(document).ready(function() {
         var annualCost = 0;
         var payment_period;
         var mortgage_pay_text;
-
 
         payment_period = $('#mc_payment_period').val();
 
@@ -146,25 +144,20 @@ $(document).ready(function() {
     });
 
     function make_prop_week( prop_id, currentDiv ) {
-    	var ajaxurl = HOUZEZ_ajaxcalls_vars.admin_url + 'admin-ajax.php';
-
     	$.ajax({
             type: 'POST',
-            url: ajaxurl,
-            dataType: 'JSON',
-            data: {
-                'action' : 'houzez_make_prop_week',
-                'propid' : prop_id
-            },
-            success: function() {
-
-                var prnt = currentDiv.parents('.item-wrap');
-                prnt.find('.item-thumb').append('<span class="label-week label">Property of the Week</span>');
-                currentDiv.remove();
-                window.location.reload();
-
+            url: '/wp-json/v1/houzez_make_prop_week',
+            data: {'propid' : prop_id},
+            success: function(result) {
+                if (result) {                    
+                    var prnt = currentDiv.parents('.item-wrap');
+                    prnt.find('.item-thumb').append('<span class="label-week label">Property of the Week</span>');
+                    currentDiv.remove();
+                    window.location.reload();
+                } else {
+                    alert('It is not your published property.');
+                }
             }
-
         });
     }
 
@@ -180,23 +173,19 @@ $(document).ready(function() {
     });
 
     function remove_prop_week( prop_id, currentDiv ) {
-    	var ajaxurl = HOUZEZ_ajaxcalls_vars.admin_url + 'admin-ajax.php';
-
-    	$.ajax({
+        $.ajax({
             type: 'POST',
-            url: ajaxurl,
-            dataType: 'JSON',
-            data: {
-                'action' : 'houzez_remove_prop_week',
-                'propid' : prop_id
-            },
-            success: function() {
-
-                var prnt = currentDiv.parents('.item-wrap');
-                prnt.find('.label-week').remove();
-                currentDiv.remove();
-                window.location.reload();
-
+            url: '/wp-json/v1/houzez_remove_prop_week',
+            data: {'propid' : prop_id},
+            success: function(result) {
+                if (result) {
+                    var prnt = currentDiv.parents('.item-wrap');
+                    prnt.find('.label-week').remove();
+                    currentDiv.remove();
+                    window.location.reload();
+                } else {
+                    alert('It is not your published property.');
+                }
             }
         });
     }
@@ -215,20 +204,15 @@ $(document).ready(function() {
             var doc_type = fileObject['type'];
 
             if (doc_size < 10 && doc_type == 'application/pdf') {
-                var ajaxurl = HOUZEZ_ajaxcalls_vars.admin_url + 'admin-ajax.php';
-
                 data.append('file', fileObject);
-                data.append('action', 'houzez_doc_upload');
-                
+
                 $.ajax({
                     type: 'POST',
-                    url: ajaxurl,
+                    url: '/wp-json/v1/houzez_doc_upload',
                     data: data,
                     contentType: false,
                     processData: false,
                     success: function(result) {
-                        result = result.substring(0, result.length - 1);
-                        
                         if (result == 'success') {
                             count++;
 
