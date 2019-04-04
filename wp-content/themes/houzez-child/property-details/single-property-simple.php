@@ -27,6 +27,8 @@ if( isset( $_GET['prop_nav'] ) ) {
 }
 $prop_description = get_the_content();
 
+$perspective = get_post_meta( $post->ID, 'fave_perspective',true);
+
 if ($layout): foreach ($layout as $key=>$value) {
 
     switch($key) {
@@ -68,11 +70,13 @@ if ($layout): foreach ($layout as $key=>$value) {
         case 'floor_plans':
             if( $prop_floor_plan != 'disable' && !empty( $prop_floor_plan ) ) {
                 get_template_part('property-details/floor', 'plans');
-            };
+            }
             break;
 
         case 'solar_perspective':
+            if ( $perspective != '' ) {
                 get_template_part('property-details/solar', 'perspective');
+            }
             break;
 
         case 'video':

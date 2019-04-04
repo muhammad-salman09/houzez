@@ -541,7 +541,7 @@ Template: houzez
 	padding: 10px 50px;
 }
 .doc_content {
-	min-height: 400px;
+	min-height: 200px;
 }
 .doc_content div p {
 	margin: 0;

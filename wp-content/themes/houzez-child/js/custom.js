@@ -19,10 +19,6 @@ $(document).ready(function() {
 
 	$('.main-nav').css('margin-left', val + 'px');
 
-    /*$('.advanced-search .bootstrap-select').prev().change(function() {
-        $(this).closest('form').submit();
-    });*/
-
     $('.advanced-search .bootstrap-select button').mouseover(function() {
         $(this).find('.filter-option').css('color', '#55d2d8');
         $(this).find('.filter-option').css('cursor', 'pointer');
@@ -58,49 +54,6 @@ $(document).ready(function() {
 			$('.advance-title').text('Search Properties for Rent');
 		}
 	});
-
-	var min_price = parseInt($('#min_price').val());
-	var max_price = parseInt($('#max_price').val());
-
-	var thousands_separator = HOUZEZ_ajaxcalls_vars.thousands_separator;
-
-	$(".price-range").slider({
-        range: true,
-        min: 1000,
-        max: 500000,
-        values: [min_price, max_price],
-        slide: function (event, ui) {
-            var min_price_range = addCommas(ui.values[0]);
-            var max_price_range = addCommas(ui.values[1]);
-
-            $(".min-price-range-hidden").val( min_price_range );
-            $(".max-price-range-hidden").val( max_price_range );
-
-            $(".min-price-range").text( min_price_range );
-            $(".max-price-range").text( max_price_range );
-        }
-    });
-
-    var min_price = addCommas(min_price);
-    var max_price = addCommas(max_price);
-
-    $(".min-price-range-hidden").val(min_price);
-    $(".max-price-range-hidden").val(max_price);
-
-    $(".min-price-range").text(min_price);
-    $(".max-price-range").text(max_price);
-
-    function addCommas(nStr) {
-        nStr += '';
-        var x = nStr.split('.');
-        var x1 = x[0];
-        var x2 = x.length > 1 ? '.' + x[1] : '';
-        var rgx = /(\d+)(\d{3})/;
-        while (rgx.test(x1)) {
-            x1 = x1.replace(rgx, '$1' + thousands_separator + '$2');
-        }
-        return x1 + x2;
-    }
 
 	$('#cCalculate').click(function() {
         var monthly_payment = HOUZEZ_ajaxcalls_vars.monthly_payment;
@@ -299,19 +252,21 @@ $(document).ready(function() {
     });
 
     if ($('#singlePropertyMapSection').children().length > 0) {
-        var LatLng = $('.map-location').val();
+        var perspective = $('.map-perspective').val();
 
-        LatLng = LatLng.split(',');
+        if (typeof(perspective) !== 'undefined' && perspective != '') {
+            var LatLng = $('.map-location').val();
 
-        var latitude = parseFloat(LatLng[0]);
-        var longitude = parseFloat(LatLng[1]);
+            LatLng = LatLng.split(',');
 
-        var m12 = new Model(12, latitude, longitude);
-        var m16 = new Model(16, latitude, longitude);
-        
-        $('.solar12').attr('src', $('.solar12').attr('src') + m12.azimuth + '.png');
-        $('.solar16').attr('src', $('.solar16').attr('src') + m16.azimuth + '.png');
+            var latitude = parseFloat(LatLng[0]);
+            var longitude = parseFloat(LatLng[1]);
+
+            var m12 = new Model(perspective, 12, latitude, longitude);
+            var m16 = new Model(perspective, 16, latitude, longitude);
+            
+            $('.solar12').attr('src', $('.solar12').attr('src') + m12.azimuth + '.png');
+            $('.solar16').attr('src', $('.solar16').attr('src') + m16.azimuth + '.png');
+        }
     }
-
-    
 });

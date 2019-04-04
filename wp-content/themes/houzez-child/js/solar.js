@@ -153,7 +153,7 @@ function azimuth(currentTime, latitude, longitude, useEccentricity) {
 // Two-way interactive bindings to user interface
 // -------------------------------------------
 
-var Model = function (currentHour, latitude, longitude) {
+var Model = function (perspective, currentHour, latitude, longitude) {
     self = this;
     now = new Date();
 
@@ -176,7 +176,35 @@ var Model = function (currentHour, latitude, longitude) {
 
     // Outputs: Sun Location, converted to degrees
     var az = toDeg(azimuth((currentUTC() - summer_solstice) / 1000.0, latitude, longitude, useEccentricity));
-console.log(az);
+    az = Math.round(az);
+    
+    switch (perspective) {
+        case 'northeast':
+            az += 45;
+            break;
+        case 'east':
+            az += 90;
+            break;
+        case 'southeast':
+            az += 135;
+            break;
+        case 'south':
+            az += 180;
+            break;
+        case 'southwest':
+            az += 225;
+            break;
+        case 'west':
+            az += 270;
+            break;
+        case 'northwest':
+            az += 315;
+            break;
+    }
+
+    if (az >= 360)
+        az -= 360;
+
     if (az <= 22.5 || az > 337.5)
         self.azimuth = 'North';
     else if (az <= 67.5)
