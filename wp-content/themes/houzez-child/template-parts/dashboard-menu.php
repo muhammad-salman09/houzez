@@ -14,7 +14,7 @@ $dashboard_favorites = houzez_get_template_link_2('template/user_dashboard_favor
 $dashboard_search = houzez_get_template_link_2('template/user_dashboard_saved_search.php');
 $dashboard_invoices = houzez_get_template_link_2('template/user_dashboard_invoices.php');
 $dashboard_msgs = houzez_get_template_link_2('template/user_dashboard_messages.php');
-$dashboard_membership = houzez_get_template_link_2('template/user_dashboard_membership.php');
+$dashboard_membership = houzez_get_template_link_2('template-user-dashboard-membership.php');
 $dashboard_gdpr = houzez_get_template_link_2('template/user_dashboard_gdpr.php');
 $dashboard_seen_msgs = add_query_arg( 'view', 'inbox', $dashboard_msgs );
 $dashboard_unseen_msgs = add_query_arg( 'view', 'sent', $dashboard_msgs );
@@ -36,7 +36,7 @@ if( is_page_template( 'template/user_dashboard_profile.php' ) ) {
     $ac_invoices = 'class=active';
 } elseif ( is_page_template( 'template/user_dashboard_messages.php' ) ) {
     $ac_msgs = 'class=active';
-} elseif ( is_page_template( 'template/user_dashboard_membership.php' ) ) {
+} elseif ( is_page_template( 'template-user-dashboard-membership.php' ) ) {
     $ac_mem = 'class=active';
 } elseif ( is_page_template( 'template/user_dashboard_gdpr.php' ) ) {
     $ac_gdpr = 'class=active';
@@ -46,29 +46,36 @@ $agency_agents = add_query_arg( 'agents', 'list', $dash_profile_link );
 $agency_agent_add = add_query_arg( 'agent', 'add_new', $dash_profile_link );
 
 $all = add_query_arg( 'prop_status', 'all', $dashboard_listings );
+$package = add_query_arg( 'prop_status', 'package', $dashboard_listings );
 $approved = add_query_arg( 'prop_status', 'approved', $dashboard_listings );
 $pending = add_query_arg( 'prop_status', 'pending', $dashboard_listings );
 $expired = add_query_arg( 'prop_status', 'expired', $dashboard_listings );
 $draft = add_query_arg( 'prop_status', 'draft', $dashboard_listings );
 $on_hold = add_query_arg( 'prop_status', 'on_hold', $dashboard_listings );
-$ac_approved = $ac_pending = $ac_expired = $ac_all = $ac_draft = $ac_on_hold = $ac_agents = $ac_agent_new = '';
+$ac_approved = $ac_package = $ac_pending = $ac_expired = $ac_all = $ac_draft = $ac_on_hold = $ac_agents = $ac_agent_new = '';
 
 if( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'approved' ) {
     $ac_approved = 'class=active';
-
+} elseif( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'package' ) {
+    $ac_package = 'class=active';
 } elseif( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'pending' ) {
     $ac_pending = 'class=active';
-
 } elseif( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'expired' ) {
     $ac_expired = 'class=active';
-} elseif( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'approved' ) {
-    $ac_approved = 'class=active';
 } elseif( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'draft' ) {
     $ac_draft = 'class=active';
 } elseif( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'on_hold' ) {
     $ac_on_hold = 'class=active';
 } else {
     $ac_all = 'class=active';
+}
+
+if (is_page_template('template-user-dashboard-package.php') ||
+    is_page_template('template-addon-payment.php')
+   ) {
+    $ac_props = 'class=active';
+    $ac_all = '';
+    $ac_package = 'class=active';
 }
 
 if( isset( $_GET['agents'] ) && $_GET['agents'] == 'list' ) {
@@ -96,6 +103,7 @@ if( isset( $_GET['agents'] ) && $_GET['agents'] == 'list' ) {
                 echo '<li ' .esc_attr( $ac_props ). '> <a href="' . esc_url($dashboard_listings) . '"><i class="fa fa-building"></i>' . esc_html__('My Properties', 'houzez') . '</a>
                 <ul class="sub-menu">
                     <li '.esc_attr( $ac_all ).'><a href="' . esc_url($all) . '">'.$houzez_local['all'].'</a></li>
+                    <li '.esc_attr( $ac_package).'><a href="'.esc_url($package).'" '.esc_attr($ac_package).'>Additional Package Options</a></li>
                     <li '.esc_attr( $ac_approved ).'><a href="'.esc_url($approved).'" '.esc_attr($ac_approved).'>'.$houzez_local['published'].'</a></li>
                     <li '.esc_attr( $ac_pending ).'><a href="'.esc_url($pending).'" '.esc_attr($ac_pending).'>'.$houzez_local['pending'].'</a></li>
                     <li '.esc_attr( $ac_expired ).'><a href="'.esc_url($expired).'" '.esc_attr($ac_expired).'>'.$houzez_local['expired'].'</a></li>

@@ -22,7 +22,7 @@ if (isset($_GET['selected_package']) && $_GET['selected_package'] != '') {
 
 get_header();
 
-$payment_page_link = houzez_get_template_link('template/template-payment.php');
+$payment_page_link = houzez_get_template_link('template-advanced-payment.php');
 
 $payment_page_link = add_query_arg( 'selected_package', $id, $payment_page_link );
 

@@ -188,12 +188,7 @@ function getListing(id_arr) {
     });
 }
 
-function initMap(locations) {
-	var url_string = window.location;
-	var url = new URL(url_string);
-
-	var city = url.searchParams.get('city');
-  
+function initMap(locations) {  
 	map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 10,
 		center: new google.maps.LatLng(39.6, 2.95),
@@ -288,7 +283,7 @@ $(document).ready(function() {
 	var url_string = window.location;
 	var url = new URL(url_string);
 
-	var status = url.searchParams.get('status')
+	var status = url.searchParams.get('status');
 	var city = url.searchParams.get('city');
 	var lifestyle = url.searchParams.get('lifestyle');
 	var region = url.searchParams.get('region');

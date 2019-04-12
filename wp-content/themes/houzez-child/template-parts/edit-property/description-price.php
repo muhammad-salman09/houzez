@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: waqasriaz
- * Date: 18/01/16
- * Time: 5:31 PM
- */
+
 global $houzez_local, $prop_data, $prop_meta_data;
 global $hide_add_prop_fields, $required_fields, $is_multi_steps;
 $is_multi_currency = houzez_option('multi_currency');

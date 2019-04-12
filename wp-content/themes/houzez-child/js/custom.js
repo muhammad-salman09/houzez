@@ -132,7 +132,7 @@ $(document).ready(function() {
 	/*--------------------------------------------------------------------------
      *   Make Property of the Week - only for membership
      * -------------------------------------------------------------------------*/
-    $('.make-prop-week').click(function (e) {
+    /*$('.make-prop-week').click(function (e) {
         e.preventDefault();
 
         if (confirm('Are you sure you want to make this a property of the week?')) {
@@ -159,7 +159,7 @@ $(document).ready(function() {
                 }
             }
         });
-    }
+    }*/
 
     $('.remove-prop-week').click(function (e) {
         e.preventDefault();
@@ -189,6 +189,15 @@ $(document).ready(function() {
             }
         });
     }
+
+    $('.addon-type').click(function() {
+        var url_string = $('.btn-next a').attr('href');
+        var url = new URL(url_string);
+
+        url.searchParams.set('option', $(this).val());
+
+        $('.btn-next a').attr('href', url.href);
+    });
 
     $('.btn-upload').click(function() {
         var data = new FormData();
@@ -233,6 +242,14 @@ $(document).ready(function() {
                 file.val('');
             }
         }
+    });
+
+    $('.payment_option').click(function() {
+        var url_string = window.location;
+        var url = new URL(url_string);
+
+        url.searchParams.set('option', $(this).val());
+        window.location.href = url.href;
     });
 
     if ($('#singlePropertyMapSection').children().length > 0) {

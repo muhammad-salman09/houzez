@@ -1,15 +1,10 @@
 <?php
 /**
  * Template for property units
- * Created by PhpStorm.
- * User: waqasriaz
- * Date: 15/10/15
- * Time: 5:25 PM
  */
 global $post,
        $edit_link,
        $prop_address,
-       $prop_featured,
        $payment_status,
        $dashboard_listings,
        $houzez_local,
@@ -18,6 +13,7 @@ global $post,
        $price_featured_submission,
        $currency, $paid_submission_type;
 
+$prop_featured = get_post_meta( get_the_ID(), 'fave_featured', true );
 $prop_week = get_post_meta( get_the_ID(), 'fave_week', true );
 $houzez_local['week'] = 'Property of the Week';
 
@@ -43,6 +39,8 @@ $add_floor_plans_link = add_query_arg( 'listing_id', $post_id, $add_floor_plans 
 
 $add_multiunits = houzez_get_template_link_2('template/user_dashboard_multi_units.php');
 $add_multiunits_link = add_query_arg( 'listing_id', $post_id, $add_multiunits );
+
+$dashboard_package = houzez_get_template_link_2('template-user-dashboard-package.php');
 
 if( $property_status == 'publish' ) {
     $property_status = '<span class="label label-success">'.esc_html__('Approved', 'houzez').'</span>';
@@ -181,17 +179,33 @@ if( $property_status_text != 'expired' ) {
 
                 if( houzez_check_post_status( $post->ID ) ) {
 
-                    // Membership
-                    if ( $paid_submission_type == 'membership' && $prop_featured != 1 && $property_status_text == 'publish' ) {
-                        echo '<div class="btn-group">';
-                            echo '<a href="#" data-proptype="membership" data-propid="'.intval( $post->ID ).'" class="make-prop-featured btn pay-btn">' . esc_html__('Set as Featured', 'houzez') . '</a>';
-                        echo '</div>';
+                    if (isset($_GET['prop_status']) && $_GET['prop_status'] == 'package') {
+                        if ( $paid_submission_type == 'membership' ) {
+                            echo '<div class="btn-group">';
+                            echo '<a href="'.esc_url($dashboard_package).'?option=featured&post='.intval( $post->ID ).'" class="btn pay-btn">' . esc_html__('Set as Featured', 'houzez') . '</a>';
+                            echo '</div>';
+                        }
+
+                        if ( $paid_submission_type == 'membership' ) {
+                            echo '<div class="btn-group">';
+                            echo '<a href="'.esc_url($dashboard_package).'?option=week&post='.intval( $post->ID ).'" class="btn btn-primary">' . esc_html__('Property of the week', 'houzez') . '</a>';
+                            echo '</div>';
+                        }
+                        
                     }
+
                     if ( $paid_submission_type == 'membership' && $prop_featured == 1 ) {
                         echo '<div class="btn-group">';
-                            echo '<a href="#" data-proptype="membership" data-propid="'.intval( $post->ID ).'" class="remove-prop-featured btn pay-btn">' . esc_html__('Remove From Featured', 'houzez') . '</a>';
+                        echo '<a href="#" data-proptype="membership" data-propid="'.intval( $post->ID ).'" class="remove-prop-featured btn pay-btn">' . esc_html__('Remove From Featured', 'houzez') . '</a>';
                         echo '</div>';
                     }
+
+                    if ( $paid_submission_type == 'membership' && $prop_week == 1 ) {
+                        echo '<div class="btn-group">';
+                        echo '<a href="#" data-propid="'. intval( $post->ID ) .'" class="remove-prop-week btn btn-primary">' . esc_html__('Remove From Week', 'houzez') . '</a>';
+                        echo '</div>';
+                    }
+
                     if( $property_status_text == 'expired' && $paid_submission_type == 'membership' ) {
                         echo '<div class="btn-group">';
                             echo '<a href="#" data-propid="'.intval( $post->ID ).'" class="resend-for-approval btn pay-btn">' . esc_html__('Reactivate Listing', 'houzez') . '</a>';
@@ -204,17 +218,6 @@ if( $property_status_text != 'expired' ) {
                         if( $prop_featured != 1 ) {
                             echo '<a href="' . esc_url($payment_page_link_featured) . '" class="btn pay-btn">' . esc_html__('Upgrade to Featured', 'houzez') . '</a>';
                         }
-                        echo '</div>';
-                    }
-
-                    if ( $paid_submission_type == 'membership' && $prop_week != 1 && $property_status_text == 'publish' ) {
-                        echo '<div class="btn-group">';
-                            echo '<a href="#" data-propid="' . intval( $post->ID ) . '" class="make-prop-week btn btn-primary">' . esc_html__('Property of the week', 'houzez') . '</a>';
-                        echo '</div>';
-                    }
-                    if ( $paid_submission_type == 'membership' && $prop_week == 1 ) {
-                        echo '<div class="btn-group">';
-                            echo '<a href="#" data-propid="'. intval( $post->ID ) .'" class="remove-prop-week btn btn-primary">' . esc_html__('Remove From Week', 'houzez') . '</a>';
                         echo '</div>';
                     }
                 }

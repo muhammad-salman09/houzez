@@ -22,6 +22,9 @@ Template: houzez
 #section-body {
 	padding-bottom: 0;
 }
+.dashboard-content-area .container {
+	padding-bottom: 0;
+}
 /* Widget Style Start */
 #sidebar .widget-title {
 	color: #001489;
@@ -507,6 +510,60 @@ Template: houzez
 }
 /* Featured Listing/Property of the Week Style End */
 
+/* Additional Package Options Style Start */
+.pagination-main .pagination {
+	display: block;
+}
+.my-package .title {
+	font-size: 24px;
+}
+.my-package.my-property-listing .figure-block {
+	width: 300px;
+}
+.my-package h2.my-heading {
+	color: #009da5;
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+.my-package .addon {
+	margin: 50px 10px 0;
+}
+.my-package .addon label,
+.my-package .addon span {
+	font-weight: bold;
+}
+.my-package .addon div {
+	margin-bottom: 20px;
+}
+.my-package .addon div p,
+.my-package .addon div span {
+	margin: 0 20px;
+}
+.my-package .step-bar {
+	background-color: #009da5;
+	color: #ffffff;
+  height: 50px;
+}
+.my-package .step-bar .btn-left {
+	float: left;
+}
+.my-package .step-bar .btn-right {
+	float: right;
+}
+.my-package .step-bar .action a {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 0;
+  color: #fff;
+	font-size: 36px;
+  height: 50px;
+  line-height: 45px;
+  opacity: .8;
+  padding: 0;
+  text-align: center;
+  width: 50px;
+}
+/* Additional Package Options Style End */
+
 /* Package Style Start */
 .houzez-module.package-table-module {
 	display: flex;
@@ -548,6 +605,9 @@ Template: houzez
 }
 .step {
 	float: right;
+}
+.option-select-block .radio {
+	padding: 10px 0 10px 50px;
 }
 /* Package Style End */
 

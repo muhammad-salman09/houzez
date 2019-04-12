@@ -17,12 +17,28 @@ $packages_page_link = houzez_get_template_link('template-advanced-package.php');
 
 get_header();
 
+$meta_query = array();
+
 if( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'approved' ) {
     $qry_status = 'publish';
+} elseif( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'package' ) {
+    $qry_status = 'publish';
 
+    array_push($meta_query, array(
+        'key' => 'fave_featured',
+        'value' => 1,
+        'compare' => '=',
+    ));
+
+    array_push($meta_query, array(
+        'key' => 'fave_week',
+        'value' => 1,
+        'compare' => '=',
+    ));
+
+    $meta_query['relation'] = 'OR';
 } elseif( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'pending' ) {
     $qry_status = 'pending';
-
 } elseif( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'expired' ) {
     $qry_status = 'expired';
 } elseif( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'draft' ) {
@@ -32,27 +48,69 @@ if( isset( $_GET['prop_status'] ) && $_GET['prop_status'] == 'approved' ) {
 } else {
     $qry_status = 'any';
 }
+
 $sortby = '';
+
 if( isset( $_GET['sortby'] ) ) {
     $sortby = $_GET['sortby'];
 }
-$no_of_prop   =  '9';
+
+$no_of_prop   =  '10';
 $paged        = (get_query_var('paged')) ? get_query_var('paged') : 1;
-$args = array(
-    'post_type'        =>  'property',
-    'author'           =>  $userID,
-    'paged'             => $paged,
-    'posts_per_page'    => $no_of_prop,
-    'post_status'      =>  array( $qry_status )
-);
-if( isset ( $_GET['keyword'] ) ) {
-    $keyword = trim( $_GET['keyword'] );
-    if ( ! empty( $keyword ) ) {
-        $args['s'] = $keyword;
+
+if (empty($meta_query)) {
+    $args = array(
+        'post_type'      => 'property',
+        'author'         => $userID,
+        'paged'          => $paged,
+        'posts_per_page' => $no_of_prop,
+        'post_status'    => array( $qry_status )
+    );
+
+    if( isset ( $_GET['keyword'] ) ) {
+        $keyword = trim( $_GET['keyword'] );
+        if ( ! empty( $keyword ) ) {
+            $args['s'] = $keyword;
+        }
     }
+
+    $args = houzez_prop_sort ( $args );
+    $prop_qry = new WP_Query($args);
+} else {
+    $args = array(
+        'post_type'      => 'property',
+        'author'         => $userID,
+        'posts_per_page' => -1,
+        'post_status'    => array( $qry_status ),
+        'meta_query'     => $meta_query
+    );
+
+    $featured = new WP_Query($args);
+
+    $ids = array();
+    if ($featured->have_posts())
+        $ids = wp_list_pluck( $featured->posts, 'ID' );
+
+    $args = array(
+        'post_type'      => 'property',
+        'author'         => $userID,
+        'paged'          => $paged,
+        'posts_per_page' => $no_of_prop,
+        'post_status'    => array( $qry_status ),
+        'post__not_in'   => $ids
+    );
+
+    if( isset ( $_GET['keyword'] ) ) {
+        $keyword = trim( $_GET['keyword'] );
+        if ( ! empty( $keyword ) ) {
+            $args['s'] = $keyword;
+        }
+    }
+
+    $args = houzez_prop_sort ( $args );
+    $prop_qry = new WP_Query($args);
 }
-$args = houzez_prop_sort ( $args );
-$prop_qry = new WP_Query($args);
+
 ?>
 <?php get_template_part( 'template-parts/dashboard', 'menu' ); ?>
 
@@ -97,11 +155,6 @@ $prop_qry = new WP_Query($args);
                                     <?php
 
                                     while ($prop_qry->have_posts()): $prop_qry->the_post();
-                                        $post_meta_data     = get_post_custom($post->ID);
-                                        $prop_images        = get_post_meta( get_the_ID(), 'fave_property_images', false );
-                                        $prop_address       = get_post_meta( get_the_ID(), 'fave_property_map_address', true );
-                                        $prop_featured       = get_post_meta( get_the_ID(), 'fave_featured', true );
-                                        $prop_agent_display = get_post_meta( get_the_ID(), 'fave_agent_display_option', true );
 
                                         get_template_part('template-parts/dashboard_property_unit');
 
@@ -114,7 +167,7 @@ $prop_qry = new WP_Query($args);
                             }?>
 
                             <hr>
-
+                            
                             <!--start Pagination-->
                             <?php houzez_pagination( $prop_qry->max_num_pages, $range = 2 ); ?>
                             <!--start Pagination-->

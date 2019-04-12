@@ -1,13 +1,16 @@
 <h3 class="side-block-title"> <?php esc_html_e( 'Membership Package', 'houzez' ); ?> </h3>
 
 <?php
-$currency_symbol = houzez_option( 'currency_symbol' );
+$currency_symbol = '€';
 $where_currency = houzez_option( 'currency_position' );
 $select_packages_link = houzez_get_template_link('template-advanced-package.php');
 
 if( isset( $_GET['selected_package'] ) ) {
     $selected_package_id     = isset( $_GET['selected_package'] ) ? $_GET['selected_package'] : '';
-    $pack_price              = get_post_meta( $selected_package_id, 'fave_package_price', true );
+
+    $option = (isset($_GET['option'])) ? $_GET['option'] : 'option1';
+    $pack_price              = get_post_meta( $selected_package_id, 'fave_payment_' . $option, true );
+
     $pack_listings           = get_post_meta( $selected_package_id, 'fave_package_listings', true );
     $pack_featured_listings  = get_post_meta( $selected_package_id, 'fave_package_featured_listings', true );
     $pack_unlimited_listings = get_post_meta( $selected_package_id, 'fave_unlimited_listings', true );
@@ -18,11 +21,8 @@ if( isset( $_GET['selected_package'] ) ) {
     if( $pack_billing_frquency > 1 ) {
         $pack_billing_period .='s';
     }
-    if ( $where_currency == 'before' ) {
-        $package_price = $currency_symbol.' '.$pack_price;
-    } else {
-        $package_price = $pack_price.' '.$currency_symbol;
-    }
+    
+    $package_price = $currency_symbol . ' ' . $pack_price;
 
     ?>
     <ul class="pkg-total-list">
@@ -43,13 +43,13 @@ if( isset( $_GET['selected_package'] ) ) {
         </li>
         <li>
             <span class="pull-left"><?php esc_html_e( 'Listing Included:', 'houzez' ); ?></span>
-                                <span class="pull-right">
-                                    <?php if( $pack_unlimited_listings == 1 ) { ?>
-                                        <strong><?php esc_html_e( 'Unlimited Listings', 'houzez' ); ?></strong>
-                                    <?php } else { ?>
-                                        <strong><?php echo esc_attr( $pack_listings ); ?></strong>
-                                    <?php } ?>
-                                </span>
+            <span class="pull-right">
+                <?php if( $pack_unlimited_listings == 1 ) { ?>
+                    <strong><?php esc_html_e( 'Unlimited Listings', 'houzez' ); ?></strong>
+                <?php } else { ?>
+                    <strong><?php echo esc_attr( $pack_listings ); ?></strong>
+                <?php } ?>
+            </span>
         </li>
         <li>
             <span class="pull-left"><?php esc_html_e( 'Featured Listing Included:', 'houzez' ); ?></span>

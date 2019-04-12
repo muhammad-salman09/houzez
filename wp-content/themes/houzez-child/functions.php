@@ -33,8 +33,148 @@ function custom_styles() {
   </style>';
 }
 
-add_action( 'wp_enqueue_scripts', 'my_scripts' );
+add_action( 'wp_enqueue_scripts', 'my_scripts', 100 );
 function my_scripts() {
+    wp_dequeue_script( 'houzez_ajax_calls' );
+    wp_deregister_script( 'houzez_ajax_calls' );
+
+    wp_enqueue_script('houzez_ajax_calls', get_stylesheet_directory_uri() . '/js/houzez_ajax_calls.js', array('jquery'));
+    wp_localize_script('houzez_ajax_calls', 'HOUZEZ_ajaxcalls_vars',
+        array(
+            'admin_url' => get_admin_url(),
+            'houzez_rtl' => $houzez_rtl,
+            'redirect_type' => $after_login_redirect,
+            'login_redirect' => $login_redirect,
+            'login_loading' => esc_html__('Sending user info, please wait...', 'houzez'),
+            'direct_pay_text' => esc_html__('Processing, Please wait...', 'houzez'),
+            'user_id' => $userID,
+            'transparent_menu' => $fave_main_menu_trans,
+            'simple_logo' => $simple_logo,
+            'retina_logo' => $retina_logo_url,
+            'retina_logo_mobile' => $retina_mobilelogo_url,
+            'retina_logo_mobile_splash' => $retina_logo_mobile_splash,
+            'retina_logo_splash' => $retina_splash_logo_url,
+            'retina_logo_height' => $retina_logo_height,
+            'retina_logo_width' => $retina_logo_width,
+            'property_lat' => $property_lat,
+            'property_lng' => $property_lng,
+            'property_map' => $property_map,
+            'property_map_street' => $property_streetView,
+            'is_singular_property' => $is_singular_property,
+            'process_loader_refresh' => 'fa fa-spin fa-refresh',
+            'process_loader_spinner' => 'fa fa-spin fa-spinner',
+            'process_loader_circle' => 'fa fa-spin fa-circle-o-notch',
+            'process_loader_cog' => 'fa fa-spin fa-cog',
+            'success_icon' => 'fa fa-check',
+            'set_as_featured' => esc_html__('Set as Featured', 'houzez'),
+            'remove_featured' => esc_html__('Remove From Featured', 'houzez'),
+            'prop_featured' => esc_html__('Featured', 'houzez'),
+            'featured_listings_none' => esc_html__('You have used all the "Featured" listings in your package.', 'houzez'),
+            'prop_sent_for_approval' => esc_html__('Sent for Approval', 'houzez'),
+            'paypal_connecting' => esc_html__('Connecting to paypal, Please wait... ', 'houzez'),
+            'mollie_connecting' => esc_html__('Connecting to mollie, Please wait... ', 'houzez'),
+            'bitcoin_connecting' => esc_html__('Connecting to bitcoin, Please wait... ', 'houzez'),
+            'confirm' => esc_html__('Are you sure you want to delete?', 'houzez'),
+            'confirm_featured' => esc_html__('Are you sure you want to make this a featured listing?', 'houzez'),
+            'confirm_featured_remove' => esc_html__('Are you sure you want to remove from featured listing?', 'houzez'),
+            'confirm_relist' => esc_html__('Are you sure you want to relist this property?', 'houzez'),
+            'delete_property' => esc_html__('Processing, please wait...', 'houzez'),
+            'delete_confirmation' => esc_html__('Are you sure you want to delete?', 'houzez'),
+            'not_found' => esc_html__("We didn't find any results", 'houzez'),
+            'for_rent' => $advanced_search_rent_status,
+            'for_rent_price_range' => $advanced_search_price_range_rent_status,
+            'currency_symbol' => $currency_symbol,
+            'advanced_search_widget_min_price' => $advanced_search_widget_min_price,
+            'advanced_search_widget_max_price' => $advanced_search_widget_max_price,
+            'advanced_search_min_price_range_for_rent' => $advanced_search_min_price_range_for_rent,
+            'advanced_search_max_price_range_for_rent' => $advanced_search_max_price_range_for_rent,
+            'advanced_search_widget_min_area' => $advanced_search_widget_min_area,
+            'advanced_search_widget_max_area' => $advanced_search_widget_max_area,
+            'advanced_search_price_slide' => houzez_option('adv_search_price_slider'),
+            'fave_page_template' => basename(get_page_template()),
+            'google_map_style' => houzez_option('googlemap_stype'),
+            'googlemap_default_zoom' => $googlemap_zoom_level,
+            'googlemap_pin_cluster' => $googlemap_pin_cluster,
+            'googlemap_zoom_cluster' => $googlemap_zoom_cluster,
+            'map_icons_path' => get_template_directory_uri() . '/images/map/',
+            'infoboxClose' => get_template_directory_uri() . '/images/map/close.png',
+            'clusterIcon' => $clusterIcon,
+            'google_map_needed' => $google_map_needed,
+            'paged' => $paged,
+            'search_result_page' => $search_result_page,
+            'search_keyword' => stripslashes($search_keyword),
+            'search_country' => $search_country,
+            'search_state' => $search_state,
+            'search_city' => $search_city,
+            'search_feature' => $search_feature,
+            'search_area' => $search_area,
+            'search_status' => $search_status,
+            'search_label' => $search_label,
+            'search_type' => $search_type,
+            'search_bedrooms' => $search_bedrooms,
+            'search_bathrooms' => $search_bathrooms,
+            'search_min_price' => $search_min_price,
+            'search_max_price' => $search_max_price,
+            'search_currency' => $search_currency,
+            'search_min_area' => $search_min_area,
+            'search_max_area' => $search_max_area,
+            'search_property_id' => $search_property_id,
+            'search_publish_date' => $search_publish_date,
+            'search_no_posts' => $prop_no_halfmap,
+
+            'search_location' => $search_location,
+            'use_radius' => $use_radius,
+            'search_lat' => $search_lat,
+            'search_long' => $search_long,
+            'search_radius' => $search_radius,
+
+            'transportation' => esc_html__('Transportation', 'houzez'),
+            'supermarket' => esc_html__('Supermarket', 'houzez'),
+            'schools' => esc_html__('Schools', 'houzez'),
+            'libraries' => esc_html__('Libraries', 'houzez'),
+            'pharmacies' => esc_html__('Pharmacies', 'houzez'),
+            'hospitals' => esc_html__('Hospitals', 'houzez'),
+            'sort_by' => $sort_by,
+            'measurement_updating_msg' => esc_html__('Updating, Please wait...', 'houzez'),
+            'autosearch_text' => esc_html__('Searching...', 'houzez'),
+            'currency_updating_msg' => esc_html__('Updating Currency, Please wait...', 'houzez'),
+            'currency_position' => houzez_option('currency_position'),
+            'submission_currency' => houzez_option('currency_paid_submission'),
+            'wire_transfer_text' => esc_html__('To be paid', 'houzez'),
+            'direct_pay_thanks' => esc_html__('Thank you. Please check your email for payment instructions.', 'houzez'),
+            'direct_payment_title' => esc_html__('Direct Payment Instructions', 'houzez'),
+            'direct_payment_button' => esc_html__('SEND ME THE INVOICE', 'houzez'),
+            'direct_payment_details' => houzez_option('direct_payment_instruction'),
+            'measurement_unit' => $measurement_unit_adv_search,
+            'header_map_selected_city' => $header_map_selected_city,
+            'thousands_separator' => $thousands_separator,
+            'current_tempalte' => $current_template,
+            'monthly_payment' => esc_html__('Monthly Payment', 'houzez'),
+            'weekly_payment' => esc_html__('Weekly Payment', 'houzez'),
+            'bi_weekly_payment' => esc_html__('Bi-Weekly Payment', 'houzez'),
+            'compare_button_url' => houzez_get_template_link_2('template/template-compare.php'),
+            'template_thankyou' => houzez_get_template_link('template/template-thankyou.php'),
+            'compare_page_not_found' => esc_html__('Please create page using compare properties template', 'houzez'),
+            'property_detail_top' => esc_attr($property_top_area),
+            'keyword_search_field' => $keyword_field,
+            'keyword_autocomplete' => $keyword_autocomplete,
+            'houzez_date_language' => $houzez_date_language,
+            'houzez_default_radius' => $houzez_default_radius,
+            'enable_radius_search' => $enable_radius_search,
+            'enable_radius_search_halfmap' => $enable_radius_search_halfmap,
+            'houzez_primary_color' => $houzez_primary_color,
+            'geocomplete_country' => $geocomplete_country,
+            'houzez_logged_in' => $houzez_logged_in,
+            'ipinfo_location' => houzez_option('ipinfo_location'),
+            'gallery_autoplay' => houzez_option('gallery_autoplay'),
+            'stripe_page' => houzez_get_template_link('template/template-stripe-charge.php'),
+            'twocheckout_page' => houzez_get_template_link('template/template-2checkout.php'),
+            'custom_fields' => json_encode($custom_fields_array),
+            'markerPricePins' => esc_attr($markerPricePins),
+            'houzez_reCaptcha' => $enable_reCaptcha
+        )
+    );
+
     wp_enqueue_script( 'numeric', get_stylesheet_directory_uri() . '/js//numeric-1.2.6.js', array('jquery') );
     wp_enqueue_script( 'solar', get_stylesheet_directory_uri() . '/js/solar.js', array('jquery') );
     wp_enqueue_script( 'custom', get_stylesheet_directory_uri() . '/js/custom.js', array('jquery') );
@@ -138,6 +278,37 @@ function houzez_listing_price_v1() {
 }
 
 /**
+ * Rest API Initialization
+ */
+add_action('rest_api_init', 'register_api');
+function register_api() {
+    register_rest_route( 'v1', '/houzez_map_search', array(
+      'methods' => 'GET',
+      'callback' => 'houzez_map_search',
+    ));
+
+    register_rest_route( 'v1', '/houzez_map_listing', array(
+      'methods' => 'POST',
+      'callback' => 'houzez_map_listing',
+    ));
+
+    register_rest_route( 'v1', '/houzez_make_prop_week', array(
+      'methods' => 'POST',
+      'callback' => 'houzez_make_prop_week',
+    ));
+
+    register_rest_route( 'v1', '/houzez_remove_prop_week', array(
+      'methods' => 'POST',
+      'callback' => 'houzez_remove_prop_week',
+    ));
+
+    register_rest_route( 'v1', '/houzez_doc_upload', array(
+      'methods' => 'POST',
+      'callback' => 'houzez_doc_upload',
+    ));
+}
+
+/**
  * Theme Option Update for Redux options
  */
 add_filter("redux/options/houzez_options/sections", 'update_redux_options');
@@ -173,6 +344,16 @@ function update_redux_options($sections){
                 'default' => 0,
                 'on' => 'Enabled',
                 'off' => 'Disabled',
+                'section_id' => 'mem-bitcoin-payment'
+            ),
+            array(
+                'id' => 'coinbaseID',
+                'type' => 'text',
+                'required' => array('enable_bitcoin', '=', '1'),
+                'title' => 'Coinbase Client ID',
+                'subtitle' => '',
+                'desc' => '',
+                'default' => '',
                 'section_id' => 'mem-bitcoin-payment'
             )
         )
@@ -217,6 +398,16 @@ function update_redux_options($sections){
                 'default' => 0,
                 'on' => 'Enabled',
                 'off' => 'Disabled',
+                'section_id' => 'mem-google-payment'
+            ),
+            array(
+                'id' => 'merchantID',
+                'type' => 'text',
+                'required' => array('enable_googlepay', '=', '1'),
+                'title' => 'Google Merchant ID',
+                'subtitle' => '',
+                'desc' => '',
+                'default' => '',
                 'section_id' => 'mem-google-payment'
             )
         )
@@ -441,6 +632,8 @@ function update_custom_metabox($meta_boxes) {
  */
 function houzez_remove_page_templates( $templates ) {
     unset( $templates['template/template-packages.php'] );
+    unset( $templates['template/template-payment.php'] );
+    unset( $templates['template/user_dashboard_membership.php'] );
     unset( $templates['template/user_dashboard_properties.php'] );
     return $templates;
 }
@@ -619,34 +812,6 @@ vc_map( array(
 /**
  * Draw Map Search
  */
-add_action('rest_api_init', 'register_api');
-function register_api() {
-    register_rest_route( 'v1', '/houzez_map_search', array(
-      'methods' => 'GET',
-      'callback' => 'houzez_map_search',
-    ));
-
-    register_rest_route( 'v1', '/houzez_map_listing', array(
-      'methods' => 'POST',
-      'callback' => 'houzez_map_listing',
-    ));
-
-    register_rest_route( 'v1', '/houzez_make_prop_week', array(
-      'methods' => 'POST',
-      'callback' => 'houzez_make_prop_week',
-    ));
-
-    register_rest_route( 'v1', '/houzez_remove_prop_week', array(
-      'methods' => 'POST',
-      'callback' => 'houzez_remove_prop_week',
-    ));
-
-    register_rest_route( 'v1', '/houzez_doc_upload', array(
-      'methods' => 'POST',
-      'callback' => 'houzez_doc_upload',
-    ));
-}
-
 function houzez_map_search() {
     global $wp_query;
 
@@ -2181,7 +2346,6 @@ endif;
  * Encrypt Document Upload
  */
 
-
 function houzez_doc_upload() {
     $filename = $_FILES['file']['name'];
 
@@ -2212,5 +2376,281 @@ function houzez_doc_upload() {
     } else {
         return "fail";
     }
+}
+
+/**
+ * Membership Function
+ */
+
+function houzez_get_user_current_package( $user_id ) {
+
+    $remaining_listings = houzez_get_remaining_listings( $user_id );
+    $pack_featured_remaining_listings = houzez_get_featured_remaining_listings( $user_id );
+    $package_id = houzez_get_user_package_id( $user_id );
+    $packages_page_link = houzez_get_template_link('template-advanced-package.php');
+
+    if( $remaining_listings == -1 ) {
+        $remaining_listings = esc_html__('Unlimited', 'houzez');
+    }
+
+    if( !empty( $package_id ) ) {
+
+        $seconds = 0;
+        $pack_title = get_the_title( $package_id );
+        $pack_listings = get_post_meta( $package_id, 'fave_package_listings', true );
+        $pack_unmilited_listings = get_post_meta( $package_id, 'fave_unlimited_listings', true );
+        $pack_featured_listings = get_post_meta( $package_id, 'fave_package_featured_listings', true );
+        $pack_billing_period = get_post_meta( $package_id, 'fave_billing_time_unit', true );
+        $pack_billing_frequency = get_post_meta( $package_id, 'fave_billing_unit', true );
+        $pack_date = strtotime ( get_user_meta( $user_id, 'package_activation',true ) );
+
+        switch ( $pack_billing_period ) {
+            case 'Day':
+                $seconds = 60*60*24;
+                break;
+            case 'Week':
+                $seconds = 60*60*24*7;
+                break;
+            case 'Month':
+                $seconds = 60*60*24*30;
+                break;
+            case 'Year':
+                $seconds = 60*60*24*365;
+                break;
+        }
+
+        $pack_time_frame = $seconds * $pack_billing_frequency;
+        $expired_date    = $pack_date + $pack_time_frame;
+        $expired_date = date_i18n( get_option('date_format'),  $expired_date );
+
+        echo '<div class="pkgs-status">';
+        echo '<h4 class="pkgs-status-title">'.esc_html__( 'Your Current Package', 'houzez' ).'</h4>';
+        echo '<ul>';
+        echo '<li><strong>'.esc_attr( $pack_title ).'</strong></li>';
+
+        if( $pack_unmilited_listings == 1 ) {
+            echo '<li><span class="pkg-status-left">'.esc_html__('Listings Included: ','houzez').'</span><span class="pkg-status-right">'.esc_html__('unlimited listings ','houzez').'</span></li>';
+            echo '<li><span class="pkg-status-left">'.esc_html__('Listings Remaining: ','houzez').'</span><span class="pkg-status-right">'.esc_html__('unlimited listings ','houzez').'</li>';
+        } else {
+            echo '<li><span class="pkg-status-left">'.esc_html__('Listings Included: ','houzez').'</span><span class="pkg-status-right">'.esc_attr( $pack_listings ).'</li>';
+            echo '<li><span class="pkg-status-left">'.esc_html__('Listings Remaining: ','houzez').'</span><span class="listings_remainings pkg-status-right">'.esc_attr( $remaining_listings ).'</span></li>';
+        }
+
+        echo '<li><span class="pkg-status-left">'.esc_html__('Featured Included: ','houzez').'</span><span class="pkg-status-right">'.esc_attr( $pack_featured_listings ).'</span></li>';
+        echo '<li><span class="pkg-status-left">'.esc_html__('Featured Remaining: ','houzez').'</span><span class="featured_listings_remaining pkg-status-right">'.esc_attr( $pack_featured_remaining_listings ).'</span></li>';
+        echo '<li><span class="pkg-status-left">'.esc_html__('Ends On','houzez').'</span><span class="pkg-status-right">';
+        echo ' '.esc_attr( $expired_date );
+        echo '</span></li>';
+        echo '</ul>';
+        echo '</div>';
+
+        if( ! is_page_template( 'template/user_dashboard_membership.php' ) ) {
+            echo '<a href="' . esc_url($packages_page_link) . '" class="plan-link btn btn-primary btn-block"> ' . esc_html__('Change Membership Plan', 'houzez') . ' </a>';
+        }
+
+    }
+}
+
+/**
+ * Membership Package Payment (Bitcoin, GooglePay, ApplePay)
+ */
+function houzez_stripe_payment_membership( $pack_id, $pack_price, $title ) {
+
+    require_once( get_template_directory() . '/framework/stripe-php/init.php' );
+    $stripe_secret_key = houzez_option('stripe_secret_key');
+    $stripe_publishable_key = houzez_option('stripe_publishable_key');
+
+    $current_user = wp_get_current_user();
+
+    $userID = $current_user->ID;
+    $user_login = $current_user->user_login;
+    $user_email = get_the_author_meta('user_email', $userID);
+
+    $stripe = array(
+        "secret_key" => $stripe_secret_key,
+        "publishable_key" => $stripe_publishable_key
+    );
+
+    \Stripe\Stripe::setApiKey($stripe['secret_key']);
+
+    $submission_currency = houzez_option('currency_paid_submission');
+
+    $package_price_for_stripe = $pack_price * 100;
+
+    print '
+        <div class="houzez_stripe_membership " id="'.  sanitize_title($title).'">
+            <script src="https://checkout.stripe.com/checkout.js" id="stripe_script"
+            class="stripe-button"
+            data-key="'. $stripe_publishable_key.'"
+            data-amount="'.$package_price_for_stripe.'"
+            data-email="'.$user_email.'"
+            data-currency="'.$submission_currency.'"
+            data-zip-code="true"
+            data-locale="'.get_locale().'"
+            data-billing-address="true"
+            data-label="'.__('Pay with Credit Card','houzez').'"
+            data-description="'.$title.' '.__('Package Payment','houzez').'">
+            </script>
+        </div>
+        <input type="hidden" id="pack_id" name="pack_id" value="' . $pack_id . '">
+        <input type="hidden" name="userID" value="' . $userID . '">
+        <input type="hidden" id="pay_ammout" name="pay_ammout" value="' . $package_price_for_stripe . '">';
+}
+
+add_action( 'wp_ajax_nopriv_houzez_bitcoin_package_payment', 'houzez_bitcoin_package_payment' );
+add_action( 'wp_ajax_houzez_bitcoin_package_payment', 'houzez_bitcoin_package_payment' );
+
+function houzez_bitcoin_package_payment() {
+
+    /*global $current_user;
+    wp_get_current_user();
+    $userID = $current_user->ID;
+
+    if ( !is_user_logged_in() ) {
+        wp_die('are you kidding?');
+    }
+
+    if( $userID === 0 ) {
+        wp_die('are you kidding?');
+    }
+
+    $allowed_html=array();
+    $houzez_package_id    = intval($_POST['houzez_package_id']);
+    $is_package_exist     = get_posts('post_type=houzez_packages&p='.$houzez_package_id);
+
+    if( !empty ( $is_package_exist ) ) {
+
+        $coinbaseID = houzez_option('coinbaseID');
+        
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://www.coinbase.com/oauth/authorize');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "response_type=code&client_id=" . $coinbaseID);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+
+
+        $headers = array();
+        $headers[] = 'Content-Type: application/x-www-form-urlencoded';
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+        }
+        curl_close ($ch);
+
+        //echo houzez_create_paypal_agreement($houzez_package_id, $access_token, $billing_plan['id']);
+        wp_die();
+    }
+    wp_die();*/
+}
+
+function houzez_googlepay_payment_membership( $pack_id, $pack_price, $title ) {
+    require_once( get_template_directory() . '/framework/stripe-php/init.php' );
+
+    $stripe_secret_key = houzez_option('stripe_secret_key');
+    $stripe_publishable_key = houzez_option('stripe_publishable_key');
+
+    $stripe = array(
+        "secret_key" => $stripe_secret_key,
+        "publishable_key" => $stripe_publishable_key
+    );
+
+    \Stripe\Stripe::setApiKey($stripe['secret_key']);
+
+    echo '<script src="https://js.stripe.com/v3/"></script>
+           <div id="google-pay-button"></div>
+           <script type="text/javascript">
+            var stripe = Stripe("' . $stripe_publishable_key . '");
+
+            var googlePay = stripe.paymentRequest({
+                country: "US",
+                currency: "eur",
+                total: {
+                label: "' . $title . '",
+                amount: ' . $pack_price * 100 . ',
+                },
+                requestPayerName: true,
+                requestPayerEmail: true,
+            });
+
+            var elements = stripe.elements();
+            var googleButton = elements.create("paymentRequestButton", {
+                paymentRequest: googlePay,
+            });
+
+            googlePay.canMakePayment().then(function(result) {
+                if (result) {
+                    googleButton.mount("#google-pay-button");
+                } else {
+                    document.getElementById("google-pay-button").style.display = "none";
+                    document.getElementById("google-pay-button").closest(".method-row").style.display = "none";
+                }
+            });
+
+            googlePay.on("token", function(ev) {
+              fetch("/charges", {
+                method: "POST",
+                body: JSON.stringify({token: ev.token.id}),
+                headers: {"content-type": "application/json"},
+              })
+              .then(function(response) {
+                if (response.ok) {
+                  ev.complete("success");
+                } else {
+                  ev.complete("fail");
+                }
+              });
+            });
+           </script>
+           ';
+}
+
+function houzez_applepay_package_payment( $pack_id, $pack_price, $title ) {
+    require_once( get_template_directory() . '/framework/stripe-php/init.php' );
+
+    $stripe_secret_key = houzez_option('stripe_secret_key');
+    $stripe_publishable_key = houzez_option('stripe_publishable_key');
+
+    $stripe = array(
+        "secret_key" => $stripe_secret_key,
+        "publishable_key" => $stripe_publishable_key
+    );
+
+    \Stripe\Stripe::setApiKey($stripe['secret_key']);
+
+    \Stripe\ApplePayDomain::create([
+      'domain_name' => get_site_url()
+    ]);
+
+    echo '<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+            <style>
+              #apple-pay-button {
+                display: none;
+                background-color: black;
+                background-image: -webkit-named-image(apple-pay-logo-white);
+                background-size: 100% 100%;
+                background-origin: content-box;
+                background-repeat: no-repeat;
+                width: 100%;
+                height: 44px;
+                padding: 10px 0;
+                border-radius: 10px;
+              }
+            </style>
+            <button id="apple-pay-button"></button>
+            <script type="text/javascript">
+                Stripe.setPublishableKey("' . $stripe['publishable_key'] . '");
+
+                Stripe.applePay.checkAvailability(function(available) {
+                  if (available) {
+                    document.getElementById("apple-pay-button").style.display = "block";
+                  } else {
+                    document.getElementById("apple-pay-button").closest(".method-row").style.display = "none";
+                  }
+                });
+            </script>
+        ';
 }
 ?>

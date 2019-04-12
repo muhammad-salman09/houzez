@@ -62,7 +62,14 @@ $houzez_local = houzez_get_localization();
 	        $houzez_user_logout = '';
 	    }
 	}
-	if( houzez_is_dashboard() ) {
+	if( houzez_is_dashboard() ||
+        is_page_template('template-addon-payment.php') ||
+        is_page_template('template-user-dashboard-package.php') ||
+        is_page_template('template-user-dashboard-membership.php') ||
+        is_page_template('template-user-dashboard-properties.php') ||
+        is_page_template('template-advanced-package.php') ||
+        is_page_template('template-advanced-payment.php') ||
+        is_page_template('template-document-upload.php') ) {
 	    $header_layout = 'container-fluid';
 	}
 	?>
@@ -134,6 +141,10 @@ $houzez_local = houzez_get_localization();
             get_page_template_slug() != 'template/user_dashboard_profile.php' &&
             get_page_template_slug() != 'template-document-upload.php' &&
             get_page_template_slug() != 'template-advanced-package.php' &&
+            get_page_template_slug() != 'template-advanced-payment.php' &&
+            get_page_template_slug() != 'template-addon-payment.php' &&
+            get_page_template_slug() != 'template-user-dashboard-package.php' &&
+            get_page_template_slug() != 'template-user-dashboard-membership.php' &&
             get_page_template_slug() != 'template-user-dashboard-properties.php' &&
             get_page_template_slug() != 'template/user_dashboard_favorites.php' &&
             get_page_template_slug() != 'template/user_dashboard_saved_search.php' &&
@@ -340,8 +351,12 @@ if( houzez_is_landing_page() ) { $section_body .='landing-page';}
 	?>
 
 	<?php if( houzez_container_needed() && 
+        !is_page_template('template-user-dashboard-package.php') &&
+        !is_page_template('template-user-dashboard-membership.php') &&
         !is_page_template('template-user-dashboard-properties.php') &&
+        !is_page_template('template-addon-payment.php') &&
         !is_page_template('template-advanced-package.php') &&
+        !is_page_template('template-advanced-payment.php') &&
         !is_page_template('template-document-upload.php') &&
         !is_page_template('template-map-search.php') ) { ?>
 	<div class="container">
