@@ -1606,10 +1606,7 @@ jQuery(document).ready(function ($) {
                 //return false;
 
             } else if ( payment_gateway == 'bitcoin' ) {
-                /*fave_processing_modal( bitcoin_connecting );
-                houzez_bitcoin_package_payment( houzez_package_price, houzez_package_name, houzez_package_id );*/
-                $('.payment-bitcoin').closest('.radio').next().click();
-
+                window.open($('.payment-bitcoin').closest('.radio').next().val(), '_blank');
             } else if ( payment_gateway == 'googlepay' ) {
                 
             } else if ( payment_gateway == 'applepay' ) {

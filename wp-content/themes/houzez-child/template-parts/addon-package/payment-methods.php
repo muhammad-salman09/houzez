@@ -10,6 +10,16 @@ $allowed_html_array = array(
     )
 );
 
+if ($_GET['option'] == 'week') {
+    $title = 'Property of the Week';
+    $price = '1000';
+}
+
+if ($_GET['option'] == 'featured') {
+    $title = 'Featured Property';
+    $price = '750';
+}
+
 $enable_paypal = houzez_option('enable_paypal');
 $enable_stripe = houzez_option('enable_stripe');
 $enable_2checkout = houzez_option('enable_2checkout');
@@ -46,6 +56,7 @@ $enable_googlepay = houzez_option('enable_googlepay');
                     <input type="radio" class="payment-stripe" name="houzez_payment_type" value="stripe">
                     <?php esc_html_e( 'Stripe', 'houzez'); ?>
                 </label>
+                <?php houzez_stripe_payment_membership( $price, $title ); ?>
             </div>
         </div>
         <div class="method-type">
@@ -110,6 +121,7 @@ $enable_googlepay = houzez_option('enable_googlepay');
                     <input type="radio" class="payment-googlepay" name="houzez_payment_type" value="googlepay">
                     <?php esc_html_e( 'Google Pay', 'houzez' ); ?>
                 </label>
+                <?php houzez_googlepay_payment_membership( $price, $title ); ?>
             </div>
         </div>
         <div class="method-type">
@@ -126,6 +138,7 @@ $enable_googlepay = houzez_option('enable_googlepay');
                     <input type="radio" class="payment-applepay" name="houzez_payment_type" value="applepay">
                     <?php esc_html_e( 'Apple Pay', 'houzez' ); ?>
                 </label>
+                <?php houzez_applepay_package_payment( $price, $title ); ?>
             </div>
         </div>
         <div class="method-type">

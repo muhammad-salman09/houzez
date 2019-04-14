@@ -79,7 +79,7 @@ if($enable_paypal != 0 ) {
                     <input type="radio" class="payment-stripe" name="houzez_payment_type" value="stripe" <?php echo $checked_stripe;?>>
                     <?php esc_html_e( 'Stripe', 'houzez'); ?>
                 </label>
-                <?php houzez_stripe_payment_membership( $selected_package_id, $pack_price, $pack_title ); ?>
+                <?php houzez_stripe_payment_membership( $pack_price, $pack_title ); ?>
             </div>
         </div>
         <div class="method-type">
@@ -146,7 +146,7 @@ if($enable_paypal != 0 ) {
                     <?php esc_html_e( 'Bitcoin', 'houzez' ); ?>
                 </label>
             </div>
-            <a href="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>" target="_blank"></a>
+            <input type="hidden" value="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>&redirect_uri=https%3A%2F%2Fam.unfstaging.com%2Fcallback" />
         </div>
         <div class="method-type">
             <img src="<?php echo get_stylesheet_directory_uri(); ?>/bitcoin-icon.png" alt="bitcoin">
@@ -162,7 +162,7 @@ if($enable_paypal != 0 ) {
                     <input type="radio" class="payment-googlepay" name="houzez_payment_type" value="googlepay">
                     <?php esc_html_e( 'Google Pay', 'houzez' ); ?>
                 </label>
-                <?php houzez_googlepay_payment_membership( $selected_package_id, $pack_price, $pack_title ); ?>
+                <?php houzez_googlepay_payment_membership( $pack_price, $pack_title ); ?>
             </div>
         </div>
         <div class="method-type">
@@ -179,28 +179,14 @@ if($enable_paypal != 0 ) {
                     <input type="radio" class="payment-applepay" name="houzez_payment_type" value="applepay">
                     <?php esc_html_e( 'Apple Pay', 'houzez' ); ?>
                 </label>
-                <?php houzez_applepay_package_payment( $selected_package_id, $pack_price, $pack_title ); ?>
+                <?php houzez_applepay_package_payment( $pack_price, $pack_title ); ?>
             </div>
         </div>
         <div class="method-type">
             <img src="<?php echo get_stylesheet_directory_uri(); ?>/applepay-icon.png" alt="applepay">
         </div>
     </div>
-    <?php if( $houzez_auto_recurring != 1 ) { ?>
-        <div class="method-option">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="applepay_package_recurring" id="applepay_package_recurring" value="1">
-                    <?php esc_html_e( 'Set as recurring payment', 'houzez' ); ?>
-                </label>
-            </div>
-        </div>
-    <?php
-        } else {
-            echo '<input style="display: none;" type="checkbox" checked name="applepay_package_recurring" id="applepay_package_recurring" value="1">';
-        }
-    }
-    ?>
+    <?php } ?>
 
 </div>
 

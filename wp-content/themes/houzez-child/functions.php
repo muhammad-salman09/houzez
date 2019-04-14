@@ -2454,7 +2454,7 @@ function houzez_get_user_current_package( $user_id ) {
 /**
  * Membership Package Payment (Bitcoin, GooglePay, ApplePay)
  */
-function houzez_stripe_payment_membership( $pack_id, $pack_price, $title ) {
+function houzez_stripe_payment_membership( $pack_price, $title ) {
 
     require_once( get_template_directory() . '/framework/stripe-php/init.php' );
     $stripe_secret_key = houzez_option('stripe_secret_key');
@@ -2492,7 +2492,6 @@ function houzez_stripe_payment_membership( $pack_id, $pack_price, $title ) {
             data-description="'.$title.' '.__('Package Payment','houzez').'">
             </script>
         </div>
-        <input type="hidden" id="pack_id" name="pack_id" value="' . $pack_id . '">
         <input type="hidden" name="userID" value="' . $userID . '">
         <input type="hidden" id="pay_ammout" name="pay_ammout" value="' . $package_price_for_stripe . '">';
 }
@@ -2546,7 +2545,7 @@ function houzez_bitcoin_package_payment() {
     wp_die();*/
 }
 
-function houzez_googlepay_payment_membership( $pack_id, $pack_price, $title ) {
+function houzez_googlepay_payment_membership( $pack_price, $title ) {
     require_once( get_template_directory() . '/framework/stripe-php/init.php' );
 
     $stripe_secret_key = houzez_option('stripe_secret_key');
@@ -2585,7 +2584,7 @@ function houzez_googlepay_payment_membership( $pack_id, $pack_price, $title ) {
                     googleButton.mount("#google-pay-button");
                 } else {
                     document.getElementById("google-pay-button").style.display = "none";
-                    document.getElementById("google-pay-button").closest(".method-row").style.display = "none";
+                    //document.getElementById("google-pay-button").closest(".method-row").style.display = "none";
                 }
             });
 
@@ -2607,7 +2606,7 @@ function houzez_googlepay_payment_membership( $pack_id, $pack_price, $title ) {
            ';
 }
 
-function houzez_applepay_package_payment( $pack_id, $pack_price, $title ) {
+function houzez_applepay_package_payment( $pack_price, $title ) {
     require_once( get_template_directory() . '/framework/stripe-php/init.php' );
 
     $stripe_secret_key = houzez_option('stripe_secret_key');
@@ -2647,7 +2646,7 @@ function houzez_applepay_package_payment( $pack_id, $pack_price, $title ) {
                   if (available) {
                     document.getElementById("apple-pay-button").style.display = "block";
                   } else {
-                    document.getElementById("apple-pay-button").closest(".method-row").style.display = "none";
+                    //document.getElementById("apple-pay-button").closest(".method-row").style.display = "none";
                   }
                 });
             </script>
