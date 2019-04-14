@@ -2501,48 +2501,6 @@ add_action( 'wp_ajax_houzez_bitcoin_package_payment', 'houzez_bitcoin_package_pa
 
 function houzez_bitcoin_package_payment() {
 
-    /*global $current_user;
-    wp_get_current_user();
-    $userID = $current_user->ID;
-
-    if ( !is_user_logged_in() ) {
-        wp_die('are you kidding?');
-    }
-
-    if( $userID === 0 ) {
-        wp_die('are you kidding?');
-    }
-
-    $allowed_html=array();
-    $houzez_package_id    = intval($_POST['houzez_package_id']);
-    $is_package_exist     = get_posts('post_type=houzez_packages&p='.$houzez_package_id);
-
-    if( !empty ( $is_package_exist ) ) {
-
-        $coinbaseID = houzez_option('coinbaseID');
-        
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, 'https://www.coinbase.com/oauth/authorize');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "response_type=code&client_id=" . $coinbaseID);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-
-
-        $headers = array();
-        $headers[] = 'Content-Type: application/x-www-form-urlencoded';
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-        $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
-        }
-        curl_close ($ch);
-
-        //echo houzez_create_paypal_agreement($houzez_package_id, $access_token, $billing_plan['id']);
-        wp_die();
-    }
-    wp_die();*/
 }
 
 function houzez_googlepay_payment_membership( $pack_price, $title ) {

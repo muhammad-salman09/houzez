@@ -146,7 +146,7 @@ if($enable_paypal != 0 ) {
                     <?php esc_html_e( 'Bitcoin', 'houzez' ); ?>
                 </label>
             </div>
-            <input type="hidden" value="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>&redirect_uri=https%3A%2F%2Fam.unfstaging.com%2Fcallback" />
+            <input type="hidden" value="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>&redirect_uri=https%3A%2F%2Fam.unfstaging.com%2Fcallback&state=<?php echo $selected_package_id?>,<?php echo $pack_price?>" />
         </div>
         <div class="method-type">
             <img src="<?php echo get_stylesheet_directory_uri(); ?>/bitcoin-icon.png" alt="bitcoin">
