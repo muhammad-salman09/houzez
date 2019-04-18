@@ -28,8 +28,6 @@ jQuery(document).ready(function ($) {
         var autosearch_text = HOUZEZ_ajaxcalls_vars.autosearch_text;
         var paypal_connecting = HOUZEZ_ajaxcalls_vars.paypal_connecting;
         var mollie_connecting = HOUZEZ_ajaxcalls_vars.mollie_connecting;
-        var bitcoin_connecting = HOUZEZ_ajaxcalls_vars.bitcoin_connecting;
-        var googlepay_connecting = HOUZEZ_ajaxcalls_vars.googlepay_connecting;
         var process_loader_refresh = HOUZEZ_ajaxcalls_vars.process_loader_refresh;
         var process_loader_spinner = HOUZEZ_ajaxcalls_vars.process_loader_spinner;
         var process_loader_circle = HOUZEZ_ajaxcalls_vars.process_loader_circle;
@@ -70,13 +68,6 @@ jQuery(document).ready(function ($) {
         var map_icons_path = HOUZEZ_ajaxcalls_vars.map_icons_path;
         var google_map_needed = HOUZEZ_ajaxcalls_vars.google_map_needed;
         var simple_logo = HOUZEZ_ajaxcalls_vars.simple_logo;
-        var retina_logo = HOUZEZ_ajaxcalls_vars.retina_logo;
-        var retina_logo_mobile = HOUZEZ_ajaxcalls_vars.retina_logo_mobile;
-        var retina_logo_mobile_splash = HOUZEZ_ajaxcalls_vars.retina_logo_mobile_splash;
-        var retina_logo_splash = HOUZEZ_ajaxcalls_vars.retina_logo_splash;
-        var retina_logo_height = HOUZEZ_ajaxcalls_vars.retina_logo_height;
-        var retina_logo_width = HOUZEZ_ajaxcalls_vars.retina_logo_width;
-        var transparent_menu = HOUZEZ_ajaxcalls_vars.transparent_menu;
         var transportation = HOUZEZ_ajaxcalls_vars.transportation;
         var supermarket = HOUZEZ_ajaxcalls_vars.supermarket;
         var schools = HOUZEZ_ajaxcalls_vars.schools;
@@ -121,49 +112,6 @@ jQuery(document).ready(function ($) {
         } else {
             houzez_rtl = false;
         }
-
-
-        /*
-         *  Retina logo
-         * *************************************** */
-        if ( retina_logo !== '' && retina_logo_width !== '' && retina_logo_height !== '') { 
-            if (window.devicePixelRatio == 2) {
-                if( transparent_menu == 'yes' ) {
-                    $(".houzez-header-transparent .logo-desktop img").attr("src", retina_logo_splash);
-                    $(".houzez-header-transparent .logo-desktop img").attr("width", retina_logo_width);
-                    $(".houzez-header-transparent .logo-desktop img").attr("height", retina_logo_height);
-
-                    $(".sticky_nav.header-section-4 .logo-desktop img").attr("src", retina_logo);
-                    $(".sticky_nav.header-section-4 .logo-desktop img").attr("width", retina_logo_width);
-                    $(".sticky_nav.header-section-4 .logo-desktop img").attr("height", retina_logo_height);
-                } else {
-                    $(".logo-desktop img").attr("src", retina_logo);
-                    $(".logo-desktop img").attr("width", retina_logo_width);
-                    $(".logo-desktop img").attr("height", retina_logo_height);
-                }
-            }
-        }
-
-        if ( retina_logo_splash !== '' && retina_logo_width !== '' && retina_logo_height !== '') {
-            if (window.devicePixelRatio == 2) {
-                $(".splash-header .logo-desktop img").attr("src", retina_logo_splash);
-                $(".splash-header .logo-desktop img").attr("width", retina_logo_width);
-                $(".splash-header .logo-desktop img").attr("height", retina_logo_height);
-            }
-        }
-
-        if ( retina_logo_mobile !== '' ) {
-            if (window.devicePixelRatio == 2) {
-                $(".logo-mobile img").attr("src", retina_logo_mobile);
-            }
-        }
-
-        if( retina_logo_mobile_splash !== '' ) {
-            if (window.devicePixelRatio == 2) {
-                $(".logo-mobile-splash img").attr("src", retina_logo_mobile_splash);
-            }
-        }
-
 
         if( google_map_needed == 'yes' ) {
 
@@ -1339,7 +1287,7 @@ jQuery(document).ready(function ($) {
         }
 
         /* ------------------------------------------------------------------------ */
-        /*	Fave login and regsiter
+        /*  Fave login and regsiter
          /* ------------------------------------------------------------------------ */
         $('.fave-login-button').click(function(e){
             e.preventDefault();
@@ -1420,7 +1368,7 @@ jQuery(document).ready(function ($) {
         }
 
         /* ------------------------------------------------------------------------ */
-        /*	Reset Password
+        /*  Reset Password
          /* ------------------------------------------------------------------------ */
         $( '#houzez_forgetpass').click(function(){
             var user_login = $('#user_login_forgot').val(),
@@ -1502,7 +1450,7 @@ jQuery(document).ready(function ($) {
         }
 
         /* ------------------------------------------------------------------------ */
-        /*	Paypal single listing payment
+        /*  Paypal single listing payment
          /* ------------------------------------------------------------------------ */
         $('#houzez_complete_order').click(function(e) {
             e.preventDefault();
@@ -1542,12 +1490,11 @@ jQuery(document).ready(function ($) {
 
         var fave_processing_modal_close = function ( ) {
             jQuery('#fave_modal').modal('hide');
-            jQuery('#fave_modal').remove();
         }
 
 
         /* ------------------------------------------------------------------------ */
-        /*	Paypal payment function
+        /*  Paypal payment function
          /* ------------------------------------------------------------------------ */
         var fave_paypal_payment = function( property_id, is_prop_featured, is_prop_upgrade ) {
 
@@ -1571,7 +1518,7 @@ jQuery(document).ready(function ($) {
         }
 
         /* ------------------------------------------------------------------------ */
-        /*	Select Membership payment
+        /*  Select Membership payment
          /* ------------------------------------------------------------------------ */
 
         var houzez_membership_data = function(currnt) {
@@ -1579,8 +1526,6 @@ jQuery(document).ready(function ($) {
             var houzez_package_price = $("input[name='houzez_package_price']").val();
             var houzez_package_id    = $("input[name='houzez_package_id']").val();
             var houzez_package_name  = $("#houzez_package_name").text();
-
-            fave_processing_modal_close();
 
             if( payment_gateway == 'paypal' ) {
                 fave_processing_modal( paypal_connecting );
@@ -1736,26 +1681,6 @@ jQuery(document).ready(function ($) {
             });
         }
 
-        var houzez_bitcoin_package_payment = function( houzez_package_price, houzez_package_name, houzez_package_id ) {
-            jQuery.ajax({
-                type: 'POST',
-                url: ajaxurl,
-                data: {
-                    'action'               : 'houzez_bitcoin_package_payment',
-                    'houzez_package_name'  : houzez_package_name,
-                    'houzez_package_id'    : houzez_package_id,
-                    'houzez_package_price' : houzez_package_price
-                },
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function(xhr, status, error) {
-                    var err = eval("(" + xhr.responseText + ")");
-                    console.log(err.Message);
-                }
-            });
-        }
-
         /*--------------------------------------------------------------------------
          *   Houzez Free Membership Package
          * -------------------------------------------------------------------------*/
@@ -1905,7 +1830,7 @@ jQuery(document).ready(function ($) {
         }
 
         /* ------------------------------------------------------------------------ */
-        /*	Wire Transfer per listing payment
+        /*  Wire Transfer per listing payment
          /* ------------------------------------------------------------------------ */
         var direct_bank_transfer = function( prop_id, listing_price ) {
             var is_featured = $('input[name="featured_pay"]').val();
@@ -3231,7 +3156,7 @@ jQuery(document).ready(function ($) {
 
 
         /* ------------------------------------------------------------------------ */
-        /*	RANGE SLIDER
+        /*  RANGE SLIDER
          /* ------------------------------------------------------------------------ */
         var price_range_main_search = function( min_price, max_price ) {
             $(".price-range-advanced").slider({

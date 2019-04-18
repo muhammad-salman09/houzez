@@ -1,4 +1,4 @@
-
+/*
 Theme Name: Houzez Child
 Theme URI: http://www.favethemes.com/
 Author: Favethemes
@@ -140,7 +140,7 @@ Template: houzez
 .advanced-search .bootstrap-select .fa {
 	border: solid #001489;
     border-width: 0 2px 2px 0;
-    float: left;
+	float: right;
     margin-left: 10px;
     margin-top: 3px;
     padding: 3px;
@@ -228,7 +228,6 @@ Template: houzez
 }
 .page-template-template-map-search .advanced-search form {
 	margin: 0 auto;
-	width: 75%;
 }
 .draw-search>div {
 	height: 640px;
@@ -256,9 +255,6 @@ Template: houzez
 }
 .draw-search .houzez-module>div {
 	margin: 0;
-}
-.draw-search .item-detail {
-	min-height: 100px;
 }
 .draw-search .item-wrap.prop_addon .item-body .property-title, .item-body h2 {
 	font-size: 16px;
@@ -292,6 +288,19 @@ Template: houzez
 }
 .gmnoprint a, .gmnoprint span, .gm-style-cc {
     display:none;
+}
+.listing-area .grid-view .item-wrap .property-item-v2 .item-detail {
+	height: 90px;
+	overflow: hidden;
+}
+.listing-area .grid-view .item-wrap .property-item-v2 .item-amenities li {
+	min-width: 40px;
+}
+.listing-area .grid-view .item-wrap .property-item-v2 .item-amenities li img {
+	width: 30px;
+}
+.listing-area .grid-view .item-wrap .property-item-v2 .item-amenities li a.btn {
+	padding: 10px;
 }
 /* Draw Map Search Style End */
 
@@ -428,13 +437,13 @@ Template: houzez
 /* Homepage Property Addon Style End */
 
 /* Mortgage Calculator Style Start */
-.mortgage-col {
+.vc_row .vc_column_container.mortgage-col {
     background: rgb(0,157,165, 0.5);
     clip-path: polygon(20% 100%, 100% 100%, 100% 0, 0 0);
     float: right !important;
     padding: 20px 50px !important;
     shape-outside: polygon(20% 100%, 100% 100%, 100% 0, 0 0);
-    width: 55% !important;
+    width: 55%;
 }
 .mortgage-col .vc_column-inner {
 	padding-left: 25% !important;
@@ -463,6 +472,7 @@ Template: houzez
 .morg-detail h2 {
 	color: #ffffff;
 	font-size: 30px;
+	line-height: 30px;
 }
 .morg-detail span {
 	color: #ffffff;
@@ -720,3 +730,231 @@ Template: houzez
     background-color: #009da5;
 }
 /* Lifestyle Tag Sort Style End */
+
+/* Homepage Mobile/Tablet Header Layout Start */
+.header-mobile>.container {
+	padding: 0;
+}
+.header-mobile .header-logo {
+	width: 25%;
+}
+.header-mobile .header-logo img {
+	max-height: initial;
+}
+.header-mobile .header-user {
+	height: 90px;
+	width: 70%;
+}
+.header-mobile .header-user ul.account-action {
+	float: right;
+	margin: 18px 0;
+}
+.header-mobile .header-user ul.account-action li {
+	margin: 0 10px;
+}
+.header-mobile .header-user ul.account-action .account-dropdown li a {
+	font-size: 14px
+}
+.header-mobile .header-user ul.account-action li select {
+	background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.header-mobile .mobile-nav {
+	height: 90px;
+	margin-left: 10px;
+	width: initial;
+}
+.header-mobile .mobile-nav span {
+	font-size: 24px;
+	margin: 18px 0;
+}
+.home.page-template .header-mobile {
+	background: transparent;
+    position: absolute;
+    width: 100%;
+    z-index: 10;
+}
+.home.page-template .header-mobile .header-user ul.account-action li a,
+.home.page-template .header-mobile .header-user ul.account-action li span,
+.home.page-template .header-mobile .header-user ul.account-action li select {
+	color: #ffffff;
+	font-size: 20px;
+}
+.home.page-template .header-mobile .header-user ul.account-action li select option {
+	color: #000000;
+}
+.home.page-template .header-mobile .mobile-nav span {
+	color: #ffffff;
+}
+
+@media (min-width: 1366px) {
+	.page-template-template-map-search .advanced-search form {
+		width: 75%;
+	}
+}
+@media (min-width: 1121px) and (max-width: 1366px) {
+	.advanced-search-module {
+		width: 100%;
+	}
+}
+@media (min-width: 992PX) and (max-width: 1366px) {
+	.header-section-4 .header-left .navi > ul > li > a {
+		font-size: 14px;
+	}
+}
+@media (min-width: 992px) and (max-width: 1264px) {
+	.listing-area .grid-view .item-wrap .property-item-v2 .item-info {
+		height: 150px;
+	}
+}
+@media (max-width: 1200px) {
+	.grid-view .item-wrap.prop_addon .property-item .item-price-block .item-price {
+		margin: 15px 0 5px;
+		padding-bottom: 15px;
+		text-align: right;
+	}
+	.grid-view .item-wrap.prop_addon .property-item-v2 .item-info .item-amenities li {
+		min-width: 40px;
+	}
+	.grid-view .item-wrap.prop_addon .property-item-v2 .item-info .item-amenities li img {
+		width: 30px;
+	}
+	.grid-view .item-wrap.prop_addon .property-item-v2 .item-info .item-amenities li a.btn {
+		padding: 10px;
+	}
+}
+@media (min-width: 992px) and (max-width: 1120px) {
+	.select-advanced-main,
+	.range-advanced-main {
+		width: 100%;
+		margin: 10px 0;
+	}
+	.advanced-search .range-advanced-main .range-text {
+		padding-left: 5px;
+		text-align: left;
+	}
+}
+@media (max-width: 991px) {
+	.select-advanced-main > div,
+	.range-advanced-main .range-text {
+		margin: 5px 0;
+	}
+	.advanced-search .range-advanced-main .range-text {
+		padding-left: 5px;
+		text-align: left;
+	}
+	.advanced-search .buy-btn {
+		margin: 0;
+		padding-bottom: 5px;
+		padding-right: 5px;
+	}
+	.advanced-search .rent-btn {
+		margin: 0;
+		padding-bottom: 5px;
+		padding-left: 5px;
+	}
+	.advanced-search .has-search {
+		margin-bottom: 5px;
+	}
+	.list-view .item-wrap.prop_addon .item-amenities {
+		height: 60px;
+	}
+	.list-view .item-wrap.prop_addon .item-amenities li,
+	.item-wrap.prop_addon .item-info .item-amenities li {
+		min-width: 60px;
+	}
+	.item-wrap.prop_addon .item-amenities li img {
+		width: 30px;
+	}
+	#map {
+		display: none;
+	}
+	.draw-search>div {
+		height: auto;
+	}
+	#section-body.houzez-body-half .draw-search .houzez-module.property-item-module {
+		height: auto;
+		overflow: hidden;
+	}
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+	.list-view .property-item .item-detail {
+		height: 115px;
+		overflow: hidden;
+	}
+	.grid-view .item-wrap.prop_addon .property-item .figure-block,
+	.grid-view .item-wrap.prop_addon .property-item .item-body {
+		width: 100%;
+	}
+	.vc_row .vc_column_container.mortgage-col {
+		width: 80%;
+	}
+}
+@media (min-width: 768px) and (max-width: 991px) {
+	#section-body.houzez-body-half .property-listing .item-wrap {
+	    width: 50%;
+	}
+}
+@media (max-width: 767px) {
+	.advanced-search .buy-btn,
+	.advanced-search .rent-btn {
+		padding: 0 0 5px;
+	}
+	.item-wrap.prop_addon .property-item .figure-block,
+	.item-wrap.prop_addon .property-item .item-body {
+		width: 100%;
+	}
+	.vc_row .vc_column_container.mortgage-col {
+		width: 100%;
+	}
+	.morg-detail h2 {
+		font-size: 24px;
+	}
+	.morg-detail span {
+		font-size: 16px;
+	}
+}
+@media (max-width: 640px) {
+	.header-mobile .header-user {
+		width: 65%;
+	}
+	.header-mobile .header-user ul.account-action,
+	.header-mobile .mobile-nav span {
+		margin: 0;
+	}
+	.advanced-search-module {
+		width: 100%;
+	}
+}
+@media (min-width: 482px) and (max-width: 991px) {
+	#section-body.houzez-body-half .property-listing .item-wrap {
+		margin-left: 25%;
+	}
+	.draw-search .draw-search-result {
+		text-align: center;
+	}
+}
+@media (min-width: 482px) and (max-width: 547px) {
+	.listing-area .grid-view .item-wrap .property-item-v2 .item-info {
+		height: 150px;
+	}
+}
+@media (max-width: 500px) {
+	.wpb_text_column .wpb_wrapper h1 {
+		font-size: 30px;
+		text-align: center !important;
+	}
+}
+@media (max-width: 365px) {
+	.item-wrap.prop_addon .property-item-v2 .item-amenities li {
+		min-width: 40px;
+	}
+	.item-wrap.prop_addon .property-item-v2 .item-amenities li img {
+		width: 30px;
+	}
+	.item-wrap.prop_addon .property-item-v2 .item-amenities li a.btn {
+		padding: 5px 10px;
+	}
+}
+/* Homepage Mobile/Tablet Header Layout End */

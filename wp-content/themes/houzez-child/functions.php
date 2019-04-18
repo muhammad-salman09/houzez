@@ -33,10 +33,229 @@ function custom_styles() {
   </style>';
 }
 
-add_action( 'wp_enqueue_scripts', 'my_scripts', 100 );
+add_action( 'wp_enqueue_scripts', 'my_scripts' );
+
 function my_scripts() {
-    wp_dequeue_script( 'houzez_ajax_calls' );
+    /*wp_dequeue_script( 'houzez_ajax_calls' );
     wp_deregister_script( 'houzez_ajax_calls' );
+
+    global $paged, $post, $current_user;
+
+    $property_lat = $property_map = $property_streetView = $is_singular_property = $login_redirect = '';
+    $property_lng = $google_map_needed = $fave_main_menu_trans = $header_map_selected_city = $current_template = $markerPricePins = '';
+    $advanced_search_rent_status = $advanced_search_price_range_rent_status = 'for-rent';
+
+    wp_get_current_user();
+    $userID = $current_user->ID;
+
+    if (is_rtl()) {
+        $houzez_rtl = "yes";
+    } else {
+        $houzez_rtl = "no";
+    }
+
+    $after_login_redirect = houzez_option('login_redirect');
+
+    if ($after_login_redirect == 'same_page') {
+
+        if (is_tax()) {
+            $login_redirect = get_term_link(get_query_var('term'), get_query_var('taxonomy'));
+        } else {
+            if (is_home() || is_front_page()) {
+                $login_redirect = site_url();
+            } else {
+                if (!is_404() && !is_search() && !is_author()) {
+                    $login_redirect = get_permalink($post->ID);
+                }
+            }
+        }
+
+    } else {
+        $login_redirect = houzez_option('login_redirect_link');
+    }
+
+    if (!is_404() && !is_search() && !is_tax() && !is_author()) {
+        $fave_main_menu_trans = get_post_meta($post->ID, 'fave_main_menu_trans', true);
+        $header_map_selected_city = get_post_meta($post->ID, 'fave_map_city', false);
+        $current_template = get_page_template_slug($post->ID);
+    }
+
+    $simple_logo = houzez_option('custom_logo', '', 'url');
+
+    if (is_singular('property')) {
+        $property_location = get_post_meta(get_the_ID(), 'fave_property_location', true);
+        if (!empty($property_location)) {
+            $lat_lng = explode(',', $property_location);
+            $property_lat = $lat_lng[0];
+            $property_lng = $lat_lng[1];
+
+            $property_map = get_post_meta(get_the_ID(), 'fave_property_map', true);
+            $property_streetView = get_post_meta(get_the_ID(), 'fave_property_map_street_view', true);
+        }
+        $is_singular_property = 'yes';
+    }
+
+    if (taxonomy_exists('property_status')) {
+        $term_exist = get_term_by('id', $advanced_search_rent_status_id, 'property_status');
+        if ($term_exist) {
+            $advanced_search_rent_status = get_term($advanced_search_rent_status_id, 'property_status');
+            if (!is_wp_error($advanced_search_rent_status)) {
+                $advanced_search_rent_status = $advanced_search_rent_status->slug;
+            }
+        }
+
+        $term_exist_2 = get_term_by('id', $advanced_search_rent_status_id_price_range, 'property_status');
+        if ($term_exist_2) {
+            $advanced_search_price_range_rent_status = get_term($advanced_search_rent_status_id_price_range, 'property_status');
+            if (!is_wp_error($advanced_search_price_range_rent_status)) {
+                $advanced_search_price_range_rent_status = $advanced_search_price_range_rent_status->slug;
+            }
+        }
+    }
+
+    $currency_symbol = '';
+
+    $advanced_search_widget_min_price = houzez_option('advanced_search_widget_min_price');
+    if (empty($advanced_search_widget_min_price)) {
+        $advanced_search_widget_min_price = '0';
+    }
+    $advanced_search_widget_max_price = houzez_option('advanced_search_widget_max_price');
+    if (empty($advanced_search_widget_max_price)) {
+        $advanced_search_widget_max_price = '2500000';
+    }
+
+
+    $advanced_search_min_price_range_for_rent = houzez_option('advanced_search_min_price_range_for_rent');
+    if (empty($advanced_search_min_price_range_for_rent)) {
+        $advanced_search_min_price_range_for_rent = '0';
+    }
+    $advanced_search_max_price_range_for_rent = houzez_option('advanced_search_max_price_range_for_rent');
+    if (empty($advanced_search_max_price_range_for_rent)) {
+        $advanced_search_max_price_range_for_rent = '6000';
+    }
+    
+    $advanced_search_widget_min_area = houzez_option('advanced_search_widget_min_area');
+    if (empty($advanced_search_widget_min_area)) {
+        $advanced_search_widget_min_area = '0';
+    }
+
+    $advanced_search_widget_max_area = houzez_option('advanced_search_widget_max_area');
+    if (empty($advanced_search_widget_max_area)) {
+        $advanced_search_widget_max_area = '600';
+    }
+
+    $googlemap_zoom_level = houzez_option('googlemap_zoom_level');
+    $googlemap_pin_cluster = houzez_option('googlemap_pin_cluster');
+    $googlemap_zoom_cluster = houzez_option('googlemap_zoom_cluster');
+
+    $map_cluster = houzez_option('map_cluster', '', 'url');
+    if (!empty($map_cluster)) {
+        $clusterIcon = $map_cluster;
+    } else {
+        $clusterIcon = get_template_directory_uri() . '/images/map/cluster-icon.png';
+    }
+
+    if (is_page_template('template/property-listings-map.php') || is_page_template('template/submit_property.php') || is_page_template('template/submit_property_without_login.php') || $header_type == 'property_map' || is_singular('property') || is_singular('houzez_agency') || $content_has_map_shortcode || $enable_radius_search != 0) {
+        $google_map_needed = 'yes';
+    }
+
+    if (is_front_page()) {
+        $paged = (get_query_var('page')) ? get_query_var('page') : 1;
+    }
+
+    $search_result_page = houzez_option('search_result_page');
+    $search_keyword = isset($_GET['keyword']) ? sanitize_text_field($_GET['keyword']) : '';
+    $search_feature = isset($_GET['feature']) ? ($_GET['feature']) : $meta_features;
+    $search_country = isset($_GET['country']) ? sanitize_text_field($_GET['country']) : '';
+    $search_state = isset($_GET['state']) ? sanitize_text_field($_GET['state']) : $meta_states;
+    $search_city = isset($_GET['location']) ? sanitize_text_field($_GET['location']) : $meta_locations;
+    $search_area = isset($_GET['area']) ? sanitize_text_field($_GET['area']) : $meta_area;
+    $search_status = isset($_GET['status']) ? sanitize_text_field($_GET['status']) : $meta_status;
+    $search_label = isset($_GET['label']) ? sanitize_text_field($_GET['label']) : $meta_labels;
+    $search_type = isset($_GET['type']) ? sanitize_text_field($_GET['type']) : $meta_types;
+    $search_bedrooms = isset($_GET['bedrooms']) ? sanitize_text_field($_GET['bedrooms']) : '';
+    $search_bathrooms = isset($_GET['bathrooms']) ? sanitize_text_field($_GET['bathrooms']) : '';
+    $search_min_price = isset($_GET['min-price']) ? sanitize_text_field($_GET['min-price']) : $meta_min_price;
+    $search_max_price = isset($_GET['max-price']) ? sanitize_text_field($_GET['max-price']) : $meta_max_price;
+    $search_currency = isset($_GET['currency']) ? sanitize_text_field($_GET['currency']) : '';
+    $search_min_area = isset($_GET['min-area']) ? sanitize_text_field($_GET['min-area']) : '';
+    $search_max_area = isset($_GET['max-area']) ? sanitize_text_field($_GET['max-area']) : '';
+    $search_property_id = isset($_GET['property_id']) ? sanitize_text_field($_GET['property_id']) : '';
+    $search_publish_date = isset($_GET['publish_date']) ? sanitize_text_field($_GET['publish_date']) : '';
+
+    $prop_no_halfmap = 10;
+    if (is_page_template(array('template/property-listings-map.php'))) {
+        $prop_no_halfmap = get_post_meta($post->ID, 'fave_prop_no_halfmap', true);
+    }
+
+    $search_location = isset($_GET['search_location']) ? esc_attr($_GET['search_location']) : false;
+    $use_radius = 'on';
+    $search_lat = isset($_GET['lat']) ? (float)$_GET['lat'] : false;
+    $search_long = isset($_GET['lng']) ? (float)$_GET['lng'] : false;
+    $search_radius = isset($_GET['radius']) ? (int)$_GET['radius'] : false;
+
+    $sort_by = isset($_GET['sortby']) ? sanitize_text_field($_GET['sortby']) : $sort_halfmap;
+
+    $measurement_unit_adv_search = houzez_option('measurement_unit_adv_search');
+    if ($measurement_unit_adv_search == 'sqft') {
+        $measurement_unit_adv_search = houzez_option('measurement_unit_sqft_text');
+    } elseif ($measurement_unit_adv_search == 'sq_meter') {
+        $measurement_unit_adv_search = houzez_option('measurement_unit_square_meter_text');
+    }
+
+    $thousands_separator = houzez_option('thousands_separator');
+
+    $property_top_area = houzez_option('prop-top-area');
+    if (isset($_GET['s_top'])) {
+        $property_top_area = $_GET['s_top'];
+    }
+
+    $keyword_field = houzez_option('keyword_field');
+    $keyword_autocomplete = houzez_option('keyword_autocomplete');
+
+    $houzez_default_radius = houzez_option('houzez_default_radius');
+    if (isset($_GET['radius'])) {
+        $houzez_default_radius = $_GET['radius'];
+    }
+
+    $enable_radius_search = houzez_option('enable_radius_search');
+    $enable_radius_search_halfmap = houzez_option('enable_radius_search_halfmap');
+
+    $houzez_primary_color = houzez_option('houzez_primary_color');
+
+    $geo_country_limit = houzez_option('geo_country_limit');
+    $geocomplete_country = '';
+    if ($geo_country_limit != 0) {
+        $geocomplete_country = houzez_option('geocomplete_country');
+    }
+
+    $houzez_logged_in = 'yes';
+    if (!is_user_logged_in()) {
+        $houzez_logged_in = 'no';
+    }
+
+    $custom_fields_array = array();
+    if(class_exists('Houzez_Fields_Builder')) {
+        $fields_array = Houzez_Fields_Builder::get_form_fields();
+        
+        if(!empty($fields_array)){
+            foreach ( $fields_array as $value ){
+                $field_title = $value->label;
+                $field = $value->field_id;
+                if($value->is_search == 'yes') {
+                    $custom_fields_array[$field] = isset($_GET[$field]) ? sanitize_text_field($_GET[$field]) : '';
+                }
+                
+            }
+        }
+    }
+
+    $markerPricePins = houzez_option('markerPricePins');
+    if(isset($_GET['marker']) && $_GET['marker'] == 'pricePins') {
+        $markerPricePins = 'yes';
+    }
+
+    $enable_reCaptcha = houzez_option('enable_reCaptcha');
 
     wp_enqueue_script('houzez_ajax_calls', get_stylesheet_directory_uri() . '/js/houzez_ajax_calls.js', array('jquery'));
     wp_localize_script('houzez_ajax_calls', 'HOUZEZ_ajaxcalls_vars',
@@ -50,12 +269,6 @@ function my_scripts() {
             'user_id' => $userID,
             'transparent_menu' => $fave_main_menu_trans,
             'simple_logo' => $simple_logo,
-            'retina_logo' => $retina_logo_url,
-            'retina_logo_mobile' => $retina_mobilelogo_url,
-            'retina_logo_mobile_splash' => $retina_logo_mobile_splash,
-            'retina_logo_splash' => $retina_splash_logo_url,
-            'retina_logo_height' => $retina_logo_height,
-            'retina_logo_width' => $retina_logo_width,
             'property_lat' => $property_lat,
             'property_lng' => $property_lng,
             'property_map' => $property_map,
@@ -173,7 +386,7 @@ function my_scripts() {
             'markerPricePins' => esc_attr($markerPricePins),
             'houzez_reCaptcha' => $enable_reCaptcha
         )
-    );
+    );*/
 
     wp_enqueue_script( 'numeric', get_stylesheet_directory_uri() . '/js//numeric-1.2.6.js', array('jquery') );
     wp_enqueue_script( 'solar', get_stylesheet_directory_uri() . '/js/solar.js', array('jquery') );
@@ -203,8 +416,6 @@ function my_scripts() {
 add_action('admin_enqueue_scripts', 'custom_scripts');
 if (is_admin() ){
     function custom_scripts(){
-        global $pagenow, $typenow;
-
         wp_enqueue_script('ftmetajs', get_template_directory_uri() .'/js/admin/init.js', array('jquery','media-upload','thickbox'));
         wp_enqueue_style( 'houzez-admin.css', get_template_directory_uri(). '/css/admin/admin.css', array(), HOUZEZ_THEME_VERSION, 'all' );
 
@@ -665,27 +876,27 @@ if( !function_exists('houzez_advance_search_update') ) {
             <form autocomplete="off" method="get" action="<?php echo esc_url($search_template); ?>">
                 <div class="row">
                     <input type="hidden" id="type" name="status" value="for-sale" />
-                    <div class="col-md-2 buy-btn">
+                    <div class="col-md-2 col-sm-6 buy-btn">
                         <button type="button" class="btn btn-primary btn-type"><?php echo esc_html__('Buy'); ?></button>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-sm-6 rent-btn">
                         <button type="button" class="btn btn-type"><?php echo esc_html__('Rent'); ?></button>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-10 col-sm-8 has-search">
+                    <div class="col-md-10 col-sm-12 has-search">
                         <span class="fa fa-search form-control-feedback"></span>
                         <input type="text" name="city" class="form-control" 
                             placeholder="<?php echo esc_html__('Neighborhood, City'); ?>" />
                     </div>
-                    <div class="col-md-2 col-sm-4">
+                    <div class="col-md-2 col-sm-12">
                         <button type="submit" class="btn btn-secondary">
                             <?php echo strtoupper($houzez_local['search']); ?>
                         </button>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-7 col-sm-12">
+                    <div class="col-md-7 col-sm-12 select-advanced-main">
                         <div class="col-md-3 col-sm-6">
                             <select class="selectpicker bs-select-hidden" name="lifestyle">
                             <?php
@@ -763,12 +974,12 @@ if( !function_exists('houzez_advance_search_update') ) {
                     </div>
                     <div class="col-md-5 col-sm-12 range-advanced-main">
                         <?php if( $adv_search_price_slider != 0 ) { ?>
-                            <div class="range-text col-md-3">
+                            <div class="range-text col-md-4 col-lg-3">
                                 <input type="hidden" name="min-price" class="min-price-range-hidden range-input" readonly >
                                 <input type="hidden" name="max-price" class="max-price-range-hidden range-input" readonly >
                                 <span class="range-title"><?php echo $houzez_local['price_range']; ?></span>
                             </div>
-                            <div class="range-wrap col-md-9">
+                            <div class="range-wrap col-md-8 col-lg-9">
                                 <span class="min-price-range"></span>
                                 <div class="price-range-advanced"></div>
                                 <span class="max-price-range"></span>
@@ -917,35 +1128,40 @@ function houzez_map_search() {
     $wp_query = new WP_Query( $search_query );
 
     if ( $wp_query->have_posts() ) {
-        while ( $wp_query->have_posts() ) : $wp_query->the_post();            
-            $location = get_post_meta(get_the_ID(), 'fave_property_location', true);
-            array_push($location_arr, $location);
+        while ( $wp_query->have_posts() ) : $wp_query->the_post();     
+            $week = get_post_meta(get_the_ID(), 'fave_week', true);
+            $featured = get_post_meta(get_the_ID(), 'fave_featured', true);
 
-            $price = get_post_meta(get_the_ID(), 'fave_property_price', true);
-            $price = number_format ( $price , 0, '', ',' );
+            if ($week == '1' || $featured == '1') {
+                $location = get_post_meta(get_the_ID(), 'fave_property_location', true);
+                array_push($location_arr, $location);
 
-            $currency = get_post_meta(get_the_ID(), 'fave_currency', true);
+                $price = get_post_meta(get_the_ID(), 'fave_property_price', true);
+                $price = number_format ( $price , 0, '', ',' );
 
-            switch ($currency) {
-                case 'EUR':
-                    $price = '€' . $price;
-                    break;
-                case 'USD':
-                    $price = '$' . $price;
-                    break;
-                case 'GBP':
-                    $price = '£' . $price;
-                    break;
-                case 'XBT':
-                    $price = '฿' . $price;
-                    break;
-                case '':
-                    $price = '€' . $price;
-                    break;
+                $currency = get_post_meta(get_the_ID(), 'fave_currency', true);
+
+                switch ($currency) {
+                    case 'EUR':
+                        $price = '€' . $price;
+                        break;
+                    case 'USD':
+                        $price = '$' . $price;
+                        break;
+                    case 'GBP':
+                        $price = '£' . $price;
+                        break;
+                    case 'XBT':
+                        $price = '฿' . $price;
+                        break;
+                    case '':
+                        $price = '€' . $price;
+                        break;
+                }
+
+                array_push($price_arr, $price);
+                array_push($id_arr, get_the_ID());
             }
-
-            array_push($price_arr, $price);
-            array_push($id_arr, get_the_ID());
         endwhile;
         wp_reset_postdata();
     } else {

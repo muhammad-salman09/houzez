@@ -54,15 +54,15 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                         } else {
                         ?>
                         <div class="container">
-                        	<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        	<div class="col-lg-4 col-md-3 col-sm-12 col-xs-12">
                         		<label><?php echo esc_html_e('Title of Document'); ?></label>
                         		<input type="text" class="form-control" id="doc_title" />
                         	</div>
-                        	<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        	<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                         		<label><?php echo esc_html_e('Upload PDF (Must be under 10MB)'); ?></label>
                         		<input type="file" class="form-control" id="doc_file" name="doc" />
                         	</div>
-                        	<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        	<div class="col-lg-4 col-md-3 col-sm-12 col-xs-12">
                         		<button type="button" class="btn btn-primary btn-lg btn-upload">
                         			<?php echo esc_html_e('File Upload'); ?>
                         		</button>

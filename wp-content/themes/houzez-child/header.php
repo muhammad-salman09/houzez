@@ -134,209 +134,212 @@ $houzez_local = houzez_get_localization();
 	    </div>
 
 	</header>
-
-	<?php if (!is_front_page() &&
-            get_page_template_slug() != 'template/submit_property.php' &&
-            get_page_template_slug() != 'template/template-payment.php' &&
-            get_page_template_slug() != 'template/user_dashboard_profile.php' &&
-            get_page_template_slug() != 'template-document-upload.php' &&
-            get_page_template_slug() != 'template-advanced-package.php' &&
-            get_page_template_slug() != 'template-advanced-payment.php' &&
-            get_page_template_slug() != 'template-addon-payment.php' &&
-            get_page_template_slug() != 'template-user-dashboard-package.php' &&
-            get_page_template_slug() != 'template-user-dashboard-membership.php' &&
-            get_page_template_slug() != 'template-user-dashboard-properties.php' &&
-            get_page_template_slug() != 'template/user_dashboard_favorites.php' &&
-            get_page_template_slug() != 'template/user_dashboard_saved_search.php' &&
-            get_page_template_slug() != 'template/user_dashboard_invoices.php' &&
-            get_page_template_slug() != 'template/user_dashboard_messages.php' &&
-            get_page_template_slug() != 'template/user_dashboard_membership.php'
-        ) {
-        
-		$search_template = home_url() . '/advanced-search';
-
-		$measurement_unit_adv_search = houzez_option('measurement_unit_adv_search');
-        if( $measurement_unit_adv_search == 'sqft' ) {
-            $measurement_unit_adv_search = houzez_option('measurement_unit_sqft_text');
-        } elseif( $measurement_unit_adv_search == 'sq_meter' ) {
-            $measurement_unit_adv_search = houzez_option('measurement_unit_square_meter_text');
-        }
-        
-        $hide_empty = false;
-
-        $houzez_local = houzez_get_localization();
-
-        $status = 'for-sale';
-        $lifestyle = $location = $type = '';
-        $min_price = 1000;
-        $max_price = 500000;
-        
-        if (isset($_GET['status'])) {
-            $status = $_GET['status'];
-        }
-        if (isset($_GET['lifestyle'])) {
-            $lifestyle = $_GET['lifestyle'];
-        }
-        if (isset($_GET['location'])) {
-            $location = $_GET['location'];
-        }
-        if (isset($_GET['type'])) {
-            $type = $_GET['type'];
-        }
-        if (isset($_GET['min-price'])) {
-            $min_price = $_GET['min-price'];
-        }
-        if (isset($_GET['max-price'])) {
-            $max_price = $_GET['max-price'];
-        }
-	?>
-    <input type="hidden" id="min_price" value="<?php echo str_replace(',', '', $min_price); ?>" />
-    <input type="hidden" id="max_price" value="<?php echo str_replace(',', '', $max_price); ?>" />
-
-	<div class="advanced-search advanced-search-module houzez-adv-price-range">
-        <?php if (empty($search_title)) { ?>
-            <h3 class="advance-title"><?php echo esc_html__('Search Properties for Sale'); ?></h3>
-        <?php } else { ?>
-            <h3 class="advance-title"><?php echo esc_attr($search_title); ?></h3>
-        <?php } ?>
-
-        <form autocomplete="off" method="get" action="<?php echo esc_url($search_template); ?>">
-            <div class="row">
-                <input type="hidden" id="type" name="status" value="<?php echo $status; ?>" />
-                <div class="col-md-2 buy-btn">
-                    <?php if ($status == 'for-sale') { ?>
-                    <button type="button" class="btn btn-primary btn-type"><?php echo esc_html__('Buy'); ?></button>
-                    <?php } else { ?>
-                    <button type="button" class="btn btn-type"><?php echo esc_html__('Buy'); ?></button>
-                    <?php }?>
-                </div>
-                <div class="col-md-2">
-                    <?php if ($status == 'for-rent') { ?>
-                    <button type="button" class="btn btn-primary btn-type"><?php echo esc_html__('Rent'); ?></button>
-                    <?php } else { ?>
-                    <button type="button" class="btn btn-type"><?php echo esc_html__('Rent'); ?></button>
-                    <?php }?>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-10 col-sm-8 has-search">
-                    <span class="fa fa-search form-control-feedback"></span>
-                    <input type="text" name="city" class="form-control" 
-                        placeholder="<?php echo esc_html__('Neighborhood, City'); ?>" />
-                </div>
-                <div class="col-md-2 col-sm-4">
-                    <button type="submit" class="btn btn-secondary">
-                        <?php echo strtoupper($houzez_local['search']); ?>
-                    </button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-7 col-sm-12">
-                    <div class="col-md-3 col-sm-6">
-                        <?php 
-                            $lifestyle = isset($_GET['lifestyle']) ? $_GET['lifestyle'] : '';
-                        ?>
-                        <select class="selectpicker bs-select-hidden" name="lifestyle">
-                        <?php
-                            echo '<option value="">' . esc_html__('Lifestyle') . '</option>';
-
-                            $prop_lifestyle = get_terms(
-                                array(
-                                    "property_lifestyle"
-                                ),
-                                array(
-                                    'orderby' => 'name',
-                                    'order' => 'ASC',
-                                    'hide_empty' => $hide_empty,
-                                    'parent' => 0
-                                )
-                            );
-                            houzez_hirarchical_options('property_lifestyle', $prop_lifestyle, $lifestyle);
-                        ?>
-                        </select>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <?php 
-                            $region = isset($_GET['region']) ? $_GET['region'] : '';
-                        ?>
-                        <select class="selectpicker bs-select-hidden" name="region">
-                        <?php
-                            echo '<option value="">' . esc_html__('Location') . '</option>';
-
-                            $prop_region = get_terms(
-                                array(
-                                    "property_region"
-                                ),
-                                array(
-                                    'orderby' => 'name',
-                                    'order' => 'ASC',
-                                    'hide_empty' => $hide_empty,
-                                    'parent' => 0
-                                )
-                            );
-                            houzez_hirarchical_options('property_region', $prop_region, $region);
-                        ?>
-                        </select>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <?php 
-                            $type = isset($_GET['type']) ? $_GET['type'] : '';
-                        ?>
-                        <select class="selectpicker bs-select-hidden" name="type">
-                        <?php
-                            echo '<option value="">' . esc_html__('Property Type') . '</option>';
-
-                            $prop_type = get_terms(
-                                array(
-                                    "property_type"
-                                ),
-                                array(
-                                    'orderby' => 'name',
-                                    'order' => 'ASC',
-                                    'hide_empty' => $hide_empty,
-                                    'parent' => 0
-                                )
-                            );
-                            houzez_hirarchical_options('property_type', $prop_type, $type);
-                        ?>
-                        </select>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <?php 
-                            $searched_currency = isset($_GET['currency']) ? $_GET['currency'] : '';
-                            $currencies = Houzez_Currencies::get_currency_codes();
-                        ?>
-                        <select class="selectpicker bs-select-hidden" name="currency">
-                            <option value=""><?php echo esc_html__('Fiat/Crypto') ?></option>
-                        <?php
-                            foreach($currencies as $currency) {
-                                echo '<option '.selected( $currency->currency_code, $searched_currency, false).' value="'.$currency->currency_code.'">'.$currency->currency_code.'</option>';
-                            }
-                        ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-5 col-sm-12 range-advanced-main">
-                    <div class="range-text col-md-3">
-                        <input type="hidden" name="min-price" class="min-price-range-hidden range-input" readonly >
-                        <input type="hidden" name="max-price" class="max-price-range-hidden range-input" readonly >
-                        <span class="range-title"><?php echo $houzez_local['price_range']; ?></span>
-                    </div>
-                    <div class="range-wrap col-md-9">
-                        <span class="min-price-range"></span>
-                        <div class="price-range"></div>
-                        <span class="max-price-range"></span>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-	<?php } ?>
 	<!--end section header-->
 
 <?php
-get_template_part( '../houzez/inc/header/mobile-header' );
+get_template_part( 'template-parts/mobile-header' );
+?>
 
+<?php 
+    if (!is_front_page() && !is_404() &&
+        get_page_template_slug() != 'template/submit_property.php' &&
+        get_page_template_slug() != 'template/template-payment.php' &&
+        get_page_template_slug() != 'template/user_dashboard_profile.php' &&
+        get_page_template_slug() != 'template-document-upload.php' &&
+        get_page_template_slug() != 'template-advanced-package.php' &&
+        get_page_template_slug() != 'template-advanced-payment.php' &&
+        get_page_template_slug() != 'template-addon-payment.php' &&
+        get_page_template_slug() != 'template-user-dashboard-package.php' &&
+        get_page_template_slug() != 'template-user-dashboard-membership.php' &&
+        get_page_template_slug() != 'template-user-dashboard-properties.php' &&
+        get_page_template_slug() != 'template/user_dashboard_favorites.php' &&
+        get_page_template_slug() != 'template/user_dashboard_saved_search.php' &&
+        get_page_template_slug() != 'template/user_dashboard_invoices.php' &&
+        get_page_template_slug() != 'template/user_dashboard_messages.php' &&
+        get_page_template_slug() != 'template/user_dashboard_membership.php'
+    ) {
+    
+    $search_template = home_url() . '/advanced-search';
+
+    $measurement_unit_adv_search = houzez_option('measurement_unit_adv_search');
+    if( $measurement_unit_adv_search == 'sqft' ) {
+        $measurement_unit_adv_search = houzez_option('measurement_unit_sqft_text');
+    } elseif( $measurement_unit_adv_search == 'sq_meter' ) {
+        $measurement_unit_adv_search = houzez_option('measurement_unit_square_meter_text');
+    }
+    
+    $hide_empty = false;
+
+    $houzez_local = houzez_get_localization();
+
+    $status = 'for-sale';
+    $lifestyle = $location = $type = '';
+    $min_price = 1000;
+    $max_price = 500000;
+    
+    if (isset($_GET['status'])) {
+        $status = $_GET['status'];
+    }
+    if (isset($_GET['lifestyle'])) {
+        $lifestyle = $_GET['lifestyle'];
+    }
+    if (isset($_GET['location'])) {
+        $location = $_GET['location'];
+    }
+    if (isset($_GET['type'])) {
+        $type = $_GET['type'];
+    }
+    if (isset($_GET['min-price'])) {
+        $min_price = $_GET['min-price'];
+    }
+    if (isset($_GET['max-price'])) {
+        $max_price = $_GET['max-price'];
+    }
+?>
+<input type="hidden" id="min_price" value="<?php echo str_replace(',', '', $min_price); ?>" />
+<input type="hidden" id="max_price" value="<?php echo str_replace(',', '', $max_price); ?>" />
+
+<div class="advanced-search advanced-search-module houzez-adv-price-range">
+    <?php if (empty($search_title)) { ?>
+        <h3 class="advance-title"><?php echo esc_html__('Search Properties for Sale'); ?></h3>
+    <?php } else { ?>
+        <h3 class="advance-title"><?php echo esc_attr($search_title); ?></h3>
+    <?php } ?>
+
+    <form autocomplete="off" method="get" action="<?php echo esc_url($search_template); ?>">
+        <div class="row">
+            <input type="hidden" id="type" name="status" value="<?php echo $status; ?>" />
+            <div class="col-md-2 col-sm-6 buy-btn">
+                <?php if ($status == 'for-sale') { ?>
+                <button type="button" class="btn btn-primary btn-type"><?php echo esc_html__('Buy'); ?></button>
+                <?php } else { ?>
+                <button type="button" class="btn btn-type"><?php echo esc_html__('Buy'); ?></button>
+                <?php }?>
+            </div>
+            <div class="col-md-2 col-sm-6 rent-btn">
+                <?php if ($status == 'for-rent') { ?>
+                <button type="button" class="btn btn-primary btn-type"><?php echo esc_html__('Rent'); ?></button>
+                <?php } else { ?>
+                <button type="button" class="btn btn-type"><?php echo esc_html__('Rent'); ?></button>
+                <?php }?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-sm-8 has-search">
+                <span class="fa fa-search form-control-feedback"></span>
+                <input type="text" name="city" class="form-control" 
+                    placeholder="<?php echo esc_html__('Neighborhood, City'); ?>" />
+            </div>
+            <div class="col-md-2 col-sm-4">
+                <button type="submit" class="btn btn-secondary">
+                    <?php echo strtoupper($houzez_local['search']); ?>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7 col-sm-12 select-advanced-main">
+                <div class="col-md-3 col-sm-6">
+                    <?php 
+                        $lifestyle = isset($_GET['lifestyle']) ? $_GET['lifestyle'] : '';
+                    ?>
+                    <select class="selectpicker bs-select-hidden" name="lifestyle">
+                    <?php
+                        echo '<option value="">' . esc_html__('Lifestyle') . '</option>';
+
+                        $prop_lifestyle = get_terms(
+                            array(
+                                "property_lifestyle"
+                            ),
+                            array(
+                                'orderby' => 'name',
+                                'order' => 'ASC',
+                                'hide_empty' => $hide_empty,
+                                'parent' => 0
+                            )
+                        );
+                        houzez_hirarchical_options('property_lifestyle', $prop_lifestyle, $lifestyle);
+                    ?>
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <?php 
+                        $region = isset($_GET['region']) ? $_GET['region'] : '';
+                    ?>
+                    <select class="selectpicker bs-select-hidden" name="region">
+                    <?php
+                        echo '<option value="">' . esc_html__('Location') . '</option>';
+
+                        $prop_region = get_terms(
+                            array(
+                                "property_region"
+                            ),
+                            array(
+                                'orderby' => 'name',
+                                'order' => 'ASC',
+                                'hide_empty' => $hide_empty,
+                                'parent' => 0
+                            )
+                        );
+                        houzez_hirarchical_options('property_region', $prop_region, $region);
+                    ?>
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <?php 
+                        $type = isset($_GET['type']) ? $_GET['type'] : '';
+                    ?>
+                    <select class="selectpicker bs-select-hidden" name="type">
+                    <?php
+                        echo '<option value="">' . esc_html__('Property Type') . '</option>';
+
+                        $prop_type = get_terms(
+                            array(
+                                "property_type"
+                            ),
+                            array(
+                                'orderby' => 'name',
+                                'order' => 'ASC',
+                                'hide_empty' => $hide_empty,
+                                'parent' => 0
+                            )
+                        );
+                        houzez_hirarchical_options('property_type', $prop_type, $type);
+                    ?>
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <?php 
+                        $searched_currency = isset($_GET['currency']) ? $_GET['currency'] : '';
+                        $currencies = Houzez_Currencies::get_currency_codes();
+                    ?>
+                    <select class="selectpicker bs-select-hidden" name="currency">
+                        <option value=""><?php echo esc_html__('Fiat/Crypto') ?></option>
+                    <?php
+                        foreach($currencies as $currency) {
+                            echo '<option '.selected( $currency->currency_code, $searched_currency, false).' value="'.$currency->currency_code.'">'.$currency->currency_code.'</option>';
+                        }
+                    ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-12 range-advanced-main">
+                <div class="range-text col-md-3">
+                    <input type="hidden" name="min-price" class="min-price-range-hidden range-input" readonly >
+                    <input type="hidden" name="max-price" class="max-price-range-hidden range-input" readonly >
+                    <span class="range-title"><?php echo $houzez_local['price_range']; ?></span>
+                </div>
+                <div class="range-wrap col-md-9">
+                    <span class="min-price-range"></span>
+                    <div class="price-range"></div>
+                    <span class="max-price-range"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<?php } ?>
+
+<?php
 if ( is_page_template( '../houzez/template/property-listings-map.php' ) ||
      is_page_template( 'template-map-search.php' ) ) {
     $section_body .= 'houzez-body-half ';

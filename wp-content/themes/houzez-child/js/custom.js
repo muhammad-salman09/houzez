@@ -19,6 +19,11 @@ $(document).ready(function() {
 
 	$('.main-nav').css('margin-left', val + 'px');
 
+    var secHeight = $('#section-body').height();
+    var winHeight = $(window).height();
+    if (secHeight < winHeight)
+        $('.user-dashboard-left').height(winHeight - 123);
+
     $('.advanced-search .bootstrap-select button').mouseover(function() {
         $(this).find('.filter-option').css('color', '#55d2d8');
         $(this).find('.filter-option').css('cursor', 'pointer');
