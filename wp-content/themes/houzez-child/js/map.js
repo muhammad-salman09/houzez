@@ -262,7 +262,7 @@ function initMap(locations) {
 			}
 		}
 
-		if (id_arr.length == 0) {
+		if (id_arr.length == 0 && $('#map').css('display') == 'none') {
 			for (var i = 0; i < locations.length; i++)
 				id_arr.push(locations[i][3]);
 		}
