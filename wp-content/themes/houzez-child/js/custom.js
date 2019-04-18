@@ -20,14 +20,19 @@ $(document).ready(function() {
 	$('.main-nav').css('margin-left', val + 'px');
 
     if ($('body').hasClass('page-template-template-user-dashboard-properties') ||
+        $('body').hasClass('page-template-template-document-upload') ||
         $('body').hasClass('houzez-dashboard')
         ) {
         var secHeight = $('#section-body').height();
+        var headHeight = $('#header-section').height();
         var footHeight = $('#footer-section').height();
+        var adminHeight = $('#wpadminbar').height();
         var winHeight = $(window).height();
 
-        if (secHeight < (winHeight - footHeight - 123))
-            $('#section-body').height(winHeight - footHeight - 123);
+        var setHeight = winHeight - headHeight - footHeight - adminHeight;
+
+        if (secHeight < setHeight)
+            $('#section-body').height(setHeight);
     }
 
     var min_price = '';
