@@ -3,6 +3,20 @@
 $dashboard_package = houzez_get_template_link_2('template-user-dashboard-package.php');
 $package = add_query_arg( array('option' => $_GET['option'], 'post' => $_GET['post']), $dashboard_package );
 
+if (isset($_GET['state'])) {
+    $value = explode(',', urldecode($_GET['state']));
+    
+    if ($value[0] == '750') {
+        $addon = 'Featured:';
+        $price = '€750';
+    }
+
+    if ($value[0] == '1000') {
+        $addon = 'Property of the Week:';
+        $price = '€1,000';
+    }
+}
+
 if ($_GET['option'] == 'week') {
     $addon = 'Property of the Week:';
     $price = '€1,000';

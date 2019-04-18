@@ -5,10 +5,18 @@ $currency_symbol = '€';
 $where_currency = houzez_option( 'currency_position' );
 $select_packages_link = houzez_get_template_link('template-advanced-package.php');
 
-if( isset( $_GET['selected_package'] ) ) {
+if( isset( $_GET['selected_package'] ) || isset( $_GET['state'] ) ) {
     $selected_package_id     = isset( $_GET['selected_package'] ) ? $_GET['selected_package'] : '';
 
     $option = (isset($_GET['option'])) ? $_GET['option'] : 'option1';
+
+    if (isset($_GET['state'])) {
+        $value = explode(',', urldecode($_GET['state']));
+
+        $option = $value[0];
+        $selected_package_id = $value[1];
+    }
+
     $pack_price              = get_post_meta( $selected_package_id, 'fave_payment_' . $option, true );
 
     $pack_listings           = get_post_meta( $selected_package_id, 'fave_package_listings', true );

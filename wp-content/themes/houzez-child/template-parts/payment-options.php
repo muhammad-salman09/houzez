@@ -4,6 +4,13 @@ $selected_package_id = $_GET['selected_package'];
 
 $option = (isset($_GET['option'])) ? $_GET['option'] : 'option1';
 
+if (isset($_GET['state'])) {
+	$value = explode(',', urldecode($_GET['state']));
+
+	$option = $value[0];
+	$selected_package_id = $value[1];
+}
+
 $payment1 = get_post_meta( $selected_package_id, 'fave_payment_option1', true );
 $payment2 = get_post_meta( $selected_package_id, 'fave_payment_option2', true );
 $payment3 = get_post_meta( $selected_package_id, 'fave_payment_option3', true );

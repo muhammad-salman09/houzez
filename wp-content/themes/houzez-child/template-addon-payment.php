@@ -14,9 +14,10 @@ $dashboard_package = houzez_get_template_link_2('template-user-dashboard-package
 
 if ( !isset($_GET['option']) || $_GET['option'] == '' || 
 	 !isset($_GET['post']) || $_GET['post'] == '' ||
-	 ($_GET['option'] != 'featured' && $_GET['option'] != 'week')) {
+	 ($_GET['option'] != 'featured' && $_GET['option'] != 'week') ) {
 
-	wp_redirect( $listing );
+  if (!isset($_GET['state']))
+    wp_redirect( $listing );
 }
 
 get_header();
@@ -44,11 +45,9 @@ get_template_part( 'template-parts/dashboard', 'menu' );
         <div class="<?php echo esc_attr($column_classes); ?>">
           <div class="membership-content class-for-register-msg">
             <form name="houzez_checkout" method="post" class="houzez_payment_form" action="<?php echo $stripe_processor_link; ?>">
-              <?php if( $package_price > 0 ) { ?>
-	              <div class="info-title">
-	                  <h2 class="info-title-left"> <?php echo $houzez_local['payment_method']; ?> </h2>
-	              </div>
-              <?php } ?>
+              <div class="info-title">
+                  <h2 class="info-title-left"> <?php echo $houzez_local['payment_method']; ?> </h2>
+              </div>
 
               <?php
                 get_template_part('template-parts/addon-package/payment-methods');

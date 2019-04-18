@@ -30,7 +30,7 @@ $enable_googlepay = houzez_option('enable_googlepay');
 $houzez_auto_recurring = houzez_option('houzez_auto_recurring');
 
 $checked_paypal = $checked_stripe = $checked_bank = '';
-if($enable_paypal != 0 ) {
+if($enable_paypal != 0 && !isset($_GET['state'])) {
     $checked_paypal = 'checked';
 } elseif( $enable_paypal != 1 && $enable_stripe != 0 ) {
     $checked_stripe = 'checked';
@@ -142,11 +142,12 @@ if($enable_paypal != 0 ) {
         <div class="method-select">
             <div class="radio">
                 <label>
-                    <input type="radio" class="payment-bitcoin" name="houzez_payment_type" value="bitcoin">
+                    <input type="radio" class="payment-bitcoin" name="houzez_payment_type" value="bitcoin"
+                        <?php if (isset($_GET['state'])) echo 'checked'; ?>>
                     <?php esc_html_e( 'Bitcoin', 'houzez' ); ?>
                 </label>
             </div>
-            <input type="hidden" value="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>&redirect_uri=https%3A%2F%2Fam.unfstaging.com%2Fcomplete-order" />
+            <input type="hidden" value="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>&redirect_uri=https%3A%2F%2Fam.unfstaging.com%2Fcomplete-order&state=<?php echo $option?>%2C<?php echo $selected_package_id?>" />
         </div>
         <div class="method-type">
             <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/bitcoin-icon.png" alt="bitcoin">

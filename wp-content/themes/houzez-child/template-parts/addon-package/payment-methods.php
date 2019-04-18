@@ -37,7 +37,8 @@ $enable_googlepay = houzez_option('enable_googlepay');
         <div class="method-select">
             <div class="radio">
                 <label>
-                    <input type="radio" class="payment-paypal" name="houzez_payment_type" value="paypal" checked>
+                    <input type="radio" class="payment-paypal" name="houzez_payment_type" value="paypal" 
+                        <?php if (!isset($_GET['state'])) echo 'checked'; ?>>
                     <?php esc_html_e( 'Paypal', 'houzez'); ?>
                 </label>
             </div>
@@ -102,11 +103,12 @@ $enable_googlepay = houzez_option('enable_googlepay');
         <div class="method-select">
             <div class="radio">
                 <label>
-                    <input type="radio" class="payment-bitcoin" name="houzez_payment_type" value="bitcoin">
+                    <input type="radio" class="payment-bitcoin" name="houzez_payment_type" value="bitcoin"
+                        <?php if (isset($_GET['state'])) echo 'checked'; ?>>
                     <?php esc_html_e( 'Bitcoin', 'houzez' ); ?>
                 </label>
             </div>
-            <input type="hidden" value="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>&redirect_uri=https%3A%2F%2Fam.unfstaging.com%2Fadd-on-payment" />
+            <input type="hidden" value="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>&redirect_uri=https%3A%2F%2Fam.unfstaging.com%2Fadd-on-payment&state=<?php echo $price; ?>%2C<?php echo $_GET['post']?>" />
         </div>
         <div class="method-type">
             <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/bitcoin-icon.png" alt="bitcoin">

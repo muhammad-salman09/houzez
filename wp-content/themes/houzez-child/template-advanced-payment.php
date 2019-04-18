@@ -5,6 +5,10 @@
 $selected_package_id = isset( $_GET['selected_package'] ) ? $_GET['selected_package'] : '';
 $property_id = isset( $_GET['prop-id'] ) ? $_GET['prop-id'] : '';
 $upgrade_id = isset( $_GET['upgrade_id'] ) ? $_GET['upgrade_id'] : '';
+
+if (!isset( $_GET['selected_package'] ) && isset($_GET['state']) && $_GET['state'] != '')
+    $selected_package_id = $_GET['state'];
+
 if( empty( $selected_package_id ) && empty( $property_id ) && empty( $upgrade_id ) ) {
     wp_redirect( home_url() );
 }
