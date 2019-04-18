@@ -1341,7 +1341,7 @@ jQuery(document).ready(function ($) {
 
             var $form = currnt.parents('form');
             var $messages = currnt.parents('.class-for-register-msg').find('.houzez_messages_register');
-
+            
             $.ajax({
                 type: 'post',
                 url: ajaxurl,
@@ -1353,6 +1353,8 @@ jQuery(document).ready(function ($) {
                 success: function( response ) {
                     if( response.success ) {
                         $messages.empty().append('<p class="success text-success"><i class="fa fa-check"></i> '+ response.msg +'</p>');
+                        
+                        window.location.href = "https://" + window.location.hostname + '/my-profile';
                     } else {
                         $messages.empty().append('<p class="error text-danger"><i class="fa fa-close"></i> '+ response.msg +'</p>');
                     }
