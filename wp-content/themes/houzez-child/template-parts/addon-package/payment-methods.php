@@ -109,7 +109,7 @@ $enable_googlepay = houzez_option('enable_googlepay');
             <input type="hidden" value="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>&redirect_uri=https%3A%2F%2Fam.unfstaging.com%2Fadd-on-payment" />
         </div>
         <div class="method-type">
-            <img src="<?php echo get_stylesheet_directory_uri(); ?>/bitcoin-icon.png" alt="bitcoin">
+            <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/bitcoin-icon.png" alt="bitcoin">
         </div>
     </div>
     <?php } ?>
@@ -126,7 +126,7 @@ $enable_googlepay = houzez_option('enable_googlepay');
             </div>
         </div>
         <div class="method-type">
-            <img src="<?php echo get_stylesheet_directory_uri(); ?>/googlepay-icon.png" alt="googlepay">
+            <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/googlepay-icon.png" alt="googlepay">
         </div>
     </div>
     <?php } ?>
@@ -143,7 +143,7 @@ $enable_googlepay = houzez_option('enable_googlepay');
             </div>
         </div>
         <div class="method-type">
-            <img src="<?php echo get_stylesheet_directory_uri(); ?>/applepay-icon.png" alt="applepay">
+            <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/applepay-icon.png" alt="applepay">
         </div>
     </div>
 	<?php } ?>

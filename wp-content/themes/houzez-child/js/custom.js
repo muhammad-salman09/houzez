@@ -21,7 +21,7 @@ $(document).ready(function() {
 
     var secHeight = $('#section-body').height();
     var winHeight = $(window).height();
-    if (secHeight < winHeight)
+    if (secHeight < (winHeight - 123))
         $('.user-dashboard-left').height(winHeight - 123);
 
     $('.advanced-search .bootstrap-select button').mouseover(function() {
