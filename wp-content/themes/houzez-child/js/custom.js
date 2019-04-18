@@ -19,12 +19,61 @@ $(document).ready(function() {
 
 	$('.main-nav').css('margin-left', val + 'px');
 
-    var secHeight = $('#section-body').height();
-    var footHeight = $('#footer-section').height();
-    var winHeight = $(window).height();
+    if ($('body').hasClass('page-template-template-user-dashboard-properties') ||
+        $('body').hasClass('houzez-dashboard')
+        ) {
+        var secHeight = $('#section-body').height();
+        var footHeight = $('#footer-section').height();
+        var winHeight = $(window).height();
 
-    if (secHeight < (winHeight - footHeight - 123))
-        $('#section-body').height(winHeight - footHeight - 123);
+        if (secHeight < (winHeight - footHeight - 123))
+            $('#section-body').height(winHeight - footHeight - 123);
+    }
+
+    var min_price = '';
+    var max_price = '';
+    min_price = parseInt($('#min_price').val());
+    max_price = parseInt($('#max_price').val());
+
+    if (min_price != '' && max_price != '') {
+        $(".price-range").slider({
+            range: true,
+            min: 1000,
+            max: 500000,
+            values: [min_price, max_price],
+            slide: function (event, ui) {
+                var min_price_range = addCommas(ui.values[0]);
+                var max_price_range = addCommas(ui.values[1]);
+
+                $(".min-price-range-hidden").val( min_price_range );
+                $(".max-price-range-hidden").val( max_price_range );
+
+                $(".min-price-range").text( min_price_range );
+                $(".max-price-range").text( max_price_range );
+            }
+        });
+
+        var min_price = addCommas(min_price);
+        var max_price = addCommas(max_price);
+
+        $(".min-price-range-hidden").val(min_price);
+        $(".max-price-range-hidden").val(max_price);
+
+        $(".min-price-range").text(min_price);
+        $(".max-price-range").text(max_price);
+    }
+
+    function addCommas(nStr) {
+        nStr += '';
+        var x = nStr.split('.');
+        var x1 = x[0];
+        var x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+    }
 
     $('.advanced-search .bootstrap-select button').mouseover(function() {
         $(this).find('.filter-option').css('color', '#55d2d8');
@@ -273,8 +322,8 @@ $(document).ready(function() {
             var m12 = new Model(perspective, 12, latitude, longitude);
             var m16 = new Model(perspective, 16, latitude, longitude);
             
-            $('.solar12').attr('src', $('.solar12').attr('src') + m12.azimuth + '.png');
-            $('.solar16').attr('src', $('.solar16').attr('src') + m16.azimuth + '.png');
+            $('.solar12').attr('src', $('.solar-dir').val() + m12.azimuth + '.png');
+            $('.solar16').attr('src', $('.solar-dir').val() + m16.azimuth + '.png');
         }
     }
 });

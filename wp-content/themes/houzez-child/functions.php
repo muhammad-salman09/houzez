@@ -990,6 +990,9 @@ if( !function_exists('houzez_advance_search_update') ) {
         $hide_empty = false;
         ?>
 
+        <input type="hidden" id="min_price" value="1000" />
+        <input type="hidden" id="max_price" value="500000" />
+
         <div class="advanced-search advanced-search-module houzez-adv-price-range front">
             <h3 class="advance-title"><?php echo esc_html__('Search Properties for Sale'); ?></h3>
 
@@ -1930,8 +1933,6 @@ vc_map( array(
         ),
     )
 ) );
-
-
 
 /**
  *  Add Regions to Houzez Grids

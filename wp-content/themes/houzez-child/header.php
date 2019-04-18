@@ -174,8 +174,8 @@ get_template_part( 'template-parts/mobile-header' );
 
     $status = 'for-sale';
     $lifestyle = $location = $type = '';
-    $min_price = 1000;
-    $max_price = 500000;
+    $min_price = '1,000';
+    $max_price = '500,000';
     
     if (isset($_GET['status'])) {
         $status = $_GET['status'];
@@ -189,10 +189,10 @@ get_template_part( 'template-parts/mobile-header' );
     if (isset($_GET['type'])) {
         $type = $_GET['type'];
     }
-    if (isset($_GET['min-price'])) {
+    if (isset($_GET['min-price']) && $_GET['min-price'] != '') {
         $min_price = $_GET['min-price'];
     }
-    if (isset($_GET['max-price'])) {
+    if (isset($_GET['max-price']) && $_GET['max-price'] != '') {
         $max_price = $_GET['max-price'];
     }
 ?>
