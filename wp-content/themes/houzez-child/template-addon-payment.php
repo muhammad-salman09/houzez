@@ -71,3 +71,5 @@ get_template_part( 'template-parts/dashboard', 'menu' );
     </div>
   </div>
 </div>
+
+<?php get_footer(); ?>

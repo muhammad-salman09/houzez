@@ -20,9 +20,11 @@ $(document).ready(function() {
 	$('.main-nav').css('margin-left', val + 'px');
 
     var secHeight = $('#section-body').height();
+    var footHeight = $('#footer-section').height();
     var winHeight = $(window).height();
-    if (secHeight < (winHeight - 123))
-        $('.user-dashboard-left').height(winHeight - 123);
+
+    if (secHeight < (winHeight - footHeight - 123))
+        $('#section-body').height(winHeight - footHeight - 123);
 
     $('.advanced-search .bootstrap-select button').mouseover(function() {
         $(this).find('.filter-option').css('color', '#55d2d8');

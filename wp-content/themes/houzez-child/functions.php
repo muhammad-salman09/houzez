@@ -33,10 +33,10 @@ function custom_styles() {
   </style>';
 }
 
-add_action( 'wp_enqueue_scripts', 'my_scripts' );
+add_action( 'wp_enqueue_scripts', 'my_scripts', 100 );
 
 function my_scripts() {
-    /*wp_dequeue_script( 'houzez_ajax_calls' );
+    wp_dequeue_script( 'houzez_ajax_calls' );
     wp_deregister_script( 'houzez_ajax_calls' );
 
     global $paged, $post, $current_user;
@@ -386,7 +386,7 @@ function my_scripts() {
             'markerPricePins' => esc_attr($markerPricePins),
             'houzez_reCaptcha' => $enable_reCaptcha
         )
-    );*/
+    );
 
     wp_enqueue_script( 'numeric', get_stylesheet_directory_uri() . '/js//numeric-1.2.6.js', array('jquery') );
     wp_enqueue_script( 'solar', get_stylesheet_directory_uri() . '/js/solar.js', array('jquery') );

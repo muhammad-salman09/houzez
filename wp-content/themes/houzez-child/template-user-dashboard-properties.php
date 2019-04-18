@@ -178,3 +178,5 @@ if (empty($meta_query)) {
             </div>
         </div>
     </div>
+
+<?php get_footer(); ?>

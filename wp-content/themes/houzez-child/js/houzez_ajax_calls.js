@@ -2971,9 +2971,11 @@ jQuery(document).ready(function ($) {
         }
 
         var select_areas_on_load = $('.advance-search-header, .map-module-half, .widget_houzez_advanced_search').find('form');
-        populate_area_dropdown(select_areas_on_load, 'houzez_on_load');
-        populate_city_dropdown(select_areas_on_load, 'houzez_on_load');
-        populate_state_dropdown(select_areas_on_load, 'houzez_on_load');
+        if (select_areas_on_load.length > 0) {
+            populate_area_dropdown(select_areas_on_load, 'houzez_on_load');
+            populate_city_dropdown(select_areas_on_load, 'houzez_on_load');
+            populate_state_dropdown(select_areas_on_load, 'houzez_on_load');
+        }
 
         if($("#houzez-listing-map").length > 0 || $('#mapViewHalfListings').length > 0 ) {
 
