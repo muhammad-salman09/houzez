@@ -613,6 +613,12 @@ Template: houzez
 .doc_content div p {
 	margin: 0;
 }
+.doc_remove {
+	color: #aa0000;
+}
+.doc_remove:hover {
+	color: #ff0000;
+}
 .step {
 	float: right;
 }

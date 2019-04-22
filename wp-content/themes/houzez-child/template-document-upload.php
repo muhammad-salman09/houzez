@@ -2,6 +2,7 @@
 /**
  * Template Name: Document Upload
  */
+
 global $houzez_local, $current_user;
 
 wp_get_current_user();
@@ -14,17 +15,19 @@ if ( !is_user_logged_in() ) {
     wp_redirect( home_url() );
 }
 
+$pack_id = '';
+
 if (isset($_GET['selected_package']) && $_GET['selected_package'] != '') {
-	$id = $_GET['selected_package'];
+	$pack_id = $_GET['selected_package'];
 } else {
 	wp_redirect( home_url() );
 }
 
-get_header();
-
 $payment_page_link = houzez_get_template_link('template-advanced-payment.php');
 
-$payment_page_link = add_query_arg( 'selected_package', $id, $payment_page_link );
+$payment_page_link = add_query_arg( 'selected_package', $pack_id, $payment_page_link );
+
+get_header();
 
 get_template_part( 'template-parts/dashboard', 'menu' ); ?>
 
@@ -70,8 +73,30 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                         </div>
 
                         <div class="doc_content container">
-                        	<p></p>
-                        	<div></div>
+                        	<p>
+                             <?php
+                                if (!is_null($_SESSION['doc'][$pack_id]) && sizeof($_SESSION['doc'][$pack_id]) > 0)
+                                    echo 'List Encrypted files (' . sizeof($_SESSION['doc']) . ' of 5)';
+                             ?>   
+                            </p>
+                        	<div>
+                            <?php
+                                if (!is_null($_SESSION['doc'][$pack_id])) {
+                                    foreach ($_SESSION['doc'][$pack_id] as $key => $value) {
+                            ?>
+                                <p>
+                                    <span><?php echo $value; ?></span>&nbsp;
+                                    ( <a href="../Documents/<?php echo $key; ?>" target="_blank">
+                                        View
+                                    </a> /&nbsp;
+                                    <a href="javascript:void(0);" class="doc_remove">Remove</a> )
+                                    <input type="hidden" value="<?php echo $key; ?>" />
+                                </p>
+                            <?php
+                                    }
+                                }
+                            ?>
+                            </div>
                         </div>
 
                 		<a href="<?php echo esc_url($payment_page_link); ?>" class="btn btn-primary btn-lg step">

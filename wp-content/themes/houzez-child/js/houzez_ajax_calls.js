@@ -1319,6 +1319,12 @@ jQuery(document).ready(function ($) {
                         if( login_redirect_type == 'same_page' ) {
                             window.location.reload();
                         } else {
+                            var url = new URL(window.location.href);
+                            var login = url.searchParams.get('login');
+
+                            if (login && login == 'required')
+                                login_redirect = 'add-new-property';
+
                             window.location.href = login_redirect;
                         }
 

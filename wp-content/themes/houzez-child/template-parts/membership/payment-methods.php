@@ -52,7 +52,7 @@ if($enable_paypal != 0 && !isset($_GET['state'])) {
             </div>
         </div>
         <div class="method-type">
-            <img src="<?php echo get_template_directory_uri(); ?>/images/paypal-icon.jpg" alt="paypal">
+            <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/paypal-icon.png" alt="paypal">
         </div>
     </div>
     <?php if( $houzez_auto_recurring != 1 ) { ?>
@@ -77,13 +77,13 @@ if($enable_paypal != 0 && !isset($_GET['state'])) {
             <div class="radio">
                 <label>
                     <input type="radio" class="payment-stripe" name="houzez_payment_type" value="stripe" <?php echo $checked_stripe;?>>
-                    <?php esc_html_e( 'Stripe', 'houzez'); ?>
+                    <?php esc_html_e( 'Pay by Credit Card', 'houzez'); ?>
                 </label>
                 <?php houzez_stripe_payment_membership( $pack_price, $pack_title ); ?>
             </div>
         </div>
         <div class="method-type">
-            <img src="<?php echo get_template_directory_uri(); ?>/images/stripe-icon.jpg" alt="stripe">
+            <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/credit-card-icon.png" alt="credit card">
         </div>
     </div>
     <?php if( $houzez_auto_recurring != 1 ) { ?>
@@ -119,22 +119,6 @@ if($enable_paypal != 0 && !isset($_GET['state'])) {
         <div class="method-option payment_method_twocheckout">
             <?php houzez_2checkout_payment_membership(); ?>
         </div>
-    <?php } ?>
-
-    <?php if( $enable_wireTransfer != 0 ) { ?>
-    <div class="method-row">
-        <div class="method-select">
-            <div class="radio">
-                <label>
-                    <input type="radio" name="houzez_payment_type" value="direct_pay" <?php echo $checked_bank;?>>
-                    <?php esc_html_e( 'Direct Bank Transfer', 'houzez' ); ?>
-                </label>
-            </div>
-        </div>
-        <div class="method-type method-description">
-            <p> <?php esc_html_e( 'Make your payment direct into our bank account. Please use order ID as the payment reference', 'houzez' ); ?> </p>
-        </div>
-    </div>
     <?php } ?>
 
     <?php if( $enable_bitcoin != 0 ) { ?>

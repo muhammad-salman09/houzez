@@ -54,6 +54,18 @@ if ( is_user_logged_in() ) {
     $column_classes = 'col-lg-9 col-md-9 col-sm-12 dashboard-inner-left';
     $sidebar_classes = 'col-lg-3 col-md-3 col-sm-12 dashboard-inner-right';
 }
+
+$pack_id = '';
+
+if (isset($_GET['selected_package']) && $_GET['selected_package'] != '') {
+    $pack_id = $_GET['selected_package'];
+} else {
+    wp_redirect( home_url() );
+}
+
+$doc_page_link = houzez_get_template_link('template-document-upload.php');
+
+$doc_page_link = add_query_arg( 'selected_package', $pack_id, $doc_page_link );
 ?>
 
 <div class="user-dashboard-right <?php echo esc_attr($panel_class);?>">
@@ -179,6 +191,10 @@ if ( is_user_logged_in() ) {
                                 }
                                 ?>
                             </div>
+
+                            <a href="<?php echo esc_url($doc_page_link); ?>" class="btn btn-primary btn-lg step">
+                                <?php echo esc_html_e('Back to Upload'); ?>
+                            </a>
                         </div>
                     </div>
                 </div>

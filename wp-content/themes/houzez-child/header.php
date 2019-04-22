@@ -1,6 +1,13 @@
 <?php
-global $houzez_options, $houzez_local;
+global $houzez_options, $houzez_local, $current_user;
 $houzez_local = houzez_get_localization();
+
+wp_get_current_user();
+$userID = $current_user->ID;
+
+if ($userID == 0 && is_page_template('template/submit_property.php'))
+    wp_redirect(esc_url(add_query_arg('login', 'required', home_url())));
+
 /**
  * @package Houzez
  * @since Houzez 1.0

@@ -35,6 +35,16 @@ $(document).ready(function() {
             $('#section-body').height(setHeight);
     }
 
+    var url = new URL(window.location.href);
+    var login = url.searchParams.get('login');
+
+    if (login && login == 'required') {
+        $('.header-right .user a').click();
+        $('body').addClass('modal-open');
+        $('#pop-login').addClass('in');
+        $('#pop-login').css('display', 'block');
+    }
+
     var min_price = '';
     var max_price = '';
     min_price = parseInt($('#min_price').val());
@@ -269,12 +279,23 @@ $(document).ready(function() {
         var file = $('#doc_file');
         var fileObject = file[0].files[0];
 
+        var url = new URL(window.location.href);
+        var packID = url.searchParams.get('selected_package');
+
+        if (count == 4) {
+            $(this).attr('disabled', 'disabled');
+            $('#doc_title').attr('disabled', 'disabled');
+            $('#doc_file').attr('disabled', 'disabled');
+        }
+
         if (count < 5 && title != '' && typeof(fileObject) !== 'undefined') {
             var doc_size = Math.ceil(fileObject['size'] / 1024 / 1024);
             var doc_type = fileObject['type'];
 
             if (doc_size < 10 && doc_type == 'application/pdf') {
                 data.append('file', fileObject);
+                data.append('title', title);
+                data.append('packID', packID);
 
                 $.ajax({
                     type: 'POST',
@@ -283,19 +304,21 @@ $(document).ready(function() {
                     contentType: false,
                     processData: false,
                     success: function(result) {
-                        if (result == 'success') {
+                        if (result != 'fail') {
                             count++;
 
                             $('.doc_content>p').text('List Encrypted files (' + count + ' of 5)');
 
-                            $('.doc_content div').append('<p>' + title + '</p>');
+                            var txt = '<p><span>' + title + '</span> ';
+                            txt += '( <a href="../Documents/' + result + '" target="_blank">View</a> / ';
+                            txt += '<a href="javascript:void(0);" class="doc_remove">Remove</a> )';
+                            txt += '<input type="hidden" value="' + result + '" /></p>';
+
+                            $('.doc_content div').append(txt);
 
                             $('#doc_title').val('');
                             file.val('');
                         }
-                    },
-                    error: function(err) {
-                        console.log(err);
                     }
                 });
             } else {
@@ -303,6 +326,32 @@ $(document).ready(function() {
                 file.val('');
             }
         }
+    });
+
+    $(document).on('click', 'a.doc_remove', function() {
+        var url = new URL(window.location.href);
+        var packID = url.searchParams.get('selected_package');
+
+        var file = $(this).next().val();
+        $(this).closest('p').addClass('removeP');
+
+        $.ajax({
+            type: 'POST',
+            url: '/wp-json/v1/houzez_doc_remove',
+            data: {file: file, packID: packID},
+            success: function(result) {
+                if (result == 'success') {
+                    $('.removeP').remove();
+
+                    var count = $('.doc_content div').children().length;
+                    
+                    $('.doc_content>p').text('');
+                    if (count > 0) {
+                        $('.doc_content>p').text('List Encrypted files (' + count + ' of 5)');
+                    }
+                }
+            }
+        });
     });
 
     $('.payment_option').click(function() {

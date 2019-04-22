@@ -44,7 +44,7 @@ $enable_googlepay = houzez_option('enable_googlepay');
             </div>
         </div>
         <div class="method-type">
-            <img src="<?php echo get_template_directory_uri(); ?>/images/paypal-icon.jpg" alt="paypal">
+            <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/paypal-icon.png" alt="paypal">
         </div>
     </div>
     <?php } ?>
@@ -55,13 +55,13 @@ $enable_googlepay = houzez_option('enable_googlepay');
             <div class="radio">
                 <label>
                     <input type="radio" class="payment-stripe" name="houzez_payment_type" value="stripe">
-                    <?php esc_html_e( 'Stripe', 'houzez'); ?>
+                    <?php esc_html_e( 'Pay by Credit Card', 'houzez'); ?>
                 </label>
                 <?php houzez_stripe_payment_membership( $price, $title ); ?>
             </div>
         </div>
         <div class="method-type">
-            <img src="<?php echo get_template_directory_uri(); ?>/images/stripe-icon.jpg" alt="stripe">
+            <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/credit-card-icon.png" alt="credit card">
         </div>
     </div>
     <?php } ?>
@@ -80,22 +80,6 @@ $enable_googlepay = houzez_option('enable_googlepay');
                 <img src="<?php echo get_template_directory_uri(); ?>/images/2checkout.jpg" alt="2checkout">
             </div>
         </div>
-    <?php } ?>
-
-    <?php if( $enable_wireTransfer != 0 ) { ?>
-    <div class="method-row">
-        <div class="method-select">
-            <div class="radio">
-                <label>
-                    <input type="radio" name="houzez_payment_type" value="direct_pay">
-                    <?php esc_html_e( 'Direct Bank Transfer', 'houzez' ); ?>
-                </label>
-            </div>
-        </div>
-        <div class="method-type method-description">
-            <p> <?php esc_html_e( 'Make your payment direct into our bank account. Please use order ID as the payment reference', 'houzez' ); ?> </p>
-        </div>
-    </div>
     <?php } ?>
 
     <?php if( $enable_bitcoin != 0 ) { ?>

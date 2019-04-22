@@ -1,4 +1,12 @@
 <?php
+function register_my_session(){
+    if( ! session_id() ) {
+        session_start();
+    }
+}
+
+add_action('init', 'register_my_session');
+
 add_action('admin_head', 'custom_styles');
 function custom_styles() {
   echo '<style>
@@ -613,11 +621,6 @@ function register_api() {
       'callback' => 'houzez_map_search',
     ));
 
-    register_rest_route( 'v1', '/houzez_map_search', array(
-      'methods' => 'GET',
-      'callback' => 'houzez_map_search',
-    ));
-
     register_rest_route( 'v1', '/houzez_map_listing', array(
       'methods' => 'POST',
       'callback' => 'houzez_map_listing',
@@ -636,6 +639,11 @@ function register_api() {
     register_rest_route( 'v1', '/houzez_doc_upload', array(
       'methods' => 'POST',
       'callback' => 'houzez_doc_upload',
+    ));
+
+    register_rest_route( 'v1', '/houzez_doc_remove', array(
+      'methods' => 'POST',
+      'callback' => 'houzez_doc_remove',
     ));
 }
 
@@ -1222,7 +1230,7 @@ function houzez_map_search() {
         );
     }
 
-    if ( !empty($min_price) && !empty($min_price) ) {
+    if ( !empty($min_price) && !empty($max_price) ) {
         $min_price = doubleval( houzez_clean( $min_price ) );
         $max_price = doubleval( houzez_clean( $max_price ) );
 
@@ -1251,7 +1259,7 @@ function houzez_map_search() {
     $wp_query = new WP_Query( $search_query );
 
     if ( $wp_query->have_posts() ) {
-        while ( $wp_query->have_posts() ) : $wp_query->the_post();     
+        while ( $wp_query->have_posts() ) : $wp_query->the_post();
             $week = get_post_meta(get_the_ID(), 'fave_week', true);
             $featured = get_post_meta(get_the_ID(), 'fave_featured', true);
 
@@ -1287,8 +1295,6 @@ function houzez_map_search() {
             }
         endwhile;
         wp_reset_postdata();
-    } else {
-       
     }
 
     $result = array(
@@ -1410,6 +1416,45 @@ function houzez_map_listing() {
 
     return $result;
 }
+
+/* Add metaboxes to property city */
+function houzez_get_all_region( $selected = '' ) {
+    $taxonomy       =   'property_region';
+    $args = array(
+        'hide_empty'    => false
+    );
+    $tax_terms      =   get_terms($taxonomy,$args);
+    $select_region    =   '';
+
+    foreach ($tax_terms as $tax_term) {
+        $select_region.= '<option value="' . $tax_term->slug.'" ';
+        if($tax_term->slug == $selected){
+            $select_state.= ' selected="selected" ';
+        }
+        $select_region.= ' >' . $tax_term->name . '</option>';
+    }
+    return $select_region;
+}
+
+function houzez_property_city_add_meta_fields() {
+    $houzez_meta = houzez_get_property_city_meta();
+    $all_regions = houzez_get_all_region();
+    ?>
+
+    <div class="form-field">
+        <label><?php _e( 'Which region has this city?', 'houzez' ); ?></label>
+        <select name="fave[parent_state]" class="widefat">
+            <?php echo $all_regions; ?>
+        </select>
+        <p class="description"><?php _e( 'Select region which has this city.', 'houzez' ); ?></p>
+    </div>
+
+
+
+    <?php
+}
+
+add_action( 'property_city_add_form_fields', 'houzez_property_city_add_meta_fields' );
 
 /**
  * Custom taxonomy for custom post type 'Property'
@@ -1933,6 +1978,146 @@ vc_map( array(
         ),
     )
 ) );
+
+/**
+ * Properties sort by features
+ */
+add_action('init', 'remove_parent_theme_shortcodes');
+
+function remove_parent_theme_shortcodes() {
+    remove_shortcode('houzez-properties');
+
+    add_shortcode('houzez-properties', 'houzez_properties_sort');
+}
+
+function houzez_properties_sort($atts, $content = null)
+{
+    extract(shortcode_atts(array(
+        'prop_grid_style' => '',
+        'module_type' => '',
+        'property_type' => '',
+        'property_status' => '',
+        'property_state' => '',
+        'property_city' => '',
+        'property_area' => '',
+        'property_label' => '',
+        'houzez_user_role' => '',
+        'featured_prop' => '',
+        'posts_limit' => '',
+        'sort_by' => '',
+        'offset' => ''
+    ), $atts));
+
+    ob_start();
+    global $paged;
+    if (is_front_page()) {
+        $paged = (get_query_var('page')) ? get_query_var('page') : 1;
+    }
+
+    if( $module_type == "grid_3_cols" ) {
+        $css_classes = "grid-view grid-view-3-col";
+    } elseif( $module_type == "grid_2_cols" ) {
+        $css_classes = "grid-view";
+    } elseif( $module_type == "list" ) {
+        $css_classes = "list-view";
+    } else {
+        $css_classes = "grid-view grid-view-3-col";
+    }
+
+    
+    $the_query = houzez_data_source::get_wp_query($atts, $paged);
+    
+    if ($the_query->have_posts()) :
+        $arr = array();
+        $featured = array();
+        $week = array();
+        $normal = array();
+
+        while ($the_query->have_posts()) : $the_query->the_post();
+            $prop_featured = get_post_meta( get_the_ID(), 'fave_featured', true );
+            $prop_week     = get_post_meta( get_the_ID(), 'fave_week', true );
+
+            if ($prop_featured == 1)
+                array_push($featured, get_the_ID());
+            else if ($prop_week == 1)
+                array_push($week, get_the_ID());
+            else
+                array_push($normal, get_the_ID());
+        endwhile;
+
+        $arr = array_merge($week, $featured, $normal);
+        
+        wp_reset_postdata();
+    endif;
+
+    $args = array('post_type' => 'property', 'post__in'=> $arr, 'orderby'=>'post__in');
+
+    $the_query = new WP_Query( $args );
+
+    ?>
+    <div id="properties_module_section" class="houzez-module property-item-module">
+        <div id="properties_module_container">
+            <div id="module_properties" class="property-listing <?php echo esc_attr($css_classes);?>">
+
+                <?php
+                if( $prop_grid_style == "v_2" ) {
+                    if ($the_query->have_posts()) :
+                        while ($the_query->have_posts()) : $the_query->the_post();
+
+                            get_template_part('template-parts/property-for-listing-v2');
+
+                        endwhile;
+                        wp_reset_postdata();
+                    else:
+                        get_template_part('template-parts/property', 'none');
+                    endif;
+                } else {
+                    if ($the_query->have_posts()) :
+                        while ($the_query->have_posts()) : $the_query->the_post();
+
+                            get_template_part('template-parts/property-for-listing');
+
+                        endwhile;
+                        wp_reset_postdata();
+                    else:
+                        get_template_part('template-parts/property', 'none');
+                    endif;
+                }
+                ?>
+
+            </div>
+            <!-- end container-content -->
+        </div>
+        <div class="clearfix"></div>
+        <div id="fave-pagination-loadmore" class="pagination-wrap fave-load-more">
+            <div class="pagination">
+                <a 
+                data-paged="2" 
+                data-prop-limit="<?php esc_attr_e($posts_limit); ?>" 
+                data-grid-style="<?php esc_attr_e($prop_grid_style); ?>" 
+                data-type="<?php esc_attr_e($property_type); ?>" 
+                data-status="<?php esc_attr_e($property_status); ?>" 
+                data-state="<?php esc_attr_e($property_state); ?>" 
+                data-city="<?php esc_attr_e($property_city); ?>" 
+                data-area="<?php esc_attr_e($property_area); ?>" 
+                data-label="<?php esc_attr_e($property_label); ?>" 
+                data-user-role="<?php esc_attr_e($houzez_user_role); ?>" 
+                data-featured-prop="<?php esc_attr_e($featured_prop); ?>" 
+                data-offset="<?php esc_attr_e($offset); ?>"
+                data-sortby="<?php esc_attr_e($sort_by); ?>"
+                href="#">
+                    <?php esc_html_e('Load More', 'houzez'); ?>     
+                </a>               
+            </div>
+        </div>
+    </div>
+
+    <?php
+    $result = ob_get_contents();
+    ob_end_clean();
+    return $result;
+
+}
 
 /**
  *  Add Regions to Houzez Grids
@@ -2680,11 +2865,13 @@ if( !function_exists('houzez_remove_payment_option') ):
 endif;
 
 /**
- * Encrypt Document Upload
+ * Encrypt Document Upload & Remove
  */
 
 function houzez_doc_upload() {
     $filename = $_FILES['file']['name'];
+    $title = $_POST['title'];
+    $packID = $_POST['packID'];
 
     $name = pathinfo($filename, PATHINFO_FILENAME);
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
@@ -2703,15 +2890,35 @@ function houzez_doc_upload() {
             $increment++;
         }
 
-        $basename = $dir . $name . '_' . $increment . '.' . $extension;
-    } else {
-        $basename = $dir . $filename;
+        $filename = $name . '_' . $increment . '.' . $extension;
     }
 
+    $basename = $dir . $filename;
+
     if (move_uploaded_file($_FILES['file']['tmp_name'], $basename)) {
-        return "success";
+        if (!is_array($_SESSION['doc']))
+            $_SESSION['doc'] = array();
+
+        $_SESSION['doc'][$packID][$filename] = $title;
+
+        return $filename;
     } else {
         return "fail";
+    }
+}
+
+function houzez_doc_remove() {
+    $upload = wp_upload_dir();
+    $dir = $upload['basedir'] . '/../../Documents/';
+    $file = $_POST['file'];
+    $packID = $_POST['packID'];
+
+    if (unlink($dir . $file)) {
+        unset($_SESSION['doc'][$packID][$file]);
+
+        return 'success';
+    } else {
+        return 'fail';
     }
 }
 
