@@ -10,6 +10,7 @@ $pack_title = get_the_title( $selected_package_id );
 
 $option = (isset($_GET['option'])) ? $_GET['option'] : 'option1';
 $pack_price = get_post_meta( $selected_package_id, 'fave_payment_' . $option, true );
+$pack_plan = get_post_meta( $selected_package_id, 'fave_plan_' . $option, true );
 
 $terms_conditions = houzez_option('payment_terms_condition');
 $allowed_html_array = array(
@@ -79,7 +80,7 @@ if($enable_paypal != 0 && !isset($_GET['state'])) {
                     <input type="radio" class="payment-stripe" name="houzez_payment_type" value="stripe" <?php echo $checked_stripe;?>>
                     <?php esc_html_e( 'Pay by Credit Card', 'houzez'); ?>
                 </label>
-                <?php houzez_stripe_payment_membership( $pack_price, $pack_title ); ?>
+                <?php houzez_stripe_payment_membership( $pack_plan, $pack_price, $pack_title ); ?>
             </div>
         </div>
         <div class="method-type">

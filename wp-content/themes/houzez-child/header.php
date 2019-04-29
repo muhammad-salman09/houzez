@@ -151,6 +151,7 @@ get_template_part( 'template-parts/mobile-header' );
     if (!is_front_page() && !is_404() &&
         get_page_template_slug() != 'template/submit_property.php' &&
         get_page_template_slug() != 'template/template-payment.php' &&
+        get_page_template_slug() != 'template/template-thankyou.php' &&
         get_page_template_slug() != 'template/user_dashboard_profile.php' &&
         get_page_template_slug() != 'template-document-upload.php' &&
         get_page_template_slug() != 'template-advanced-package.php' &&

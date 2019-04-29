@@ -3,9 +3,35 @@
  * Template Name: Document Upload
  */
 
+if (isset($_GET['file'])) {
+    $filename = 'ftp://' . houzez_option('ftp_username'). ':' . houzez_option('ftp_password') . 
+                '@' . houzez_option('ftp_url'). '/' . $_GET['file'];  
+
+    $contents = file_get_contents($filename);
+
+    header('Content-Type: application/pdf');
+    header('Content-Length: ' . strlen($contents));
+    header('Content-Disposition: inline; filename="' . $_GET['file'] . '"');
+    header('Cache-Control: private, max-age=0, must-revalidate');
+    header('Pragma: public');
+    ini_set('zlib.output_compression','0');
+
+    die($contents);
+}
+
 global $houzez_local, $current_user;
 
 wp_get_current_user();
+
+$userID = $current_user->ID;
+$docs = array();
+
+for ($i = 1; $i < 6; $i++) {
+    $doc = get_user_meta($userID, 'package_doc' . $i, true);
+
+    if ($doc != '')
+        array_push($docs, $doc);
+}
 
 $paid_submission_type = esc_html ( houzez_option('enable_paid_submission','') );
 if( $paid_submission_type != 'membership' ) {
@@ -75,25 +101,22 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                         <div class="doc_content container">
                         	<p>
                              <?php
-                                if (!is_null($_SESSION['doc'][$pack_id]) && sizeof($_SESSION['doc'][$pack_id]) > 0)
-                                    echo 'List Encrypted files (' . sizeof($_SESSION['doc']) . ' of 5)';
+                                if (sizeof($docs) > 0)
+                                    echo 'List Encrypted files (' . sizeof($docs) . ' of 5)';
                              ?>   
                             </p>
                         	<div>
                             <?php
-                                if (!is_null($_SESSION['doc'][$pack_id])) {
-                                    foreach ($_SESSION['doc'][$pack_id] as $key => $value) {
+                                foreach ($docs as $doc) {
+                                    $val = explode('/', $doc);
                             ?>
                                 <p>
-                                    <span><?php echo $value; ?></span>&nbsp;
-                                    ( <a href="../Documents/<?php echo $key; ?>" target="_blank">
-                                        View
-                                    </a> /&nbsp;
+                                    <span><?php echo $val[0]; ?></span>&nbsp;
+                                    ( <a href="javascript:void(0);" class="doc_view">View</a> /&nbsp;
                                     <a href="javascript:void(0);" class="doc_remove">Remove</a> )
-                                    <input type="hidden" value="<?php echo $key; ?>" />
+                                    <input type="hidden" value="<?php echo $val[1]; ?>" />
                                 </p>
                             <?php
-                                    }
                                 }
                             ?>
                             </div>

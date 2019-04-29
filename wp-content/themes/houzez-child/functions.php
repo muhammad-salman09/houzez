@@ -20,9 +20,6 @@ function custom_styles() {
     .payment_option {
         margin-top: 25px;
     }
-    .payment {
-        width: 50%;
-    }
     .payment:not(.selected) {
         display: none;
     }
@@ -655,6 +652,51 @@ function update_redux_options($sections){
     $i = 1;
     $index = 0;
     while ($index == 0) {
+        if ($sections[$i]['id'] == 'property-lightbox') {
+            $index = $i;
+        }
+
+        $i++;
+    }
+
+    for ($i = sizeof($sections); $i > $index; $i--) {
+        $sections[$i + 1] = $sections[$i];
+    }
+
+    $sections[$index + 1] = array(
+        'title' => 'Document Upload',
+        'id' => 'document-upload',
+        'desc' => '',
+        'icon' => 'el-icon-cog el-icon-small',
+        'priority' => $index + 1,
+        'fields' => array(
+            array(
+                'id' => 'ftp_url',
+                'type' => 'text',
+                'title' => 'FTP URL',
+                'desc' => '',
+                'section_id' => 'document-upload'
+            ),
+            array(
+                'id' => 'ftp_username',
+                'type' => 'text',
+                'title' => 'FTP User Name',
+                'desc' => '',
+                'section_id' => 'document-upload'
+            ),
+            array(
+                'id' => 'ftp_password',
+                'type' => 'text',
+                'title' => 'FTP User Password',
+                'desc' => '',
+                'section_id' => 'document-upload'
+            ),
+        )
+    );
+
+    $i = 1;
+    $index = 0;
+    while ($index == 0) {
         if ($sections[$i]['id'] == 'mem-wire-payment') {
             $index = $i;
         }
@@ -844,47 +886,59 @@ function update_custom_metabox($meta_boxes) {
     for ($j = 0; $j < sizeof($meta_boxes); $j++) {
         // Package Creation
         if ($meta_boxes[$j]['pages'][0] == 'houzez_packages') {
-            for ($i = sizeof($meta_boxes[$j]['fields']) + 12; $i > 2; $i--) {
-                if ($i > 14) {
-                    $meta_boxes[$j]['fields'][$i] = $meta_boxes[$j]['fields'][$i - 13];
+            for ($i = sizeof($meta_boxes[$j]['fields']) + 16; $i > 2; $i--) {
+                if ($i > 18) {
+                    $meta_boxes[$j]['fields'][$i] = $meta_boxes[$j]['fields'][$i - 17];
                 } else {
-                    $index = floor($i / 3);
+                    $index = floor($i / 4);
 
                     switch ($i) {
                         case 3:
-                        case 6:
-                        case 9:
-                        case 12:
+                        case 7:
+                        case 11:
+                        case 15:
                             $meta_boxes[$j]['fields'][$i] = array(
                                 'name' => 'Payment Option:',
                                 'type' => 'custom_html',
-                                'std' => '<span>' . $options[$index - 1] . '</span>',
+                                'std' => '<span>' . $options[$index] . '</span>',
                                 'columns' => 4
                             );
                             break;
                         case 4:
-                        case 7:
-                        case 10:
-                        case 13:
+                        case 8:
+                        case 12:
+                        case 16:
                             $meta_boxes[$j]['fields'][$i] = array(
                                 'id' => 'fave_payment_option' . $index,
                                 'name' => 'Amount',
                                 'type' => 'number',
                                 'std' => '',
-                                'columns' => 4
+                                'columns' => 3
                             );
                             break;
                         case 5:
-                        case 8:
-                        case 11:
+                        case 9:
+                        case 13:
+                        case 17:
+                            $meta_boxes[$j]['fields'][$i] = array(
+                                'id' => 'fave_plan_option' . $index,
+                                'name' => 'Plan ID',
+                                'type' => 'text',
+                                'std' => '',
+                                'columns' => 3
+                            );
+                            break;
+                        case 6:
+                        case 10:
                         case 14:
+                        case 18:
                             $meta_boxes[$j]['fields'][$i] = array(
                                 'id' => 'fave_payment_btn' . $index,
                                 'name' => '',
                                 'type' => 'button',
                                 'std' => 'Remove',
                                 'class' => 'payment_option',
-                                'columns' => 3
+                                'columns' => 2
                             );
                             break;
                     }
@@ -914,7 +968,7 @@ function update_custom_metabox($meta_boxes) {
 
             ksort($meta_boxes[$j]['fields']);
 
-            $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields']) - 1]['columns'] = 6;
+            $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields']) - 1]['columns'] = 12;
             $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields'])] = array(
                 'id' => 'fave_encrypt_doc',
                 'name' => 'Encryption and Document Storage',
@@ -998,8 +1052,8 @@ if( !function_exists('houzez_advance_search_update') ) {
         $hide_empty = false;
         ?>
 
-        <input type="hidden" id="min_price" value="1000" />
-        <input type="hidden" id="max_price" value="500000" />
+        <input type="hidden" id="min_price" value="<?php echo houzez_option('advanced_search_widget_min_price'); ?>" />
+        <input type="hidden" id="max_price" value="<?php echo houzez_option('advanced_search_widget_max_price'); ?>" />
 
         <div class="advanced-search advanced-search-module houzez-adv-price-range front">
             <h3 class="advance-title"><?php echo esc_html__('Search Properties for Sale'); ?></h3>
@@ -1258,41 +1312,66 @@ function houzez_map_search() {
 
     $wp_query = new WP_Query( $search_query );
 
+    if ($wp_query->have_posts()) :
+        $arr = array();
+        $featured = array();
+        $week = array();
+        $normal = array();
+
+        while ($wp_query->have_posts()) : $wp_query->the_post();
+            $prop_featured = get_post_meta( get_the_ID(), 'fave_featured', true );
+            $prop_week     = get_post_meta( get_the_ID(), 'fave_week', true );
+
+            if ($prop_featured == 1)
+                array_push($featured, get_the_ID());
+            else if ($prop_week == 1)
+                array_push($week, get_the_ID());
+            else
+                array_push($normal, get_the_ID());
+        endwhile;
+
+        $arr = array_merge($week, $featured, $normal);
+        
+        wp_reset_postdata();
+    endif;
+
+    if (sizeof($arr) > 0) {
+        $args = array('post_type' => 'property', 'post__in'=> $arr, 'orderby'=>'post__in');
+
+        $wp_query = new WP_Query( $args );
+    }
+
     if ( $wp_query->have_posts() ) {
         while ( $wp_query->have_posts() ) : $wp_query->the_post();
-            $week = get_post_meta(get_the_ID(), 'fave_week', true);
-            $featured = get_post_meta(get_the_ID(), 'fave_featured', true);
 
-            if ($week == '1' || $featured == '1') {
-                $location = get_post_meta(get_the_ID(), 'fave_property_location', true);
-                array_push($location_arr, $location);
+            $location = get_post_meta(get_the_ID(), 'fave_property_location', true);
+            array_push($location_arr, $location);
 
-                $price = get_post_meta(get_the_ID(), 'fave_property_price', true);
-                $price = number_format ( $price , 0, '', ',' );
+            $price = get_post_meta(get_the_ID(), 'fave_property_price', true);
+            $price = number_format ( $price , 0, '', ',' );
 
-                $currency = get_post_meta(get_the_ID(), 'fave_currency', true);
+            $currency = get_post_meta(get_the_ID(), 'fave_currency', true);
 
-                switch ($currency) {
-                    case 'EUR':
-                        $price = '€' . $price;
-                        break;
-                    case 'USD':
-                        $price = '$' . $price;
-                        break;
-                    case 'GBP':
-                        $price = '£' . $price;
-                        break;
-                    case 'XBT':
-                        $price = '฿' . $price;
-                        break;
-                    case '':
-                        $price = '€' . $price;
-                        break;
-                }
-
-                array_push($price_arr, $price);
-                array_push($id_arr, get_the_ID());
+            switch ($currency) {
+                case 'EUR':
+                    $price = '€' . $price;
+                    break;
+                case 'USD':
+                    $price = '$' . $price;
+                    break;
+                case 'GBP':
+                    $price = '£' . $price;
+                    break;
+                case 'XBT':
+                    $price = '฿' . $price;
+                    break;
+                case '':
+                    $price = '€' . $price;
+                    break;
             }
+
+            array_push($price_arr, $price);
+            array_push($id_arr, get_the_ID());
         endwhile;
         wp_reset_postdata();
     }
@@ -2869,57 +2948,94 @@ endif;
  */
 
 function houzez_doc_upload() {
+    $userID = $_POST['userID'];
+
     $filename = $_FILES['file']['name'];
     $title = $_POST['title'];
-    $packID = $_POST['packID'];
 
     $name = pathinfo($filename, PATHINFO_FILENAME);
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
 
     $increment = '';
-
     $basename = '';
 
-    $upload = wp_upload_dir();
-    $dir = $upload['basedir'] . '/../../Documents/';
+    $ftp_server = houzez_option('ftp_url');
+    $conn_id = ftp_connect($ftp_server);
+    ftp_login($conn_id, houzez_option('ftp_username'), houzez_option('ftp_password'));
 
-    if (file_exists($dir . $filename)) {
+    $path = "/";
+    $check_file_exist = $path . $filename;
+    $contents_on_server = ftp_nlist($conn_id, $path);
+
+    if (in_array($check_file_exist, $contents_on_server)) {
         $increment = 1;
 
-        while(file_exists($dir . $name . '_' . $increment . '.' . $extension)) {
+        while (in_array($path . $name . '_' . $increment . '.' . $extension, $contents_on_server)) {
             $increment++;
         }
 
         $filename = $name . '_' . $increment . '.' . $extension;
     }
 
-    $basename = $dir . $filename;
+    $basename = $path . $filename;
 
-    if (move_uploaded_file($_FILES['file']['tmp_name'], $basename)) {
-        if (!is_array($_SESSION['doc']))
-            $_SESSION['doc'] = array();
+    $result = '';
 
-        $_SESSION['doc'][$packID][$filename] = $title;
+    if (ftp_put($conn_id, $basename, $_FILES['file']['tmp_name'], FTP_ASCII)) {
+        $flag = true;
+        $i = 1;
 
-        return $filename;
+        while ($flag) {
+            $doc = get_user_meta($userID, 'package_doc' . $i, true);
+
+            if ($doc == '') {
+                add_user_meta($userID, 'package_doc' . $i, $title . '/' . $filename);
+                $flag = false;
+            }
+
+            $i++;
+        }
+
+        $result = $filename;
     } else {
-        return "fail";
+        $result = 'fail';
     }
+
+    ftp_close($conn_id);
+
+    return $result;
 }
 
 function houzez_doc_remove() {
-    $upload = wp_upload_dir();
-    $dir = $upload['basedir'] . '/../../Documents/';
-    $file = $_POST['file'];
-    $packID = $_POST['packID'];
+    $userID = $_POST['userID'];
 
-    if (unlink($dir . $file)) {
-        unset($_SESSION['doc'][$packID][$file]);
+    $title = $_POST['title'];
 
-        return 'success';
+    $path = '/';
+    $filename = $_POST['file'];
+
+    $ftp_server = houzez_option('ftp_url');
+    $conn_id = ftp_connect($ftp_server);
+    ftp_login($conn_id, houzez_option('ftp_username'), houzez_option('ftp_password'));
+
+    $result = '';
+
+    if (ftp_delete($conn_id, $path . $filename)) {
+        for ($i = 1; $i < 6; $i++) {
+            $doc = get_user_meta($userID, 'package_doc' . $i, true);
+
+            if ($doc == $title . $path . $filename)
+                delete_user_meta($userID, 'package_doc' . $i);
+        }
+
+        $result = 'success';
     } else {
-        return 'fail';
+        $result = 'fail';
     }
+
+    ftp_close($conn_id);
+
+    return $result;
 }
 
 /**
@@ -2998,7 +3114,7 @@ function houzez_get_user_current_package( $user_id ) {
 /**
  * Membership Package Payment (Bitcoin, GooglePay, ApplePay)
  */
-function houzez_stripe_payment_membership( $pack_price, $title ) {
+function houzez_stripe_payment_membership( $pack_plan, $pack_price, $title ) {
 
     require_once( get_template_directory() . '/framework/stripe-php/init.php' );
     $stripe_secret_key = houzez_option('stripe_secret_key');
@@ -3009,6 +3125,11 @@ function houzez_stripe_payment_membership( $pack_price, $title ) {
     $userID = $current_user->ID;
     $user_login = $current_user->user_login;
     $user_email = get_the_author_meta('user_email', $userID);
+
+    if (isset($_GET['selected_package']))
+        $pack_id = $_GET['selected_package'];
+
+    update_post_meta($pack_id, 'fave_package_stripe_id', $pack_plan);
 
     $stripe = array(
         "secret_key" => $stripe_secret_key,
@@ -3036,6 +3157,7 @@ function houzez_stripe_payment_membership( $pack_price, $title ) {
             data-description="'.$title.' '.__('Package Payment','houzez').'">
             </script>
         </div>
+        <input type="hidden" id="pack_id" name="pack_id" value="' . $pack_id . '">
         <input type="hidden" name="userID" value="' . $userID . '">
         <input type="hidden" id="pay_ammout" name="pay_ammout" value="' . $package_price_for_stripe . '">';
 }

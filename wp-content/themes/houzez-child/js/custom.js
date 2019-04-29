@@ -279,9 +279,6 @@ $(document).ready(function() {
         var file = $('#doc_file');
         var fileObject = file[0].files[0];
 
-        var url = new URL(window.location.href);
-        var packID = url.searchParams.get('selected_package');
-
         if (count == 4) {
             $(this).attr('disabled', 'disabled');
             $('#doc_title').attr('disabled', 'disabled');
@@ -295,7 +292,7 @@ $(document).ready(function() {
             if (doc_size < 10 && doc_type == 'application/pdf') {
                 data.append('file', fileObject);
                 data.append('title', title);
-                data.append('packID', packID);
+                data.append('userID', HOUZEZ_ajaxcalls_vars.user_id);
 
                 $.ajax({
                     type: 'POST',
@@ -310,7 +307,7 @@ $(document).ready(function() {
                             $('.doc_content>p').text('List Encrypted files (' + count + ' of 5)');
 
                             var txt = '<p><span>' + title + '</span> ';
-                            txt += '( <a href="../Documents/' + result + '" target="_blank">View</a> / ';
+                            txt += '( <a href="javascript:void(0);" class="doc_view">View</a> / ';
                             txt += '<a href="javascript:void(0);" class="doc_remove">Remove</a> )';
                             txt += '<input type="hidden" value="' + result + '" /></p>';
 
@@ -328,17 +325,23 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', 'a.doc_remove', function() {
+    $(document).on('click', 'a.doc_view', function() {
+        var file = $(this).next().next().val();
         var url = new URL(window.location.href);
-        var packID = url.searchParams.get('selected_package');
 
+        window.open(url + '&file=' + file,'_blank');
+    });
+
+    $(document).on('click', 'a.doc_remove', function() {
+        var title = $(this).closest('p').find('span').text();
         var file = $(this).next().val();
+
         $(this).closest('p').addClass('removeP');
 
         $.ajax({
             type: 'POST',
             url: '/wp-json/v1/houzez_doc_remove',
-            data: {file: file, packID: packID},
+            data: {title: title, file: file, userID: HOUZEZ_ajaxcalls_vars.user_id},
             success: function(result) {
                 if (result == 'success') {
                     $('.removeP').remove();
