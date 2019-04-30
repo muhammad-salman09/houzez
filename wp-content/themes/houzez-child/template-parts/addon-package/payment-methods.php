@@ -57,7 +57,7 @@ $enable_googlepay = houzez_option('enable_googlepay');
                     <input type="radio" class="payment-stripe" name="houzez_payment_type" value="stripe">
                     <?php esc_html_e( 'Pay by Credit Card', 'houzez'); ?>
                 </label>
-                <?php houzez_stripe_payment_membership( $price, $title ); ?>
+                <?php houzez_stripe_payment_membership( '', $price, $title ); ?>
             </div>
         </div>
         <div class="method-type">

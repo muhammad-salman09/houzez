@@ -50,7 +50,7 @@ $(document).ready(function() {
     min_price = parseInt($('#min_price').val());
     max_price = parseInt($('#max_price').val());
 
-    if (min_price != '' && max_price != '') {
+    if (!isNaN(min_price) && !isNaN(max_price) && min_price != '' && max_price != '') {
         $(".price-range").slider({
             range: true,
             min: 1000,
