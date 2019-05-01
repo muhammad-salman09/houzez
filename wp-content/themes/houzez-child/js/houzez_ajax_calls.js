@@ -1344,6 +1344,7 @@ jQuery(document).ready(function ($) {
         } // end houzez_login
 
         var houzez_register = function ( currnt ) {
+            var to_url = $('#to_url').val();
 
             var $form = currnt.parents('form');
             var $messages = currnt.parents('.class-for-register-msg').find('.houzez_messages_register');
@@ -1360,7 +1361,10 @@ jQuery(document).ready(function ($) {
                     if( response.success ) {
                         $messages.empty().append('<p class="success text-success"><i class="fa fa-check"></i> '+ response.msg +'</p>');
                         
-                        window.location.href = "https://" + window.location.hostname + '/my-profile';
+                        if (to_url == '')
+                            window.location.href = "https://" + window.location.hostname + '/my-profile';
+                        else
+                            window.location.href = to_url;
                     } else {
                         $messages.empty().append('<p class="error text-danger"><i class="fa fa-close"></i> '+ response.msg +'</p>');
                     }

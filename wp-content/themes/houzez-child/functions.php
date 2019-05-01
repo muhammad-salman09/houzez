@@ -3049,6 +3049,20 @@ function houzez_doc_share() {
     $url = $_POST['url'];
     $mail = $_POST['mail'];
 
+    $users = get_users();
+
+    $flag = false;
+
+    foreach ($users as $user) {
+        if ($user->user_email == $mail) {
+            $flag = true;
+            $url .= '&uname=' . $user->display_name;
+        }
+    }
+
+    if (!$flag)
+        $url .= '&sign=required';
+
     $headers = "Reply-To: <staging@unfstaging.com>\r\n"; 
     $headers .= "Return-Path: <staging@unfstaging.com>\r\n";
     $headers .= "From: <staging@unfstaging.comm>\r\n";

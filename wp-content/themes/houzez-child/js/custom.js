@@ -41,8 +41,26 @@ $(document).ready(function() {
     if (login && login == 'required') {
         $('.header-right .user a').click();
         $('body').addClass('modal-open');
+
         $('#pop-login').addClass('in');
         $('#pop-login').css('display', 'block');
+    }
+
+    var url = new URL(window.location.href);
+    var sign = url.searchParams.get('sign');
+
+    if (sign && sign == 'required') {
+        $('.header-right .user a').click();
+        $('body').addClass('modal-open');
+
+        $('#pop-login').addClass('in');
+        $('#pop-login').css('display', 'block');
+
+        $('#pop-login .login-tabs li').removeClass('active');
+        $('#pop-login .login-tabs .houzez_register').addClass('active');
+
+        $('#pop-login .tab-content .tab-pane').removeClass('in active');
+        $('#pop-login .tab-content .tab-pane:last-child').addClass('in active');
     }
 
     var min_price = '';

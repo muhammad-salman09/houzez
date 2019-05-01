@@ -3,12 +3,23 @@
  * Template Name: Document Upload
  */
 
-global $houzez_local;
+global $houzez_local, $current_user;
+
+wp_get_current_user();
+$userID = $current_user->ID;
 
 $listing_id = '';
 
-if (isset($_GET['listing_id']) && $_GET['listing_id'] != '') {
+if (isset($_GET['listing_id']) && $_GET['listing_id'] != '' &&
+    ($userID != 0 || (isset($_GET['uname']) && $_GET['uname'] != ''))) {
 	$listing_id = $_GET['listing_id'];
+} else if (isset($_GET['sign']) && $_GET['sign'] == 'required') {
+    $current_url = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $to_url = urlencode(substr($current_url, 0, strlen($current_url) - 14));
+
+    $url = '/?sign=required&to=' . $to_url;
+
+    wp_redirect(home_url() . $url);
 } else {
 	wp_redirect( home_url() );
 }
