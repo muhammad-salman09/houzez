@@ -75,13 +75,8 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                     $pack_payment_option4 = get_post_meta( get_the_ID(), 'fave_payment_option4', true );
                     
                     $process_link = '';
-                    if ($pack_encrypt_doc == 1) {
-                        $upload_page_link = houzez_get_template_link('template-document-upload.php');
-                        $process_link = add_query_arg( 'selected_package', get_the_ID(), $upload_page_link );
-                    } else {
-                        $payment_page_link = houzez_get_template_link('template-advanced-payment.php');
-                        $process_link = add_query_arg( 'selected_package', get_the_ID(), $payment_page_link );
-                    }
+                    $payment_page_link = houzez_get_template_link('template-advanced-payment.php');
+                    $process_link = add_query_arg( 'selected_package', get_the_ID(), $payment_page_link );
 
 
                     if( $i == 1 && $total_packages == 2 ) {

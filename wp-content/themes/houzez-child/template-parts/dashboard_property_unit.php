@@ -40,6 +40,9 @@ $add_floor_plans_link = add_query_arg( 'listing_id', $post_id, $add_floor_plans 
 $add_multiunits = houzez_get_template_link_2('template/user_dashboard_multi_units.php');
 $add_multiunits_link = add_query_arg( 'listing_id', $post_id, $add_multiunits );
 
+$upload_link = houzez_get_template_link('template-document-upload.php');
+$upload_link = add_query_arg( 'listing_id', $post_id, $upload_link );
+
 $dashboard_package = houzez_get_template_link_2('template-user-dashboard-package.php');
 
 if( $property_status == 'publish' ) {
@@ -149,7 +152,7 @@ if( $property_status_text != 'expired' ) {
                             <?php } ?>
 
                         <?php } ?>
-
+                        <li><a href="<?php echo esc_url($upload_link); ?>"><i class="fa fa-upload"></i> <?php esc_html_e('Document Upload', 'houzez'); ?></a></li>
                     </ul>
                 </div>
                 <?php

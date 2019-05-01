@@ -638,6 +638,11 @@ function register_api() {
       'callback' => 'houzez_doc_upload',
     ));
 
+    register_rest_route( 'v1', '/houzez_doc_share', array(
+      'methods' => 'POST',
+      'callback' => 'houzez_doc_share',
+    ));
+
     register_rest_route( 'v1', '/houzez_doc_remove', array(
       'methods' => 'POST',
       'callback' => 'houzez_doc_remove',
@@ -2948,7 +2953,7 @@ endif;
  */
 
 function houzez_doc_upload() {
-    $userID = $_POST['userID'];
+    $post_id = $_POST['post_id'];
 
     $filename = $_FILES['file']['name'];
     $title = $_POST['title'];
@@ -2963,7 +2968,9 @@ function houzez_doc_upload() {
     $conn_id = ftp_connect($ftp_server);
     ftp_login($conn_id, houzez_option('ftp_username'), houzez_option('ftp_password'));
 
-    $path = "/";
+    ftp_mkdir($conn_id, $post_id);
+
+    $path = '/' . $post_id . '/';
     $check_file_exist = $path . $filename;
     $contents_on_server = ftp_nlist($conn_id, $path);
 
@@ -2986,10 +2993,10 @@ function houzez_doc_upload() {
         $i = 1;
 
         while ($flag) {
-            $doc = get_user_meta($userID, 'package_doc' . $i, true);
+            $doc = get_post_meta($post_id, 'doc' . $i, true);
 
             if ($doc == '') {
-                add_user_meta($userID, 'package_doc' . $i, $title . '/' . $filename);
+                add_post_meta($post_id, 'doc' . $i, $title . '/' . $filename);
                 $flag = false;
             }
 
@@ -3007,11 +3014,11 @@ function houzez_doc_upload() {
 }
 
 function houzez_doc_remove() {
-    $userID = $_POST['userID'];
+    $post_id = $_POST['post_id'];
 
     $title = $_POST['title'];
 
-    $path = '/';
+    $path = '/' . $post_id . '/';
     $filename = $_POST['file'];
 
     $ftp_server = houzez_option('ftp_url');
@@ -3022,10 +3029,10 @@ function houzez_doc_remove() {
 
     if (ftp_delete($conn_id, $path . $filename)) {
         for ($i = 1; $i < 6; $i++) {
-            $doc = get_user_meta($userID, 'package_doc' . $i, true);
+            $doc = get_post_meta($post_id, 'doc' . $i, true);
 
-            if ($doc == $title . $path . $filename)
-                delete_user_meta($userID, 'package_doc' . $i);
+            if ($doc == $title . '/' . $filename)
+                delete_post_meta($post_id, 'doc' . $i);
         }
 
         $result = 'success';
@@ -3036,6 +3043,23 @@ function houzez_doc_remove() {
     ftp_close($conn_id);
 
     return $result;
+}
+
+function houzez_doc_share() {
+    $url = $_POST['url'];
+    $mail = $_POST['mail'];
+
+    $headers = "Reply-To: <staging@unfstaging.com>\r\n"; 
+    $headers .= "Return-Path: <staging@unfstaging.com>\r\n";
+    $headers .= "From: <staging@unfstaging.comm>\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-type: text/plain; charset=iso-8859-1\r\n";
+    $headers .= "X-Priority: 3\r\n";
+    $headers .= "X-Mailer: PHP". phpversion() ."\r\n";
+
+    wp_mail($mail, 'Affordable Real Estate', $url, $headers);
+
+    return true;
 }
 
 /**

@@ -3,9 +3,19 @@
  * Template Name: Document Upload
  */
 
+global $houzez_local;
+
+$listing_id = '';
+
+if (isset($_GET['listing_id']) && $_GET['listing_id'] != '') {
+	$listing_id = $_GET['listing_id'];
+} else {
+	wp_redirect( home_url() );
+}
+
 if (isset($_GET['file'])) {
     $filename = 'ftp://' . houzez_option('ftp_username'). ':' . houzez_option('ftp_password') . 
-                '@' . houzez_option('ftp_url'). '/' . $_GET['file'];  
+                '@' . houzez_option('ftp_url'). '/' . $listing_id . '/' . $_GET['file'];  
 
     $contents = file_get_contents($filename);
 
@@ -19,39 +29,14 @@ if (isset($_GET['file'])) {
     die($contents);
 }
 
-global $houzez_local, $current_user;
-
-wp_get_current_user();
-
-$userID = $current_user->ID;
 $docs = array();
 
 for ($i = 1; $i < 6; $i++) {
-    $doc = get_user_meta($userID, 'package_doc' . $i, true);
+    $doc = get_post_meta($listing_id, 'doc' . $i, true);
 
     if ($doc != '')
         array_push($docs, $doc);
 }
-
-$paid_submission_type = esc_html ( houzez_option('enable_paid_submission','') );
-if( $paid_submission_type != 'membership' ) {
-    wp_redirect( home_url() );
-}
-if ( !is_user_logged_in() ) {
-    wp_redirect( home_url() );
-}
-
-$pack_id = '';
-
-if (isset($_GET['selected_package']) && $_GET['selected_package'] != '') {
-	$pack_id = $_GET['selected_package'];
-} else {
-	wp_redirect( home_url() );
-}
-
-$payment_page_link = houzez_get_template_link('template-advanced-payment.php');
-
-$payment_page_link = add_query_arg( 'selected_package', $pack_id, $payment_page_link );
 
 get_header();
 
@@ -63,8 +48,6 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
 
 	<div class="dashboard-content-area">
         <div class="container">
-
-            <?php get_template_part('template-parts/create-listing-top'); ?>
 
             <div class="row">
             	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -105,26 +88,45 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                                     echo 'List Encrypted files (' . sizeof($docs) . ' of 5)';
                              ?>   
                             </p>
-                        	<div>
                             <?php
-                                foreach ($docs as $doc) {
-                                    $val = explode('/', $doc);
+                                if (sizeof($docs) > 0) {
                             ?>
-                                <p>
-                                    <span><?php echo $val[0]; ?></span>&nbsp;
-                                    ( <a href="javascript:void(0);" class="doc_view">View</a> /&nbsp;
-                                    <a href="javascript:void(0);" class="doc_remove">Remove</a> )
-                                    <input type="hidden" value="<?php echo $val[1]; ?>" />
-                                </p>
+                            <table>
+                                <thead>
+                                    <th>No</th>
+                                    <th>Title</th>
+                                    <th>File Name</th>
+                                    <th>Share Email</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                <?php
+                                    $i = 1;
+                                    foreach ($docs as $doc) {
+                                        $val = explode('/', $doc);
+                                ?>
+                                    <tr>
+                                        <td><?php echo $i++; ?></td>
+                                        <td><?php echo $val[0]; ?></td>
+                                        <td><?php echo $val[1]; ?></td>
+                                        <td>
+                                            <input type="text" class="share_email">
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0);" class="doc_view">View</a> /&nbsp;
+                                            <a href="javascript:void(0);" class="doc_remove">Remove</a> /&nbsp;
+                                            <a href="javascript:void(0);" class="doc_share">Share</a>
+                                        </td>
+                                    </tr>
+                                <?php
+                                    }
+                                ?>
+                                </tbody>
+                            </table>
                             <?php
                                 }
                             ?>
-                            </div>
                         </div>
-
-                		<a href="<?php echo esc_url($payment_page_link); ?>" class="btn btn-primary btn-lg step">
-			            	<?php echo esc_html_e('Done'); ?>
-			            </a>
                         <?php
                         }
 	                    ?>

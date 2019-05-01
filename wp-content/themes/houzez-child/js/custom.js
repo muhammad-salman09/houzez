@@ -271,9 +271,12 @@ $(document).ready(function() {
     });
 
     $('.btn-upload').click(function() {
+        var url = new URL(window.location.href);
+        var post_id = url.searchParams.get('listing_id');
+
         var data = new FormData();
 
-        var count = $('.doc_content div').children().length;
+        var count = $('.doc_content table tbody tr').length;
 
         var title = $('#doc_title').val();
         var file = $('#doc_file');
@@ -292,7 +295,7 @@ $(document).ready(function() {
             if (doc_size < 10 && doc_type == 'application/pdf') {
                 data.append('file', fileObject);
                 data.append('title', title);
-                data.append('userID', HOUZEZ_ajaxcalls_vars.user_id);
+                data.append('post_id', post_id);
 
                 $.ajax({
                     type: 'POST',
@@ -306,12 +309,28 @@ $(document).ready(function() {
 
                             $('.doc_content>p').text('List Encrypted files (' + count + ' of 5)');
 
-                            var txt = '<p><span>' + title + '</span> ';
-                            txt += '( <a href="javascript:void(0);" class="doc_view">View</a> / ';
-                            txt += '<a href="javascript:void(0);" class="doc_remove">Remove</a> )';
-                            txt += '<input type="hidden" value="' + result + '" /></p>';
+                            var txt = '';
 
-                            $('.doc_content div').append(txt);
+                            if (count == 1) {
+                                txt += '<table><thead><th>No</th><th>Title</th><th>File Name</th>';
+                                txt += '<th>Share Email</th><th></th></thead><tbody>';
+                                txt += '<tr><td>1</td><td>' + title + '</td><td>' + result + '</td>';
+                                txt += '<td><input type="text" class="share_email"></td>';
+                                txt += '<td><a href="javascript:void(0);" class="doc_view">View</a> / ';
+                                txt += '<a href="javascript:void(0);" class="doc_remove">Remove</a> / ';
+                                txt += '<a href="javascript:void(0);" class="doc_share">Share</a></td></tr>';
+                                txt += '</tbody></table>';
+
+                                $('.doc_content').append(txt);
+                            } else {
+                                txt += '<tr><td>' + count + '</td><td>' + title + '</td><td>' + result + '</td>';
+                                txt += '<td><input type="text" class="share_email"></td>';
+                                txt += '<td><a href="javascript:void(0);" class="doc_view">View</a> / ';
+                                txt += '<a href="javascript:void(0);" class="doc_remove">Remove</a> / ';
+                                txt += '<a href="javascript:void(0);" class="doc_share">Share</a></td></tr>';
+
+                                $('.doc_content table tbody').append(txt);
+                            }
 
                             $('#doc_title').val('');
                             file.val('');
@@ -326,31 +345,65 @@ $(document).ready(function() {
     });
 
     $(document).on('click', 'a.doc_view', function() {
-        var file = $(this).next().next().val();
+        var file = $(this).parent().prev().prev().text();
         var url = new URL(window.location.href);
 
         window.open(url + '&file=' + file,'_blank');
     });
 
-    $(document).on('click', 'a.doc_remove', function() {
-        var title = $(this).closest('p').find('span').text();
-        var file = $(this).next().val();
+    $(document).on('click', 'a.doc_share', function() {
+        var url = new URL(window.location.href);
+        var file = $(this).parent().prev().prev().text();
 
-        $(this).closest('p').addClass('removeP');
+        url += '&file=' + file;
+
+        var mail = $(this).parent().prev().find('input').val();
+
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (re.test(mail)) {
+            $.ajax({
+                type: 'POST',
+                url: '/wp-json/v1/houzez_doc_share',
+                data: {url: url, mail: mail},
+                success: function(result) {
+                    if (result)
+                        alert('Document sent to ' + mail + ' successfully.');
+                }
+            });
+        } else {
+            alert('Email address is not valid.');
+        }
+    });
+
+    $(document).on('click', 'a.doc_remove', function() {
+        var url = new URL(window.location.href);
+        var post_id = url.searchParams.get('listing_id');
+
+        var title = $(this).parent().prev().prev().prev().text();
+        var file = $(this).parent().prev().prev().text();
+
+        $(this).closest('tr').addClass('removeP');
 
         $.ajax({
             type: 'POST',
             url: '/wp-json/v1/houzez_doc_remove',
-            data: {title: title, file: file, userID: HOUZEZ_ajaxcalls_vars.user_id},
+            data: {title: title, file: file, post_id: post_id},
             success: function(result) {
                 if (result == 'success') {
                     $('.removeP').remove();
 
-                    var count = $('.doc_content div').children().length;
+                    var count = $('.doc_content table tbody tr').length;
+                    if (count == 0)
+                        $('.doc_content table').remove();
                     
                     $('.doc_content>p').text('');
                     if (count > 0) {
                         $('.doc_content>p').text('List Encrypted files (' + count + ' of 5)');
+
+                        for (var i = 1; i < count + 1; i++) {
+                            $('.doc_content table tbody tr:nth-child(' + i + ') td:first-child').text(i);
+                        }
                     }
                 }
             }
