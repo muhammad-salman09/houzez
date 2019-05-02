@@ -6,8 +6,12 @@ $selected_package_id = isset( $_GET['selected_package'] ) ? $_GET['selected_pack
 $property_id = isset( $_GET['prop-id'] ) ? $_GET['prop-id'] : '';
 $upgrade_id = isset( $_GET['upgrade_id'] ) ? $_GET['upgrade_id'] : '';
 
-if (!isset( $_GET['selected_package'] ) && isset($_GET['state']) && $_GET['state'] != '')
-    $selected_package_id = $_GET['state'];
+if (isset($_GET['state']) && $_GET['state'] != '') {
+    $thankyou = houzez_get_template_link('template-advanced-thankyou.php');
+    $state = str_replace(',', '%2C', $_GET['state']);
+    wp_redirect($thankyou . '/?state=' . $state);
+    die();
+}
 
 if( empty( $selected_package_id ) && empty( $property_id ) && empty( $upgrade_id ) ) {
     wp_redirect( home_url() );
@@ -191,10 +195,6 @@ $doc_page_link = add_query_arg( 'selected_package', $pack_id, $doc_page_link );
                                 }
                                 ?>
                             </div>
-
-                            <a href="<?php echo esc_url($doc_page_link); ?>" class="btn btn-primary btn-lg step">
-                                <?php echo esc_html_e('Back to Upload'); ?>
-                            </a>
                         </div>
                     </div>
                 </div>

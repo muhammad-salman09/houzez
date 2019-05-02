@@ -3200,13 +3200,6 @@ function houzez_stripe_payment_membership( $pack_plan, $pack_price, $title ) {
         <input type="hidden" id="pay_ammout" name="pay_ammout" value="' . $package_price_for_stripe . '">';
 }
 
-add_action( 'wp_ajax_nopriv_houzez_bitcoin_package_payment', 'houzez_bitcoin_package_payment' );
-add_action( 'wp_ajax_houzez_bitcoin_package_payment', 'houzez_bitcoin_package_payment' );
-
-function houzez_bitcoin_package_payment() {
-
-}
-
 function houzez_googlepay_payment_membership( $pack_price, $title ) {
     require_once( get_template_directory() . '/framework/stripe-php/init.php' );
 

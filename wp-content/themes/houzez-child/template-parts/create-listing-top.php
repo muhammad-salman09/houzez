@@ -8,7 +8,7 @@ $enable_paid_submission = houzez_option('enable_paid_submission');
 $ac_payment = $ac_thankyou = $ac_packages = $ac_submit = $ac_upload = '';
 if( is_page_template( 'template-advanced-payment.php' ) ) {
     $ac_payment = 'active';
-} elseif ( is_page_template( 'template/template-thankyou.php' ) ) {
+} elseif ( is_page_template( 'template/template-thankyou.php' ) || is_page_template( 'template-advanced-thankyou.php' ) ) {
     $ac_thankyou = 'active';
 } elseif ( is_page_template( 'template-advanced-package.php' ) ) {
     $ac_packages = 'active';

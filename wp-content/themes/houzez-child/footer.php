@@ -14,14 +14,15 @@ global $houzez_local;
 <?php if ( houzez_is_footer() ) { ?>
 
     <?php if( houzez_container_needed() && 
-            !is_page_template('template-user-dashboard-package.php') &&
-            !is_page_template('template-user-dashboard-membership.php') &&
-            !is_page_template('template-user-dashboard-properties.php') &&
-            !is_page_template('template-addon-payment.php') &&
-            !is_page_template('template-advanced-package.php') &&
-            !is_page_template('template-advanced-payment.php') &&
-            !is_page_template('template-document-upload.php') &&
-            !is_page_template('template-map-search.php') ) { ?>
+        !is_page_template('template-user-dashboard-package.php') &&
+        !is_page_template('template-user-dashboard-membership.php') &&
+        !is_page_template('template-user-dashboard-properties.php') &&
+        !is_page_template('template-addon-payment.php') &&
+        !is_page_template('template-advanced-package.php') &&
+        !is_page_template('template-advanced-payment.php') &&
+        !is_page_template('template-advanced-thankyou.php') &&
+        !is_page_template('template-document-upload.php') &&
+        !is_page_template('template-map-search.php') ) { ?>
     </div> <!--.container Start in header-->
     <?php } ?>
 </div> <!--Start in header end #section-body-->
