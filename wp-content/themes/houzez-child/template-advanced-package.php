@@ -53,13 +53,13 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                 if( $total_packages == 3 ) {
                     $pkg_classes = 'col-md-4 col-sm-4 col-xs-12';
                 } else if( $total_packages == 4 ) {
-                    $pkg_classes = 'col-md-3 col-sm-6';
+                    $pkg_classes = 'col-md-3 col-sm-6 col-xs-12';
                 } else if( $total_packages == 2 ) {
-                    $pkg_classes = 'col-md-4 col-sm-6';
+                    $pkg_classes = 'col-md-4 col-sm-6 col-xs-12';
                 } else if( $total_packages == 1 ) {
-                    $pkg_classes = 'col-md-4 col-sm-12';
+                    $pkg_classes = 'col-md-4 col-sm-12 col-xs-12';
                 } else {
-                    $pkg_classes = 'col-md-3 col-sm-6';
+                    $pkg_classes = 'col-md-3 col-sm-6 col-xs-12';
                 }
 
                 $i = 0;
