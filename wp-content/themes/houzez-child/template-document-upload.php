@@ -10,16 +10,8 @@ $userID = $current_user->ID;
 
 $listing_id = '';
 
-if (isset($_GET['listing_id']) && $_GET['listing_id'] != '' &&
-    ($userID != 0 || (isset($_GET['uname']) && $_GET['uname'] != ''))) {
+if (isset($_GET['listing_id']) && $_GET['listing_id'] != '') {
 	$listing_id = $_GET['listing_id'];
-} else if (isset($_GET['sign']) && $_GET['sign'] == 'required') {
-    $current_url = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-    $to_url = urlencode(substr($current_url, 0, strlen($current_url) - 14));
-
-    $url = '/?sign=required&to=' . $to_url;
-
-    wp_redirect(home_url() . $url);
 } else {
 	wp_redirect( home_url() );
 }
@@ -127,6 +119,7 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                                             <a href="javascript:void(0);" class="doc_view">View</a> /&nbsp;
                                             <a href="javascript:void(0);" class="doc_remove">Remove</a> /&nbsp;
                                             <a href="javascript:void(0);" class="doc_share">Share</a>
+                                            <input type="hidden" value="<?php echo $doc; ?>">
                                         </td>
                                     </tr>
                                 <?php

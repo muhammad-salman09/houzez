@@ -14,6 +14,7 @@ $dashboard_favorites = houzez_get_template_link_2('template/user_dashboard_favor
 $dashboard_search = houzez_get_template_link_2('template/user_dashboard_saved_search.php');
 $dashboard_invoices = houzez_get_template_link_2('template/user_dashboard_invoices.php');
 $dashboard_msgs = houzez_get_template_link_2('template/user_dashboard_messages.php');
+$dashboard_documents = houzez_get_template_link_2('template-user-dashboard-document.php');
 $dashboard_membership = houzez_get_template_link_2('template-user-dashboard-membership.php');
 $dashboard_gdpr = houzez_get_template_link_2('template/user_dashboard_gdpr.php');
 $dashboard_seen_msgs = add_query_arg( 'view', 'inbox', $dashboard_msgs );
@@ -36,6 +37,8 @@ if( is_page_template( 'template/user_dashboard_profile.php' ) ) {
     $ac_invoices = 'class=active';
 } elseif ( is_page_template( 'template/user_dashboard_messages.php' ) ) {
     $ac_msgs = 'class=active';
+} elseif ( is_page_template( 'template-user-dashboard-document.php' ) ) {
+    $ac_documents = 'class=active';
 } elseif ( is_page_template( 'template-user-dashboard-membership.php' ) ) {
     $ac_mem = 'class=active';
 } elseif ( is_page_template( 'template/user_dashboard_gdpr.php' ) ) {
@@ -126,6 +129,9 @@ if( isset( $_GET['agents'] ) && $_GET['agents'] == 'list' ) {
             }
             if( !empty($dashboard_msgs) ) {
                 echo '<li ' . esc_attr($ac_msgs) . '> <a href="' . esc_url($dashboard_msgs) . '"> <i class="fa fa-comments-o"></i>' . esc_html__('Messages', 'houzez') . houzez_messages_notification() . '</a></li>';
+            }
+            if( !empty($dashboard_documents) ) {
+                echo '<li ' . esc_attr($ac_documents) . '> <a href="' . esc_url($dashboard_documents) . '"> <i class="fa fa-file"></i>' . esc_html__('Documents', 'houzez') . '</a></li>';
             }
             if( !empty($dashboard_gdpr) ) {
                 echo '<li ' . esc_attr($ac_gdpr) . '> <a href="' . esc_url($dashboard_gdpr) . '"> <i class="fa fa-envelope"></i>' . esc_html__('GDPR Data Request', 'houzez').'</a></li>';

@@ -14,7 +14,14 @@ $allowed_html_array = array(
         'title' => array()
     )
 );
+
+$to_url = '';
+if (isset($_GET['to']) && $_GET['to'] != '')
+    $to_url = $_GET['to'];
 ?>
+
+<input type="hidden" id="to_url" value="<?php echo $to_url; ?>">
+
 <div class="tab-content">
     <div class="tab-pane fade in active">
         <div id="houzez_messages" class="houzez_messages message"></div>
@@ -109,14 +116,6 @@ $allowed_html_array = array(
                         ?>
                     </select>
                 <?php endif; ?>
-
-                <?php
-                    $to_url = '';
-                    if (isset($_GET['to']) && $_GET['to'] != '')
-                        $to_url = $_GET['to'];
-                ?>
-
-                <input type="hidden" id="to_url" value="<?php echo $to_url; ?>">
             </div>
             
             <?php get_template_part('template-parts/google', 'reCaptcha'); ?>

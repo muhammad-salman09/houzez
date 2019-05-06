@@ -101,7 +101,7 @@ if( $prop_details ) {
                 <strong><?php echo esc_html__('Year Built:', 'houzez'); ?></strong>
                 <?php
                     if (!empty( $year_built ) && $hide_detail_prop_fields['year_built'] != 1)
-                        echo esc_attr($year_built);
+                        echo esc_attr(date("d/m/Y", strtotime($year_built)));
                 ?>
             </li>
             <li>

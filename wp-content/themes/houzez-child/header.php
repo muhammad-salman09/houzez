@@ -71,9 +71,10 @@ if ($userID == 0 && is_page_template('template/submit_property.php'))
 	}
 	if( houzez_is_dashboard() ||
         is_page_template('template-addon-payment.php') ||
+        is_page_template('template-user-dashboard-properties.php') ||
         is_page_template('template-user-dashboard-package.php') ||
         is_page_template('template-user-dashboard-membership.php') ||
-        is_page_template('template-user-dashboard-properties.php') ||
+        is_page_template('template-user-dashboard-document.php') ||
         is_page_template('template-advanced-package.php') ||
         is_page_template('template-advanced-payment.php') ||
         is_page_template('template-document-upload.php') ) {
@@ -115,7 +116,7 @@ if ($userID == 0 && is_page_template('template/submit_property.php'))
 	        <?php if( class_exists('Houzez_login_register') ): ?>
 	            <?php if( $header_login != 'no' || $create_lisiting_enable != 0 ): ?>
 	                <div class="header-right">	                	
-	                    <?php get_template_part('../houzez/inc/header/login', 'nav'); ?>
+	                    <?php get_template_part('inc/header/login', 'nav'); ?>
 	                    <ul class="account-action">
 	                    	<li>
 	                    		<a href="<?php echo get_site_url(); ?>">
@@ -161,6 +162,7 @@ get_template_part( 'template-parts/mobile-header' );
         get_page_template_slug() != 'template-user-dashboard-package.php' &&
         get_page_template_slug() != 'template-user-dashboard-membership.php' &&
         get_page_template_slug() != 'template-user-dashboard-properties.php' &&
+        get_page_template_slug() != 'template-user-dashboard-document.php' &&
         get_page_template_slug() != 'template/user_dashboard_favorites.php' &&
         get_page_template_slug() != 'template/user_dashboard_saved_search.php' &&
         get_page_template_slug() != 'template/user_dashboard_invoices.php' &&
@@ -184,7 +186,7 @@ get_template_part( 'template-parts/mobile-header' );
     $status = 'for-sale';
     $lifestyle = $location = $type = '';
     $min_price = '1,000';
-    $max_price = '500,000';
+    $max_price = '1,000,000';
     
     if (isset($_GET['status'])) {
         $status = $_GET['status'];
@@ -363,9 +365,10 @@ if( houzez_is_landing_page() ) { $section_body .='landing-page';}
 	?>
 
 	<?php if( houzez_container_needed() && 
+        !is_page_template('template-user-dashboard-properties.php') &&
         !is_page_template('template-user-dashboard-package.php') &&
         !is_page_template('template-user-dashboard-membership.php') &&
-        !is_page_template('template-user-dashboard-properties.php') &&
+        !is_page_template('template-user-dashboard-document.php') &&
         !is_page_template('template-addon-payment.php') &&
         !is_page_template('template-advanced-package.php') &&
         !is_page_template('template-advanced-payment.php') &&

@@ -1549,6 +1549,12 @@ function remove_label_taxonomy() {
     remove_meta_box('property_labeldiv', 'property', 'normal');
 }
 
+add_action( 'admin_menu', 'remove_state_taxonomy', 999 );
+function remove_state_taxonomy() {
+    remove_submenu_page('edit.php?post_type=property', 'edit-tags.php?taxonomy=property_state&amp;post_type=property');
+    remove_meta_box('property_statediv', 'property', 'normal');
+}
+
 add_action('init', 'overwrite_theme_post_types', 1000);
 function overwrite_theme_post_types() {
     $labels_lifestyle = array(
@@ -2992,18 +2998,27 @@ function houzez_doc_upload() {
         $flag = true;
         $i = 1;
 
+        $key = '';
+
         while ($flag) {
             $doc = get_post_meta($post_id, 'doc' . $i, true);
 
             if ($doc == '') {
-                add_post_meta($post_id, 'doc' . $i, $title . '/' . $filename);
+                $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+                $charactersLength = strlen($characters);
+
+                for ($j = 0; $j < 12; $j++) {
+                    $key .= $characters[rand(0, $charactersLength - 1)];
+                }
+
+                add_post_meta($post_id, 'doc' . $i, $title . '/' . $filename . '/' . $key);
                 $flag = false;
             }
 
             $i++;
         }
 
-        $result = $filename;
+        $result = $filename . '/' . $key;
     } else {
         $result = 'fail';
     }
@@ -3031,7 +3046,9 @@ function houzez_doc_remove() {
         for ($i = 1; $i < 6; $i++) {
             $doc = get_post_meta($post_id, 'doc' . $i, true);
 
-            if ($doc == $title . '/' . $filename)
+            $val = explode('/', $doc);
+
+            if ($val[0] == $title && $val[1] == $filename)
                 delete_post_meta($post_id, 'doc' . $i);
         }
 
@@ -3046,22 +3063,34 @@ function houzez_doc_remove() {
 }
 
 function houzez_doc_share() {
-    $url = $_POST['url'];
+    $url = houzez_get_template_link('template-user-dashboard-document.php');
+
+    $post_id = $_POST['post_id'];
+    $enc = $_POST['enc'];
     $mail = $_POST['mail'];
+
+    add_post_meta($post_id, $mail, $enc . '/' . date('Y-m-d'));
 
     $users = get_users();
 
     $flag = false;
 
     foreach ($users as $user) {
-        if ($user->user_email == $mail) {
+        if ($user->user_email == $mail)
             $flag = true;
-            $url .= '&uname=' . $user->display_name;
-        }
     }
 
-    if (!$flag)
-        $url .= '&sign=required';
+    if (!$flag) {
+        $keys = explode('/', $enc);
+        $key = $keys[3];
+
+        $parts = explode('@', $mail);
+        $name = $parts[0];
+
+        $new_enc = $key . md5($name);
+
+        $url .= '?encrypt=' . $new_enc;
+    }
 
     $headers = "Reply-To: <staging@unfstaging.com>\r\n"; 
     $headers .= "Return-Path: <staging@unfstaging.com>\r\n";

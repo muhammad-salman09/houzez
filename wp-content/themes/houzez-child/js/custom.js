@@ -20,6 +20,7 @@ $(document).ready(function() {
 	$('.main-nav').css('margin-left', val + 'px');
 
     if ($('body').hasClass('page-template-template-user-dashboard-properties') ||
+        $('body').hasClass('page-template-template-user-dashboard-document') ||
         $('body').hasClass('page-template-template-document-upload') ||
         $('body').hasClass('houzez-dashboard')
         ) {
@@ -323,6 +324,8 @@ $(document).ready(function() {
                     processData: false,
                     success: function(result) {
                         if (result != 'fail') {
+                            res = result.split('/');
+
                             count++;
 
                             $('.doc_content>p').text('List Encrypted files (' + count + ' of 5)');
@@ -332,20 +335,22 @@ $(document).ready(function() {
                             if (count == 1) {
                                 txt += '<table><thead><th>No</th><th>Title</th><th>File Name</th>';
                                 txt += '<th>Share Email</th><th></th></thead><tbody>';
-                                txt += '<tr><td>1</td><td>' + title + '</td><td>' + result + '</td>';
+                                txt += '<tr><td>1</td><td>' + title + '</td><td>' + res[0] + '</td>';
                                 txt += '<td><input type="text" class="share_email"></td>';
                                 txt += '<td><a href="javascript:void(0);" class="doc_view">View</a> / ';
                                 txt += '<a href="javascript:void(0);" class="doc_remove">Remove</a> / ';
-                                txt += '<a href="javascript:void(0);" class="doc_share">Share</a></td></tr>';
+                                txt += '<a href="javascript:void(0);" class="doc_share">Share</a>';
+                                txt += '<input type="hidden" value="' + title + '/' + result + '" /></td></tr>';
                                 txt += '</tbody></table>';
 
                                 $('.doc_content').append(txt);
                             } else {
-                                txt += '<tr><td>' + count + '</td><td>' + title + '</td><td>' + result + '</td>';
+                                txt += '<tr><td>' + count + '</td><td>' + title + '</td><td>' + res[0] + '</td>';
                                 txt += '<td><input type="text" class="share_email"></td>';
                                 txt += '<td><a href="javascript:void(0);" class="doc_view">View</a> / ';
                                 txt += '<a href="javascript:void(0);" class="doc_remove">Remove</a> / ';
-                                txt += '<a href="javascript:void(0);" class="doc_share">Share</a></td></tr>';
+                                txt += '<a href="javascript:void(0);" class="doc_share">Share</a>';
+                                txt += '<input type="hidden" value="' + title + '/' + result + '" /></td></tr>';
 
                                 $('.doc_content table tbody').append(txt);
                             }
@@ -367,31 +372,6 @@ $(document).ready(function() {
         var url = new URL(window.location.href);
 
         window.open(url + '&file=' + file,'_blank');
-    });
-
-    $(document).on('click', 'a.doc_share', function() {
-        var url = new URL(window.location.href);
-        var file = $(this).parent().prev().prev().text();
-
-        url += '&file=' + file;
-
-        var mail = $(this).parent().prev().find('input').val();
-
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-        if (re.test(mail)) {
-            $.ajax({
-                type: 'POST',
-                url: '/wp-json/v1/houzez_doc_share',
-                data: {url: url, mail: mail},
-                success: function(result) {
-                    if (result)
-                        alert('Document sent to ' + mail + ' successfully.');
-                }
-            });
-        } else {
-            alert('Email address is not valid.');
-        }
     });
 
     $(document).on('click', 'a.doc_remove', function() {
@@ -426,6 +406,31 @@ $(document).ready(function() {
                 }
             }
         });
+    });
+
+    $(document).on('click', 'a.doc_share', function() {
+        var url = new URL(window.location.href);
+        var post_id = url.searchParams.get('listing_id');
+
+        var enc = $(this).next().val();
+
+        var mail = $(this).parent().prev().find('input').val();
+
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (re.test(mail)) {
+            $.ajax({
+                type: 'POST',
+                url: '/wp-json/v1/houzez_doc_share',
+                data: {post_id: post_id, enc: enc, mail: mail},
+                success: function(result) {
+                    if (result)
+                        alert('Document sent to ' + mail + ' successfully.');
+                }
+            });
+        } else {
+            alert('Email address is not valid.');
+        }
     });
 
     $('.payment_option').click(function() {

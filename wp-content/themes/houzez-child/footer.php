@@ -14,9 +14,10 @@ global $houzez_local;
 <?php if ( houzez_is_footer() ) { ?>
 
     <?php if( houzez_container_needed() && 
+        !is_page_template('template-user-dashboard-properties.php') &&
         !is_page_template('template-user-dashboard-package.php') &&
         !is_page_template('template-user-dashboard-membership.php') &&
-        !is_page_template('template-user-dashboard-properties.php') &&
+        !is_page_template('template-user-dashboard-document.php') &&
         !is_page_template('template-addon-payment.php') &&
         !is_page_template('template-advanced-package.php') &&
         !is_page_template('template-advanced-payment.php') &&
@@ -27,19 +28,24 @@ global $houzez_local;
     <?php } ?>
 </div> <!--Start in header end #section-body-->
 
-<?php get_template_part('template-parts/scroll-to-top'); ?>
+<?php
+
+if (!is_page_template('template-user-dashboard-properties.php') &&
+    !is_page_template('template-user-dashboard-package.php') &&
+    !is_page_template('template-user-dashboard-membership.php') &&
+    !is_page_template('template-user-dashboard-document.php') &&
+    !is_page_template('template-addon-payment.php') &&
+    !is_page_template('template-advanced-package.php') &&
+    !is_page_template('template-advanced-payment.php') &&
+    !is_page_template('template-advanced-thankyou.php') &&
+    !is_page_template('template-document-upload.php') &&
+    !is_page_template('template-map-search.php')) {
+
+        get_template_part('template-parts/scroll-to-top'); ?>
 
 <!--start footer section-->
 <footer id="footer-section">
-    <?php if (!is_page_template('template-user-dashboard-package.php') &&
-            !is_page_template('template-user-dashboard-membership.php') &&
-            !is_page_template('template-user-dashboard-properties.php') &&
-            !is_page_template('template-addon-payment.php') &&
-            !is_page_template('template-advanced-package.php') &&
-            !is_page_template('template-advanced-payment.php') &&
-            !is_page_template('template-document-upload.php') &&
-            !is_page_template('template-map-search.php')) {
-
+    <?php 
     if ( !is_active_sidebar( 'footer-sidebar-1' )
         && ! is_active_sidebar( 'footer-sidebar-2' )
         && ! is_active_sidebar( 'footer-sidebar-3' )
@@ -60,8 +66,7 @@ global $houzez_local;
     <div class="<?php echo esc_attr( $footer ); ?>">
         <div class="container">
             <div class="row">
-
-                <?php
+            <?php
                 if( $footer_cols === 'one_col' ) {
                     if ( is_active_sidebar( 'footer-sidebar-1' ) ) {
                         echo '<div class="col-md-12 col-sm-12">';
@@ -164,11 +169,10 @@ global $houzez_local;
                         echo '</div>';
                     }
                 }
-                ?>
+            ?>
             </div>
         </div>
     </div>
-    <?php } ?>
     
     <div class="footer-bottom">
 
@@ -251,6 +255,8 @@ global $houzez_local;
 
 </footer>
 <!--end footer section-->
+<?php } ?>
+
 <?php } else { // End splash template if ?>
     </div> <!--Start in header end #section-body-->
 <?php } ?>

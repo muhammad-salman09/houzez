@@ -1302,6 +1302,8 @@ jQuery(document).ready(function ($) {
         });
 
         var houzez_login = function( currnt ) {
+            var to_url = $('#to_url').val();
+
             var $form = currnt.parents('form');
             var $messages = currnt.parents('.login-block').find('.houzez_messages');
 
@@ -1316,18 +1318,24 @@ jQuery(document).ready(function ($) {
                 success: function( response ) {
                     if( response.success ) {
                         $messages.empty().append('<p class="success text-success"><i class="fa fa-check"></i> '+ response.msg +'</p>');
-                        if( login_redirect_type == 'same_page' ) {
+
+                        if ( login_redirect_type == 'same_page' ) {
                             window.location.reload();
                         } else {
                             var url = new URL(window.location.href);
                             var login = url.searchParams.get('login');
 
-                            if (login && login == 'required')
-                                login_redirect = 'add-new-property';
+                            if (to_url == '') {
+                                if (login && login == 'required')
+                                    login_redirect = 'add-new-property';
+                                else
+                                    login_redirect = 'my-properties';
 
-                            window.location.href = login_redirect;
+                                window.location.href = login_redirect;
+                            } else {
+                                window.location.href = to_url;
+                            }
                         }
-
                     } else {
                         $messages.empty().append('<p class="error text-danger"><i class="fa fa-close"></i> '+ response.msg +'</p>');
                     }
@@ -1362,7 +1370,7 @@ jQuery(document).ready(function ($) {
                         $messages.empty().append('<p class="success text-success"><i class="fa fa-check"></i> '+ response.msg +'</p>');
                         
                         if (to_url == '')
-                            window.location.href = "https://" + window.location.hostname + '/my-profile';
+                            window.location.href = "https://" + window.location.hostname + '/my-properties/';
                         else
                             window.location.href = to_url;
                     } else {

@@ -16,13 +16,13 @@ $fave_perspective    = get_post_meta( get_the_ID(), 'fave_perspective',true);
     </div>
     <div class="block row">
     	<div class="col-md-6">
-    		<h3 class="text-center">12:00 PM</h3>
+    		<h3 class="text-center">12:00</h3>
             <div class="text-center">
                 <img class="solar12" />
             </div>
     	</div>
     	<div class="col-md-6">
-    		<h3 class="text-center">16:00 PM</h3>
+    		<h3 class="text-center">16:00</h3>
             <div class="text-center">
                 <img class="solar16" />
             </div>

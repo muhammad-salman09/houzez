@@ -95,6 +95,10 @@ Template: houzez
 .header-right .account-action .account-dropdown {
 	background-color: #ffffff;
 }
+.account-action .account-dropdown ul {
+	background-color: #ffffff;
+	box-shadow: 0px 0px 4px 5px rgba(0, 0, 0, 0.15);
+}
 /* Header Style End */
 
 /* Advanced Search Style Start */
@@ -626,7 +630,7 @@ Template: houzez
     line-height: 1.42857143;
 	padding: 8px;
 	text-align: center;
-    vertical-align: top;
+    vertical-align: middle;
 }
 .doc_content table tbody tr td input {
 	width: 100%;
@@ -657,8 +661,12 @@ Template: houzez
     border: 1px solid #009da5;
     border-radius: 10px;
     color: #009da5;
-    margin-right: 10px;
+    float: left;
+    margin: 0 10px 5px;
 	padding: 5px 15px;
+}
+.detail-block {
+	clear: both;
 }
 .detail-block * {
 	font-family: sans-serif;
