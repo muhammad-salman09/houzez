@@ -57,6 +57,9 @@ $enable_googlepay = houzez_option('enable_googlepay');
                     <input type="radio" class="payment-stripe" name="houzez_payment_type" value="stripe">
                     <?php esc_html_e( 'Pay by Credit Card', 'houzez'); ?>
                 </label>
+                <input type="hidden" name="houzez_option_price" value="<?php echo $price; ?>">
+                <input type="hidden" name="houzez_option_name" value="<?php echo $_GET['option']; ?>">
+                <input type="hidden" name="houzez_property_id" value="<?php echo $_GET['post']; ?>">
                 <?php houzez_stripe_payment_membership( '', $price, $title ); ?>
             </div>
         </div>
@@ -92,7 +95,7 @@ $enable_googlepay = houzez_option('enable_googlepay');
                     <?php esc_html_e( 'Bitcoin', 'houzez' ); ?>
                 </label>
             </div>
-            <input type="hidden" value="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>&redirect_uri=https%3A%2F%2Fam.unfstaging.com%2Fadd-on-payment&state=<?php echo $price; ?>%2C<?php echo $_GET['post']?>" />
+            <input type="hidden" value="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>&redirect_uri=https%3A%2F%2Fam.unfstaging.com%2Fadd-on-payment&state=<?php echo $price; ?>%2C<?php echo $_GET['post']; ?>%2C<?php echo $_GET['option']; ?>" />
         </div>
         <div class="method-type">
             <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/bitcoin-icon.png" alt="bitcoin">
@@ -136,9 +139,9 @@ $enable_googlepay = houzez_option('enable_googlepay');
 
 </div>
 
-<button id="houzez_complete_membership" type="submit" class="btn btn-success btn-submit">
-	<?php esc_html_e( 'Complete Membership', 'houzez' ); ?>
+<button id="houzez_complete_option" type="submit" class="btn btn-success btn-submit">
+	<?php esc_html_e( 'Complete Package Option', 'houzez' ); ?>
 </button>
 <span class="help-block">
-	<?php echo sprintf( wp_kses(__( 'By clicking "Complete Membership" you agree to our <a target="_blank" href="%s">Terms & Conditions</a>', 'houzez' ), $allowed_html_array), get_permalink($terms_conditions) ); ?>
+	<?php echo sprintf( wp_kses(__( 'By clicking "Complete Package Option" you agree to our <a target="_blank" href="%s">Terms & Conditions</a>', 'houzez' ), $allowed_html_array), get_permalink($terms_conditions) ); ?>
 </span>

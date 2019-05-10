@@ -8,23 +8,23 @@ if (isset($_GET['state'])) {
     
     if ($value[0] == '750') {
         $addon = 'Featured:';
-        $price = '€750';
+        $price = 750;
     }
 
     if ($value[0] == '1000') {
         $addon = 'Property of the Week:';
-        $price = '€1,000';
+        $price = 1000;
     }
-}
-
-if ($_GET['option'] == 'week') {
-    $addon = 'Property of the Week:';
-    $price = '€1,000';
 }
 
 if ($_GET['option'] == 'featured') {
     $addon = 'Featured:';
-    $price = '€750';
+    $price = 750;
+}
+
+if ($_GET['option'] == 'week') {
+    $addon = 'Property of the Week:';
+    $price = 1000;
 }
 
 ?>
@@ -41,6 +41,6 @@ if ($_GET['option'] == 'featured') {
     </li>
     <li>
         <span class="pull-left"><?php esc_html_e( 'Total Price:', 'houzez' ); ?></span>
-        <span class="pull-right"><?php echo $price; ?></span>
+        <span class="pull-right"><?php echo '€' . number_format( $price , 0, '', ',' ); ?>/week</span>
     </li>
 </ul>

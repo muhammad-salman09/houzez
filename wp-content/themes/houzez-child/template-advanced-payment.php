@@ -13,7 +13,7 @@ if (isset($_GET['state']) && $_GET['state'] != '') {
     die();
 }
 
-if( empty( $selected_package_id ) && empty( $property_id ) && empty( $upgrade_id ) ) {
+if( $selected_package_id == '' ) {
     wp_redirect( home_url() );
 }
 set_time_limit (600);
@@ -44,7 +44,7 @@ $user_show_roles = houzez_option('user_show_roles');
 $show_hide_roles = houzez_option('show_hide_roles');
 $enable_paid_submission = houzez_option('enable_paid_submission');
 $packages_page_link = houzez_get_template_link('template/template-packages.php');
-$stripe_processor_link = houzez_get_template_link('template/template-stripe-charge.php');
+$stripe_processor_link = houzez_get_template_link('template-advanced-stripe-charge.php');
 
 $panel_class = '';
 $houzez_loggedin = false;

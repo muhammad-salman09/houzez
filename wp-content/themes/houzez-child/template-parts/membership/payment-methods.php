@@ -5,12 +5,11 @@ global $current_user;
 $current_user = wp_get_current_user();
 $userID = $current_user->ID;
 
-$selected_package_id = isset( $_GET['selected_package'] ) ? $_GET['selected_package'] : '';
-$pack_title = get_the_title( $selected_package_id );
+$selected_package_id = $_GET['selected_package'];
+$pack_title = get_the_title( $selected_package_id ) . ' Package';
 
 $option = (isset($_GET['option'])) ? $_GET['option'] : 'option1';
 $pack_price = get_post_meta( $selected_package_id, 'fave_payment_' . $option, true );
-$pack_plan = get_post_meta( $selected_package_id, 'fave_plan_' . $option, true );
 
 $terms_conditions = houzez_option('payment_terms_condition');
 $allowed_html_array = array(
@@ -67,7 +66,11 @@ if($enable_paypal != 0 && !isset($_GET['state'])) {
         </div>
     <?php
         } else {
-            echo '<input style="display: none;" type="checkbox" checked name="paypal_package_recurring" id="paypal_package_recurring" value="1">';
+            if ($option == 'option1') {
+                echo '<input style="display: none;" type="checkbox" checked name="paypal_package_recurring" id="paypal_package_recurring" value="0">';
+            } else {
+                echo '<input style="display: none;" type="checkbox" checked name="paypal_package_recurring" id="paypal_package_recurring" value="1">';
+            }
         }
     }
     ?>
@@ -80,7 +83,7 @@ if($enable_paypal != 0 && !isset($_GET['state'])) {
                     <input type="radio" class="payment-stripe" name="houzez_payment_type" value="stripe" <?php echo $checked_stripe;?>>
                     <?php esc_html_e( 'Pay by Credit Card', 'houzez'); ?>
                 </label>
-                <?php houzez_stripe_payment_membership( $pack_plan, $pack_price, $pack_title ); ?>
+                <?php houzez_stripe_payment_membership( $selected_package_id, $pack_price, $pack_title ); ?>
             </div>
         </div>
         <div class="method-type">
@@ -98,7 +101,11 @@ if($enable_paypal != 0 && !isset($_GET['state'])) {
         </div>
     <?php
         } else {
-            echo '<input type="hidden" name="houzez_stripe_recurring" id="houzez_stripe_recurring" value="1">';
+            if ($option == 'option1') {
+                echo '<input type="hidden" name="houzez_stripe_recurring" id="houzez_stripe_recurring" value="0">';
+            } else {
+                echo '<input type="hidden" name="houzez_stripe_recurring" id="houzez_stripe_recurring" value="1">';
+            }
         }
     }
     ?>
@@ -132,7 +139,7 @@ if($enable_paypal != 0 && !isset($_GET['state'])) {
                     <?php esc_html_e( 'Bitcoin', 'houzez' ); ?>
                 </label>
             </div>
-            <input type="hidden" value="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>&redirect_uri=https%3A%2F%2Fam.unfstaging.com%2Fcomplete-order&state=<?php echo $pack_price?>%2C<?php echo $selected_package_id?>" />
+            <input type="hidden" value="https://www.coinbase.com/oauth/authorize/?response_type=code&client_id=<?php echo houzez_option('coinbaseID')?>&redirect_uri=https%3A%2F%2Fam.unfstaging.com%2Fcomplete-order&state=<?php echo $pack_price; ?>%2C<?php echo $selected_package_id; ?>%2C<?php echo $option; ?>" />
         </div>
         <div class="method-type">
             <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/bitcoin-icon.png" alt="bitcoin">

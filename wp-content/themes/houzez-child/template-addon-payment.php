@@ -7,6 +7,13 @@ if ( !is_user_logged_in() ) {
     wp_redirect(  home_url() );
 }
 
+if (isset($_GET['state']) && $_GET['state'] != '') {
+    $thankyou = houzez_get_template_link('template-addon-thankyou.php');
+    $state = str_replace(',', '%2C', $_GET['state']);
+    wp_redirect($thankyou . '/?state=' . $state);
+    die();
+}
+
 $dashboard_listings = houzez_get_template_link_2('template-user-dashboard-properties.php');
 $listing = add_query_arg( 'prop_status', 'package', $dashboard_listings );
 
@@ -27,7 +34,7 @@ $houzez_loggedin = true;
 $column_classes = 'col-lg-10 col-md-9 col-sm-12 dashboard-inner-left';
 $sidebar_classes = 'col-lg-2 col-md-3 col-sm-12 dashboard-inner-right';
 
-$stripe_processor_link = houzez_get_template_link('template/template-stripe-charge.php');
+$stripe_processor_link = houzez_get_template_link('template-advanced-stripe-charge.php');
 
 get_template_part( 'template-parts/dashboard', 'menu' );
 ?>

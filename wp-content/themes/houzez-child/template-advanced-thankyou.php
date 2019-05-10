@@ -7,6 +7,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 if ( !is_user_logged_in() ) {
     wp_redirect( home_url() );
 }
+
 global $houzez_local, $current_user;
 wp_get_current_user();
 $userID = $current_user->ID;
@@ -32,18 +33,27 @@ if( $enable_paid_submission == 'membership' ) {
 
         $price = $value[0];
         $pack_id = $value[1];
+        $option = $value[2];
+
+        if ($option == 'option1')
+            $invoice_billing_type = 'One Time';
+        else
+            $invoice_billing_type = 'Recurring';
 
         $invoiceID = houzez_generate_invoice( 'package', 'one_time', $pack_id, $date, $userID, 0, 0, '', $paymentMethod );
-        update_post_meta( $invoiceID, 'invoice_payment_status', 1 );
 
         $fave_meta['invoice_billion_for'] = 'package';
-        $fave_meta['invoice_billing_type'] = 'one_time';
+        $fave_meta['invoice_billing_type'] = $invoice_billing_type;
         $fave_meta['invoice_item_id'] = $pack_id;
         $fave_meta['invoice_item_price'] = $price;
         $fave_meta['invoice_purchase_date'] = $date;
         $fave_meta['invoice_buyer_id'] = $userID;
         $fave_meta['invoice_payment_method'] = $paymentMethod;
+        $fave_meta['invoice_payment_status'] = 1;
+        
         update_post_meta( $invoiceID, '_houzez_invoice_meta', $fave_meta );
+
+        update_post_meta( $invoiceID, 'invoice_payment_status', 1 );
     }
 }
 get_header();

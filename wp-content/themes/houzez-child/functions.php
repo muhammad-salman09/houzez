@@ -500,7 +500,7 @@ function my_scripts() {
             'houzez_logged_in' => $houzez_logged_in,
             'ipinfo_location' => houzez_option('ipinfo_location'),
             'gallery_autoplay' => houzez_option('gallery_autoplay'),
-            'stripe_page' => houzez_get_template_link('template/template-stripe-charge.php'),
+            'stripe_page' => houzez_get_template_link('template-advanced-stripe-charge.php'),
             'twocheckout_page' => houzez_get_template_link('template/template-2checkout.php'),
             'custom_fields' => json_encode($custom_fields_array),
             'markerPricePins' => esc_attr($markerPricePins),
@@ -575,7 +575,7 @@ function houzez_listing_price() {
         $symbol = '€';
 
     $sale_price = get_post_meta( get_the_ID(), 'fave_property_price', true );
-    $sale_price = number_format ( $sale_price , 0, '', ',' );
+    $sale_price = number_format( $sale_price , 0, '', ',' );
 
     $status = get_the_terms( get_the_ID(), 'property_status' );
 
@@ -598,7 +598,7 @@ function houzez_listing_price_v1() {
         $symbol = '€';
 
     $sale_price = get_post_meta( get_the_ID(), 'fave_property_price', true );
-    $sale_price = number_format ( $sale_price , 0, '', ',' );
+    $sale_price = number_format( $sale_price , 0, '', ',' );
     
     $status = get_the_terms( get_the_ID(), 'property_status' );
     
@@ -621,11 +621,6 @@ function register_api() {
     register_rest_route( 'v1', '/houzez_map_listing', array(
       'methods' => 'POST',
       'callback' => 'houzez_map_listing',
-    ));
-
-    register_rest_route( 'v1', '/houzez_make_prop_week', array(
-      'methods' => 'POST',
-      'callback' => 'houzez_make_prop_week',
     ));
 
     register_rest_route( 'v1', '/houzez_remove_prop_week', array(
@@ -2894,35 +2889,12 @@ if( !function_exists('houzez_add_widget') ) {
  */
 
 /* -----------------------------------------------------------------------------------------------------------
- *  Make Property of the Week
- -------------------------------------------------------------------------------------------------------------*/
- if( !function_exists('houzez_make_prop_week') ):
-    function  houzez_make_prop_week(){
-        global $current_user;
-
-        wp_get_current_user();
-        $userID =   $current_user->ID;
-
-        $prop_id = intval( $_POST['propid'] );
-        $post = get_post( $prop_id );
-
-        if( $post->post_author == $userID ) {
-            update_post_meta($prop_id, 'fave_week', 1);
-        }
-
-        return ($post->post_author == $userID);
-    }
-endif;
-
-/* -----------------------------------------------------------------------------------------------------------
  *  Remove Property of the Week
  -------------------------------------------------------------------------------------------------------------*/
 if( !function_exists('houzez_remove_prop_week') ):
     function  houzez_remove_prop_week(){
-        global $current_user;
-
-        wp_get_current_user();
-        $userID =   $current_user->ID;
+        $userID = apply_filters( 'determine_current_user', false );
+        wp_set_current_user( $userID );
 
         $prop_id = intval( $_POST['propid'] );
         $post = get_post( $prop_id );
@@ -3179,9 +3151,9 @@ function houzez_get_user_current_package( $user_id ) {
 }
 
 /**
- * Membership Package Payment (Bitcoin, GooglePay, ApplePay)
+ * Membership Package Payment (Stripe, Bitcoin, GooglePay, ApplePay)
  */
-function houzez_stripe_payment_membership( $pack_plan, $pack_price, $title ) {
+function houzez_stripe_payment_membership( $pack_id, $pack_price, $title ) {
 
     require_once( get_template_directory() . '/framework/stripe-php/init.php' );
     $stripe_secret_key = houzez_option('stripe_secret_key');
@@ -3192,11 +3164,6 @@ function houzez_stripe_payment_membership( $pack_plan, $pack_price, $title ) {
     $userID = $current_user->ID;
     $user_login = $current_user->user_login;
     $user_email = get_the_author_meta('user_email', $userID);
-
-    if (isset($_GET['selected_package']))
-        $pack_id = $_GET['selected_package'];
-
-    update_post_meta($pack_id, 'fave_package_stripe_id', $pack_plan);
 
     $stripe = array(
         "secret_key" => $stripe_secret_key,
@@ -3221,7 +3188,7 @@ function houzez_stripe_payment_membership( $pack_plan, $pack_price, $title ) {
             data-locale="'.get_locale().'"
             data-billing-address="true"
             data-label="'.__('Pay with Credit Card','houzez').'"
-            data-description="'.$title.' '.__('Package Payment','houzez').'">
+            data-description="'.$title.' '.__('Payment','houzez').'">
             </script>
         </div>
         <input type="hidden" id="pack_id" name="pack_id" value="' . $pack_id . '">
@@ -3335,5 +3302,106 @@ function houzez_applepay_package_payment( $pack_price, $title ) {
                 });
             </script>
         ';
+}
+
+
+/**
+ * Additional Package Option Payment
+ */
+add_action( 'wp_ajax_nopriv_houzez_paypal_option_payment', 'houzez_paypal_option_payment' );
+add_action( 'wp_ajax_houzez_paypal_option_payment', 'houzez_paypal_option_payment' );
+
+function houzez_paypal_option_payment() {
+    global $current_user;
+    wp_get_current_user();
+    $userID = $current_user->ID;
+
+    $allowed_html =   array();
+    $blogInfo = esc_url( home_url() );
+    $houzez_option_name    =   wp_kses($_POST['houzez_option_name'],$allowed_html);
+    $houzez_option_price   =   $_POST['houzez_option_price'];
+    $houzez_property_id      =   $_POST['houzez_property_id'];
+
+    $currency            = houzez_option('currency_paid_submission');
+
+    $option = array(
+        'featured' => 'Featured Property',
+        'week'     => 'Property of the Week'
+    );
+
+    $payment_description = esc_html__($option[$houzez_option_name].' payment on', 'houzez').$blogInfo;
+
+    $is_paypal_live      = houzez_option('paypal_api');
+    $host                = 'https://api.sandbox.paypal.com';
+
+    if( $is_paypal_live =='live'){
+        $host = 'https://api.paypal.com';
+    }
+
+    $url             =   $host.'/v1/oauth2/token';
+    $postArgs        =   'grant_type=client_credentials';
+    $access_token    =   houzez_get_paypal_access_token( $url, $postArgs );
+    $url             =   $host.'/v1/payments/payment';
+    $return_url      = houzez_get_template_link('template-addon-thankyou.php');
+    $dash_profile_link   =  houzez_get_dashboard_profile_link();
+
+    $payment = array(
+        'intent' => 'sale',
+        "redirect_urls" => array(
+            "return_url" => $return_url,
+            "cancel_url" => $dash_profile_link
+        ),
+        'payer' => array("payment_method" => "paypal"),
+    );
+
+    $payment['transactions'][0] = array(
+        'amount' => array(
+            'total' => $houzez_option_price,
+            'currency' => $currency,
+            'details' => array(
+                'subtotal' => $houzez_option_price,
+                'tax' => '0.00',
+                'shipping' => '0.00'
+            )
+        ),
+        'description' => $payment_description
+    );
+
+    $payment['transactions'][0]['item_list']['items'][] = array(
+        'quantity' => '1',
+        'name' => esc_html__('Additional Package Payment','houzez'),
+        'price' => $houzez_option_price,
+        'currency' => $currency,
+        'sku' => $option[$houzez_option_name],
+    );
+
+    // Convert PHP array into json format
+    $jsonEncode = json_encode($payment);
+    $json_response = houzez_execute_paypal_request( $url, $jsonEncode, $access_token );
+
+    foreach ($json_response['links'] as $link) {
+        if($link['rel'] == 'execute'){
+            $payment_execute_url = $link['href'];
+            $payment_execute_method = $link['method'];
+        } else if($link['rel'] == 'approval_url'){
+            $payment_approval_url = $link['href'];
+            $payment_approval_method = $link['method'];
+        }
+    }
+
+    // Save data in database for further use on processor page
+    $output['payment_execute_url'] = $payment_execute_url;
+    $output['access_token']        = $access_token;
+    $output['property_id']         = $houzez_property_id;
+    $output['property_option']     = $houzez_option_name;
+
+    $save_output[$userID]   =   $output;
+    update_option('houzez_paypal_addon_package', $save_output);
+    update_user_meta( $userID, 'houzez_paypal_property', $output);
+
+    print $payment_approval_url;
+
+    wp_die();
+
 }
 ?>

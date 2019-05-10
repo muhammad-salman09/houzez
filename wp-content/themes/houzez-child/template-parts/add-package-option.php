@@ -16,6 +16,9 @@ if ( is_page_template( 'template-user-dashboard-package.php' ) ) {
 if ( is_page_template( 'template-addon-payment.php' ) ) {
     $ac_payment = 'active';
 }
+if ( is_page_template( 'template-addon-thankyou.php' ) ) {
+    $ac_thankyou = 'active';
+}
 
 ?>
 <ol class="pay-step-bar">

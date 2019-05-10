@@ -1538,18 +1538,73 @@ jQuery(document).ready(function ($) {
         }
 
         /* ------------------------------------------------------------------------ */
+        /*  Additional Package Option payment
+        /* ------------------------------------------------------------------------ */
+
+        var houzez_package_option = function(currnt) {
+            var payment_gateway = $("input[name='houzez_payment_type']:checked").val();
+
+            var houzez_option_price = $("input[name='houzez_option_price']").val();
+            var houzez_option_name  = $("input[name='houzez_option_name']").val();
+            var houzez_property_id    = $("input[name='houzez_property_id']").val();
+
+            if( payment_gateway == 'paypal' ) {
+                fave_processing_modal( paypal_connecting );
+                houzez_paypal_option_payment( houzez_option_price, houzez_option_name, houzez_property_id );
+
+            } else if ( payment_gateway == 'stripe' ) {
+                var hform = currnt.parents('form');
+                hform.find('.houzez_stripe_membership button').trigger( "click" );
+
+            } else if ( payment_gateway == 'bitcoin' ) {
+                window.open($('.payment-bitcoin').closest('.radio').next().val(), '_blank');
+            }
+
+            return false;
+        }
+
+        $('#houzez_complete_option').click( function(e) {
+            e.preventDefault();
+            var currnt = $(this);
+
+            houzez_package_option(currnt);
+        } );
+
+        var houzez_paypal_option_payment = function( houzez_option_price, houzez_option_name, houzez_property_id ) {
+
+            $.ajax({
+                type: 'POST',
+                url: ajaxurl,
+                data: {
+                    'action'    : 'houzez_paypal_option_payment',
+                    'houzez_option_price' : houzez_option_price,
+                    'houzez_option_name'  : houzez_option_name,
+                    'houzez_property_id'  : houzez_property_id
+                },
+                success: function (data) {
+                    window.location.href = data;
+                },
+                error: function(xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    console.log(err.Message);
+                }
+            });
+        }
+
+        /* ------------------------------------------------------------------------ */
         /*  Select Membership payment
-         /* ------------------------------------------------------------------------ */
+        /* ------------------------------------------------------------------------ */
 
         var houzez_membership_data = function(currnt) {
             var payment_gateway = $("input[name='houzez_payment_type']:checked").val();
+
             var houzez_package_price = $("input[name='houzez_package_price']").val();
             var houzez_package_id    = $("input[name='houzez_package_id']").val();
             var houzez_package_name  = $("#houzez_package_name").text();
 
             if( payment_gateway == 'paypal' ) {
                 fave_processing_modal( paypal_connecting );
-                if ($('#paypal_package_recurring').is(':checked')) {
+                if ($('#paypal_package_recurring').is(':checked') && $('#paypal_package_recurring').val() == 1) {
                     houzez_recuring_paypal_package_payment( houzez_package_price, houzez_package_name, houzez_package_id );
                 } else {
                     houzez_paypal_package_payment( houzez_package_price, houzez_package_name, houzez_package_id );
@@ -1759,58 +1814,11 @@ jQuery(document).ready(function ($) {
                     console.log(err.Message);
                 }
 
-            });//end ajax
+            });
         }
 
         /*--------------------------------------------------------------------------
-         *   Make Property Featured - only for membership
-         * -------------------------------------------------------------------------*/
-        /*$('.make-prop-featured').click(function (e) {
-            e.preventDefault();
-
-            if (confirm(confirm_featured)) {
-                var prop_id = $(this).attr('data-propid');
-                var prop_type = $(this).attr('data-proptype');
-                make_prop_featured(prop_id, $(this), prop_type);
-                $(this).unbind("click");
-            }
-        });
-
-        var make_prop_featured = function( prop_id, currentDiv, prop_type ) {
-
-            $.ajax({
-                type: 'POST',
-                url: ajaxurl,
-                dataType: 'JSON',
-                data: {
-                    'action' : 'houzez_make_prop_featured',
-                    'propid' : prop_id,
-                    'prop_type': prop_type
-                },
-                success: function ( res ) {
-
-                    if( res.success ) {
-                        var prnt = currentDiv.parents('.item-wrap');
-                        prnt.find('.item-thumb').append('<span class="label-featured label">'+fave_prop_featured+'</span>');
-                        currentDiv.remove();
-                        window.location.reload();
-                        var total_featured_listings = parseInt(jQuery('.featured_listings_remaining').text(), 10);
-                        jQuery('.featured_listings_remaining').text(total_featured_listings - 1);
-                    } else {
-                        currentDiv.parent().empty().append('<div class="alert alert-danger">'+featured_listings_none+'</div>');
-                    }
-
-                },
-                error: function(xhr, status, error) {
-                    var err = eval("(" + xhr.responseText + ")");
-                    console.log(err.Message);
-                }
-
-            });//end ajax
-        }*/
-
-        /*--------------------------------------------------------------------------
-         *   Make Property Featured - only for membership
+         *   Remove Property Featured/Property of the Week
          * -------------------------------------------------------------------------*/
         $('.remove-prop-featured').click(function (e) {
             e.preventDefault();
@@ -1846,7 +1854,37 @@ jQuery(document).ready(function ($) {
                     console.log(err.Message);
                 }
 
-            });//end ajax
+            });
+        }
+
+        $('.remove-prop-week').click(function (e) {
+            e.preventDefault();
+
+            if (confirm('Are you sure you want to remove from property of the week?')) {
+                var prop_id = $(this).attr('data-propid');
+
+                remove_prop_week(prop_id, $(this));
+                $(this).unbind("click");
+            }
+        });
+
+        function remove_prop_week( prop_id, currentDiv ) {
+            $.ajax({
+                type: 'POST',
+                url: '/wp-json/v1/houzez_remove_prop_week',
+                data: {'propid' : prop_id},
+                success: function(result) {
+                    if (result) {
+                        var prnt = currentDiv.parents('.item-wrap');
+                        prnt.find('.label-week').remove();
+                        currentDiv.remove();
+                        window.location.reload();
+                    } else {
+                        alert('It is not your published property.');
+                        window.location.reload();
+                    }
+                }
+            });
         }
 
         /* ------------------------------------------------------------------------ */

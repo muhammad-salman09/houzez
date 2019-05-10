@@ -22,6 +22,7 @@ $(document).ready(function() {
     if ($('body').hasClass('page-template-template-user-dashboard-properties') ||
         $('body').hasClass('page-template-template-user-dashboard-document') ||
         $('body').hasClass('page-template-template-document-upload') ||
+        $('body').hasClass('page-template-template-addon-thankyou') ||
         $('body').hasClass('houzez-dashboard')
         ) {
         var secHeight = $('#section-body').height();
@@ -218,67 +219,6 @@ $(document).ready(function() {
 	    return (key == 8 || key == 9 || key == 46 || key == 110 || key == 190 ||
 	            (key >= 35 && key <= 40) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105));
 	});
-
-	/*--------------------------------------------------------------------------
-     *   Make Property of the Week - only for membership
-     * -------------------------------------------------------------------------*/
-    /*$('.make-prop-week').click(function (e) {
-        e.preventDefault();
-
-        if (confirm('Are you sure you want to make this a property of the week?')) {
-            var prop_id = $(this).attr('data-propid');
-
-            make_prop_week(prop_id, $(this));
-            $(this).unbind("click");
-        }
-    });
-
-    function make_prop_week( prop_id, currentDiv ) {
-    	$.ajax({
-            type: 'POST',
-            url: '/wp-json/v1/houzez_make_prop_week',
-            data: {'propid' : prop_id},
-            success: function(result) {
-                if (result) {                    
-                    var prnt = currentDiv.parents('.item-wrap');
-                    prnt.find('.item-thumb').append('<span class="label-week label">Property of the Week</span>');
-                    currentDiv.remove();
-                    window.location.reload();
-                } else {
-                    alert('It is not your published property.');
-                }
-            }
-        });
-    }*/
-
-    $('.remove-prop-week').click(function (e) {
-        e.preventDefault();
-
-        if (confirm('Are you sure you want to remove from property of the week?')) {
-            var prop_id = $(this).attr('data-propid');
-
-            remove_prop_week(prop_id, $(this));
-            $(this).unbind("click");
-        }
-    });
-
-    function remove_prop_week( prop_id, currentDiv ) {
-        $.ajax({
-            type: 'POST',
-            url: '/wp-json/v1/houzez_remove_prop_week',
-            data: {'propid' : prop_id},
-            success: function(result) {
-                if (result) {
-                    var prnt = currentDiv.parents('.item-wrap');
-                    prnt.find('.label-week').remove();
-                    currentDiv.remove();
-                    window.location.reload();
-                } else {
-                    alert('It is not your published property.');
-                }
-            }
-        });
-    }
 
     $('.addon-type').click(function() {
         var url_string = $('.btn-next a').attr('href');
