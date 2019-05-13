@@ -112,10 +112,10 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                             <div class="done-icon"><i class="fa fa-check"></i></div>
                             <?php
                                 echo '<h2>';
-                                echo houzez_option('thankyou_title');
+                                the_title();
                                 echo '</h2>';
                                 echo '<p>';
-                                echo houzez_option('thankyou_des');
+                                the_content();
                                 echo '</p>';
                             ?>
                             <a href="<?php echo esc_url( $add_new_link ); ?>" class="btn btn-primary btn-long"> <?php echo esc_html__('Add New Property'); ?> </a>
