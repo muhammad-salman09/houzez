@@ -38,6 +38,8 @@ function custom_styles() {
   </style>';
 }
 
+function houzez_cancel_user_membership($user_id){}
+
 add_action( 'wp_ajax_nopriv_houzez_register_redirect', 'houzez_register_redirect', 200 );
 add_action( 'wp_ajax_houzez_register_redirect', 'houzez_register_redirect', 200 );
 

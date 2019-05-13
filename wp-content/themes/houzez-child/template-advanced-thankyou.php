@@ -18,7 +18,7 @@ $admin_email      =  get_bloginfo('admin_email');
 $allowed_html   =   array();
 
 $enable_paid_submission = houzez_option('enable_paid_submission');
-$dash_profile_link = houzez_get_dashboard_profile_link();
+$add_new_link = houzez_get_template_link('template/submit_property.php');
 
 if( $enable_paid_submission == 'membership' ) {
     /*-----------------------------------------------------------------------------------*/
@@ -34,6 +34,8 @@ if( $enable_paid_submission == 'membership' ) {
         $price = $value[0];
         $pack_id = $value[1];
         $option = $value[2];
+
+        houzez_update_membership_package( $userID, $pack_id );
 
         if ($option == 'option1')
             $invoice_billing_type = 'One Time';
@@ -66,6 +68,8 @@ if( $enable_paid_submission == 'membership' ) {
 
         $pack_id = $_GET['id'];
         $price = $_GET['price'];
+
+        houzez_update_membership_package( $userID, $pack_id );
 
         if ($_GET['option'] == 'option1')
             $invoice_billing_type = 'One Time';
@@ -114,7 +118,7 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                                 echo houzez_option('thankyou_des');
                                 echo '</p>';
                             ?>
-                            <a href="<?php echo esc_url( $dash_profile_link ); ?>" class="btn btn-primary btn-long"> <?php echo $houzez_local['goto_dash']; ?> </a>
+                            <a href="<?php echo esc_url( $add_new_link ); ?>" class="btn btn-primary btn-long"> <?php echo esc_html__('Add New Property'); ?> </a>
                         </div>
                     </div>
                 </div>
