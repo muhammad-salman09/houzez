@@ -1989,21 +1989,34 @@ if ( !function_exists('houzez_property_addon') ) {
             $paged = (get_query_var('page')) ? get_query_var('page') : 1;
         }
 
-        if ($atts['hz_select_addon'] == 'fave_week')
+        if ($atts['hz_select_addon'] == 'fave_week') {
             $css_classes = 'list-view';
-        if ($atts['hz_select_addon'] == 'fave_featured')
+
+            $args = array(
+                'orderby' => 'rand',
+                'post_status' => 'publish',
+                'post_type' => 'property',
+                'posts_per_page' => $atts['hz_limit_post_number'],
+                'meta_key' => $atts['hz_select_addon'],
+                'meta_value' => 1,
+                'meta_compare' => '='
+            );
+        }
+
+        if ($atts['hz_select_addon'] == 'fave_featured') {
             $css_classes = 'grid-view';
 
-        $args = array(
-            'order' => 'DESC',
-            'orderby' => 'id',
-            'post_status' => 'publish',
-            'post_type' => 'property',
-            'posts_per_page' => $atts['hz_limit_post_number'],
-            'meta_key' => $atts['hz_select_addon'],
-            'meta_value' => 1,
-            'meta_compare' => '='
-        );
+            $args = array(
+                'order' => 'DESC',
+                'orderby' => 'id',
+                'post_status' => 'publish',
+                'post_type' => 'property',
+                'posts_per_page' => $atts['hz_limit_post_number'],
+                'meta_key' => $atts['hz_select_addon'],
+                'meta_value' => 1,
+                'meta_compare' => '='
+            );
+        }
 
         $the_query = new WP_Query($args);
         ?>
@@ -2536,7 +2549,8 @@ function widget_content($args, $instance, $type) {
             'meta_key' => $type,
             'meta_value' => '1',
             'ignore_sticky_posts' => 1,
-            'post_status' => 'publish'
+            'post_status' => 'publish',
+            'orderby' => 'rand'
         )
     );
     ?>
