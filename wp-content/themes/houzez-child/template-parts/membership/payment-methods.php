@@ -155,7 +155,7 @@ if($enable_paypal != 0 && !isset($_GET['state'])) {
                     <input type="radio" class="payment-googlepay" name="houzez_payment_type" value="googlepay">
                     <?php esc_html_e( 'Google Pay', 'houzez' ); ?>
                 </label>
-                <?php houzez_googlepay_payment_membership( $pack_price, $pack_title ); ?>
+                <?php houzez_googlepay_payment( $selected_package_id, $pack_price, $pack_title, $option ); ?>
             </div>
         </div>
         <div class="method-type">
@@ -172,7 +172,7 @@ if($enable_paypal != 0 && !isset($_GET['state'])) {
                     <input type="radio" class="payment-applepay" name="houzez_payment_type" value="applepay">
                     <?php esc_html_e( 'Apple Pay', 'houzez' ); ?>
                 </label>
-                <?php houzez_applepay_package_payment( $pack_price, $pack_title ); ?>
+                <?php houzez_applepay_payment( $selected_package_id, $pack_price, $pack_title, $option ); ?>
             </div>
         </div>
         <div class="method-type">

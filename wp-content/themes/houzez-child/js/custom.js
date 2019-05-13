@@ -22,6 +22,7 @@ $(document).ready(function() {
     if ($('body').hasClass('page-template-template-user-dashboard-properties') ||
         $('body').hasClass('page-template-template-user-dashboard-document') ||
         $('body').hasClass('page-template-template-document-upload') ||
+        $('body').hasClass('page-template-template-advanced-thankyou') ||
         $('body').hasClass('page-template-template-addon-thankyou') ||
         $('body').hasClass('houzez-dashboard')
         ) {

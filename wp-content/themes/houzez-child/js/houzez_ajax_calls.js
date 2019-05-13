@@ -1558,6 +1558,8 @@ jQuery(document).ready(function ($) {
 
             } else if ( payment_gateway == 'bitcoin' ) {
                 window.open($('.payment-bitcoin').closest('.radio').next().val(), '_blank');
+            } else if ( payment_gateway == 'googlepay' ) {
+                googlePayNow('package');
             }
 
             return false;
@@ -1628,7 +1630,7 @@ jQuery(document).ready(function ($) {
             } else if ( payment_gateway == 'bitcoin' ) {
                 window.open($('.payment-bitcoin').closest('.radio').next().val(), '_blank');
             } else if ( payment_gateway == 'googlepay' ) {
-                
+                googlePayNow('membership');
             } else if ( payment_gateway == 'applepay' ) {
                 
             } else {

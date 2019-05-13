@@ -3196,7 +3196,7 @@ function houzez_stripe_payment_membership( $pack_id, $pack_price, $title ) {
         <input type="hidden" id="pay_ammout" name="pay_ammout" value="' . $package_price_for_stripe . '">';
 }
 
-function houzez_googlepay_payment_membership( $pack_price, $title ) {
+function houzez_googlepay_payment( $id, $price, $title, $option ) {
     require_once( get_template_directory() . '/framework/stripe-php/init.php' );
 
     $stripe_secret_key = houzez_option('stripe_secret_key');
@@ -3212,6 +3212,11 @@ function houzez_googlepay_payment_membership( $pack_price, $title ) {
     echo '<script src="https://js.stripe.com/v3/"></script>
            <div id="google-pay-button"></div>
            <script type="text/javascript">
+            var url1 = "' . houzez_get_template_link('template-advanced-thankyou.php') . '";
+            var url2 = "' . houzez_get_template_link('template-addon-thankyou.php') . '";
+
+            var param = "";
+
             var stripe = Stripe("' . $stripe_publishable_key . '");
 
             var googlePay = stripe.paymentRequest({
@@ -3219,7 +3224,7 @@ function houzez_googlepay_payment_membership( $pack_price, $title ) {
                 currency: "eur",
                 total: {
                 label: "' . $title . '",
-                amount: ' . $pack_price * 100 . ',
+                amount: ' . $price * 100 . ',
                 },
                 requestPayerName: true,
                 requestPayerEmail: true,
@@ -3234,30 +3239,47 @@ function houzez_googlepay_payment_membership( $pack_price, $title ) {
                 if (result) {
                     googleButton.mount("#google-pay-button");
                 } else {
-                    document.getElementById("google-pay-button").style.display = "none";
-                    //document.getElementById("google-pay-button").closest(".method-row").style.display = "none";
+                    document.getElementById("google-pay-button").closest(".method-row").style.display = "none";
                 }
+
+                document.getElementById("google-pay-button").style.display = "none";
             });
 
             googlePay.on("token", function(ev) {
-              fetch("/charges", {
+              fetch("/", {
                 method: "POST",
                 body: JSON.stringify({token: ev.token.id}),
-                headers: {"content-type": "application/json"},
+                headers: {"content-type": "application/json"}
               })
               .then(function(response) {
                 if (response.ok) {
                   ev.complete("success");
+
+                  var url = "";
+
+                  if (param == "membership")
+                    url = url1;
+                  if (param == "package")
+                    url = url2;
+
+                  url += "?pay=google&option=' . $option . '&price=' . $price . '&id=' . $id . '";
+
+                  window.location.href = url;
                 } else {
                   ev.complete("fail");
                 }
               });
             });
+
+            function googlePayNow(value) {
+                param = value;
+                googlePay.show();
+            }
            </script>
            ';
 }
 
-function houzez_applepay_package_payment( $pack_price, $title ) {
+function houzez_applepay_payment( $id, $price, $title, $option ) {
     require_once( get_template_directory() . '/framework/stripe-php/init.php' );
 
     $stripe_secret_key = houzez_option('stripe_secret_key');
@@ -3297,9 +3319,26 @@ function houzez_applepay_package_payment( $pack_price, $title ) {
                   if (available) {
                     document.getElementById("apple-pay-button").style.display = "block";
                   } else {
-                    //document.getElementById("apple-pay-button").closest(".method-row").style.display = "none";
+                    document.getElementById("apple-pay-button").closest(".method-row").style.display = "none";
                   }
                 });
+
+                /*Stripe.applePay.buildSession({
+                    countryCode: "US",
+                    currencyCode: "eur",
+                    total: {
+                        label: "' . $title . '",
+                        amount: ' . $price * 100 . '
+                    }
+                }, onSuccessHandler, onErrorHandler);
+
+                function onSuccessHandler(result, completion) {
+                  $.post( "/charges", { token: result.token.id }).done(function() {
+                    completion(true);
+                  }).fail(function() {
+                    completion(false);
+                  });
+                }*/
             </script>
         ';
 }

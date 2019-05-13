@@ -167,6 +167,40 @@ if (isset($_GET['state'])) {
     update_post_meta( $invoiceID, 'invoice_payment_status', 1 );
 }
 
+/*-----------------------------------------------------------------------------------*/
+// Googlepay payments for membeship packages
+/*-----------------------------------------------------------------------------------*/
+if (isset($_GET['pay']) && $_GET['pay'] == 'google') {
+    $paymentMethod = 'Google Pay';
+    $time = time();
+    $date = date('Y-m-d H:i:s', $time);
+
+    $option = $_GET['option'];
+    $property_id = $_GET['id'];
+    $price = $_GET['price'];
+
+    update_post_meta( $property_id, 'fave_' . $option, 1 );
+
+    $invoiceID = houzez_generate_invoice( 'package', 'one_time', $property_id, $date, $userID, 0, 0, '', $paymentMethod );
+
+    if ($option == 'featured')
+        $fave_meta['invoice_billion_for'] = 'Featured Property';
+    if ($option == 'week')
+        $fave_meta['invoice_billion_for'] = 'Property of the Week';
+
+    $fave_meta['invoice_billing_type'] = 'One Time';
+    $fave_meta['invoice_item_id'] = $property_id;
+    $fave_meta['invoice_item_price'] = $price;
+    $fave_meta['invoice_purchase_date'] = $date;
+    $fave_meta['invoice_buyer_id'] = $userID;
+    $fave_meta['invoice_payment_method'] = $paymentMethod;
+    $fave_meta['invoice_payment_status'] = 1;
+    
+    update_post_meta( $invoiceID, '_houzez_invoice_meta', $fave_meta );
+
+    update_post_meta( $invoiceID, 'invoice_payment_status', 1 );
+}
+
 get_header();
 
 $panel_class = 'dashboard-with-panel';

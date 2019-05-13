@@ -111,7 +111,7 @@ $enable_googlepay = houzez_option('enable_googlepay');
                     <input type="radio" class="payment-googlepay" name="houzez_payment_type" value="googlepay">
                     <?php esc_html_e( 'Google Pay', 'houzez' ); ?>
                 </label>
-                <?php houzez_googlepay_payment_membership( $price, $title ); ?>
+                <?php houzez_googlepay_payment( $_GET['post'], $price, $title, $_GET['option'] ); ?>
             </div>
         </div>
         <div class="method-type">
@@ -128,7 +128,7 @@ $enable_googlepay = houzez_option('enable_googlepay');
                     <input type="radio" class="payment-applepay" name="houzez_payment_type" value="applepay">
                     <?php esc_html_e( 'Apple Pay', 'houzez' ); ?>
                 </label>
-                <?php houzez_applepay_package_payment( $price, $title ); ?>
+                <?php houzez_applepay_payment( $_GET['post'], $price, $title, $_GET['option'] ); ?>
             </div>
         </div>
         <div class="method-type">

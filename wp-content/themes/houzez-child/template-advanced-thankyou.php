@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Thank You & Payment Process - Bitcoin
+ * Template Name: Thank You & Payment Process - Not Paypal
  */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
@@ -27,7 +27,7 @@ if( $enable_paid_submission == 'membership' ) {
     if (isset($_GET['state'])) {
         $paymentMethod = 'Bitcoin';
         $time = time();
-        $date = date('Y-m-d H:i:s',$time);
+        $date = date('Y-m-d H:i:s', $time);
 
         $value = explode(',', urldecode($_GET['state']));
 
@@ -36,6 +36,38 @@ if( $enable_paid_submission == 'membership' ) {
         $option = $value[2];
 
         if ($option == 'option1')
+            $invoice_billing_type = 'One Time';
+        else
+            $invoice_billing_type = 'Recurring';
+
+        $invoiceID = houzez_generate_invoice( 'package', 'one_time', $pack_id, $date, $userID, 0, 0, '', $paymentMethod );
+
+        $fave_meta['invoice_billion_for'] = 'package';
+        $fave_meta['invoice_billing_type'] = $invoice_billing_type;
+        $fave_meta['invoice_item_id'] = $pack_id;
+        $fave_meta['invoice_item_price'] = $price;
+        $fave_meta['invoice_purchase_date'] = $date;
+        $fave_meta['invoice_buyer_id'] = $userID;
+        $fave_meta['invoice_payment_method'] = $paymentMethod;
+        $fave_meta['invoice_payment_status'] = 1;
+        
+        update_post_meta( $invoiceID, '_houzez_invoice_meta', $fave_meta );
+
+        update_post_meta( $invoiceID, 'invoice_payment_status', 1 );
+    }
+
+    /*-----------------------------------------------------------------------------------*/
+    // Googlepay payments for membeship packages
+    /*-----------------------------------------------------------------------------------*/
+    if (isset($_GET['pay']) && $_GET['pay'] == 'google') {
+        $paymentMethod = 'Google Pay';
+        $time = time();
+        $date = date('Y-m-d H:i:s', $time);
+
+        $pack_id = $_GET['id'];
+        $price = $_GET['price'];
+
+        if ($_GET['option'] == 'option1')
             $invoice_billing_type = 'One Time';
         else
             $invoice_billing_type = 'Recurring';
