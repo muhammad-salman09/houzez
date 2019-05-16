@@ -348,6 +348,7 @@ Template: houzez
 }
 .item-wrap.prop_addon .property-item .item-body .property-title,
 .item-wrap.prop_addon .property-item-v2 .item-body .property-title {
+	height: 40px;
     text-overflow: ellipsis;
 	white-space: normal;
 }
