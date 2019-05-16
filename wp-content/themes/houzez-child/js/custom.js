@@ -38,6 +38,12 @@ $(document).ready(function() {
             $('#section-body').height(setHeight);
     }
 
+    if ($('body').hasClass('page-template-template-thankyou')) {
+        var direct = window.location.protocol + '//' + window.location.hostname + '/add-new-property';
+        $('.block-success-inner a').attr('href', direct);
+        $('.block-success-inner a').text('Add New Property')
+    }
+
     var url = new URL(window.location.href);
     var login = url.searchParams.get('login');
 
