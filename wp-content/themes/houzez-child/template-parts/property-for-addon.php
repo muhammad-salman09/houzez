@@ -38,9 +38,9 @@ $disable_photo_count = houzez_option('disable_photo_count');
                 <a href="<?php the_permalink() ?>" class="hover-effect">
                     <?php
                     if( has_post_thumbnail( $post->ID ) ) {
-                        the_post_thumbnail( 'houzez-prop_image1440_610' );
+                        the_post_thumbnail( 'houzez-single-big-size' );
                     }else{
-                        houzez_image_placeholder( 'houzez-prop_image1440_610' );
+                        houzez_image_placeholder( 'houzez-single-big-size' );
                     }
                     ?>
                 </a>
