@@ -666,6 +666,12 @@ Template: houzez
 .detail-block {
 	clear: both;
 }
+#solar.detail-block {
+	padding-bottom: 0;
+}
+.detail-block h3 {
+	margin: 0;
+}
 .detail-block .detail-title h2.title-left {
 	font-size: 22px;
 	font-weight: bold;
