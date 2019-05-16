@@ -3459,4 +3459,24 @@ function houzez_paypal_option_payment() {
     wp_die();
 
 }
+
+function houzez_email_type( $email, $email_type, $args ) {
+
+    $value_message = houzez_option('houzez_' . $email_type, '');
+    $value_subject = houzez_option('houzez_subject_' . $email_type, '');
+
+    if (function_exists('icl_translate')) {
+        $value_message = icl_translate('houzez', 'houzez_email_' . $value_message, $value_message);
+        $value_subject = icl_translate('houzez', 'houzez_email_subject_' . $value_subject, $value_subject);
+    }
+
+    if (strpos($value_subject, 'Your new listing on') !== false)
+        $value_message = 'Hi there,
+You have submitted new listing on  %website_url!
+Listing Title: %listing_title
+Listing ID:  %listing_id';
+
+    houzez_emails_filter_replace( $email, $value_message, $value_subject, $args);
+}
+
 ?>

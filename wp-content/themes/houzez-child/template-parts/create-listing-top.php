@@ -22,24 +22,27 @@ if( is_page_template( 'template-advanced-payment.php' ) ) {
         <span><?php esc_html_e( 'Create Listing', 'houzez' ); ?></span>
     </li>
     <?php
-    if ( !is_user_logged_in() ) {
-        if ($enable_paid_submission == 'membership') { ?>
-            <li class="pay-step-block <?php echo esc_attr( $ac_packages ); ?>"><span><?php echo sprintf(esc_html__( '%s Select a %s Package', 'houzez' ),'<span class="hidden-xs">','</span>'); ?></span></li>
-            <li class="pay-step-block <?php echo esc_attr( $ac_payment ); ?>"><span><?php esc_html_e( "Payment", "houzez" ); ?></span></li>
-        <?php } else if ($enable_paid_submission == 'per_listing') {
-            echo '<li class="pay-step-block '.$ac_payment.'"><span>'.esc_html__( "Payment", "houzez" ).'</span></li>';
-        }
-    } else {
-        if ($enable_paid_submission == 'membership') {
-            if (!houzez_user_has_membership($userID)) {?>
+    if (!isset($_GET['edit_property'])) {
+        if ( !is_user_logged_in() ) {
+            if ($enable_paid_submission == 'membership') { ?>
                 <li class="pay-step-block <?php echo esc_attr( $ac_packages ); ?>"><span><?php echo sprintf(esc_html__( '%s Select a %s Package', 'houzez' ),'<span class="hidden-xs">','</span>'); ?></span></li>
-                <li class="pay-step-block <?php echo esc_attr( $ac_payment ); ?>"><span><?php esc_html_e( 'Payment', 'houzez' ); ?></span></li>
+                <li class="pay-step-block <?php echo esc_attr( $ac_payment ); ?>"><span><?php esc_html_e( "Payment", "houzez" ); ?></span></li>
+            <?php } else if ($enable_paid_submission == 'per_listing') {
+                echo '<li class="pay-step-block '.$ac_payment.'"><span>'.esc_html__( "Payment", "houzez" ).'</span></li>';
+            }
+        } else {
+            if ($enable_paid_submission == 'membership') {
+                if (!houzez_user_has_membership($userID)) {?>
+                    <li class="pay-step-block <?php echo esc_attr( $ac_packages ); ?>"><span><?php echo sprintf(esc_html__( '%s Select a %s Package', 'houzez' ),'<span class="hidden-xs">','</span>'); ?></span></li>
+                    <li class="pay-step-block <?php echo esc_attr( $ac_payment ); ?>"><span><?php esc_html_e( 'Payment', 'houzez' ); ?></span></li>
 
-            <?php }
-        } else if ($enable_paid_submission == 'per_listing') {
-            echo '<li class="pay-step-block '.$ac_payment.'"><span>'.esc_html__( "Payment", "houzez" ).'</span></li>';
+                <?php }
+            } else if ($enable_paid_submission == 'per_listing') {
+                echo '<li class="pay-step-block '.$ac_payment.'"><span>'.esc_html__( "Payment", "houzez" ).'</span></li>';
+            }
         }
-    }?>
+    }
+    ?>
 
     <li class="pay-step-block <?php echo esc_attr( $ac_thankyou ); ?>"><span><?php esc_html_e( 'Done', 'houzez' ); ?></span></li>
 </ol>
