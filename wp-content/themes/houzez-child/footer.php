@@ -40,8 +40,7 @@ if (!is_page_template('template-user-dashboard-properties.php') &&
     !is_page_template('template-advanced-package.php') &&
     !is_page_template('template-advanced-payment.php') &&
     !is_page_template('template-advanced-thankyou.php') &&
-    !is_page_template('template-document-upload.php') &&
-    !is_page_template('template-map-search.php')) {
+    !is_page_template('template-document-upload.php')) {
 
         get_template_part('template-parts/scroll-to-top'); ?>
 

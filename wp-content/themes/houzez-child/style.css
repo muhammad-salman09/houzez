@@ -224,14 +224,12 @@ Template: houzez
 /* Advanced Search Style End */
 
 /* Draw Map Search Style Start */
-.page-template-template-map-search .advanced-search {
-	width: 100%;
+#section-body.houzez-body-half {
+	width: 75%;
+    margin: 0 auto;
 }
-.page-template-template-map-search .advanced-search h3.advance-title {
-	margin-left: 12.5%;
-}
-.page-template-template-map-search .advanced-search form {
-	margin: 0 auto;
+#section-body.houzez-body-half .draw-search {
+	margin: 0;
 }
 .draw-search>div {
 	height: 640px;
@@ -668,9 +666,6 @@ Template: houzez
 .detail-block {
 	clear: both;
 }
-.detail-block * {
-	font-family: sans-serif;
-}
 .detail-block .detail-title h2.title-left {
 	font-size: 22px;
 	font-weight: bold;
@@ -820,11 +815,6 @@ Template: houzez
 	color: #ffffff;
 }
 
-@media (min-width: 1366px) {
-	.page-template-template-map-search .advanced-search form {
-		width: 75%;
-	}
-}
 @media (min-width: 1121px) and (max-width: 1366px) {
 	.advanced-search-module {
 		width: 100%;

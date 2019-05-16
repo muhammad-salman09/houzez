@@ -1,10 +1,14 @@
 <?php
 
-global $houzez_local, $prop_data, $prop_meta_data;
-global $hide_add_prop_fields, $required_fields, $is_multi_steps;
+global $current_user, $houzez_local, $hide_add_prop_fields, $required_fields, $is_multi_steps;
 $is_multi_currency = houzez_option('multi_currency');
-$default_multi_currency = houzez_option('default_multi_currency');
+$default_multi_currency = get_the_author_meta( 'fave_author_currency' , $current_user->ID );
+if(empty($default_multi_currency)) {
+    $default_multi_currency = houzez_option('default_multi_currency');
+}
+
 ?>
+
 <div class="account-block <?php echo esc_attr($is_multi_steps);?>">
     <div class="add-title-tab">
         <h3><?php echo $houzez_local['prop_des_price']; ?></h3>
@@ -16,21 +20,21 @@ $default_multi_currency = houzez_option('default_multi_currency');
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label for="prop_title"><?php echo $houzez_local['prop_title'].houzez_required_field( $required_fields['title'] ); ?> </label>
-                        <input type="text" id="prop_title" class="form-control" value="<?php print sanitize_text_field( $prop_data->post_title ); ?>" name="prop_title" placeholder="<?php echo $houzez_local['prop_title_placeholder']; ?>"/>
+                        <input type="text" id="prop_title" class="form-control" name="prop_title" placeholder="<?php echo $houzez_local['prop_title_placeholder']; ?>"/>
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label for="description"><?php echo $houzez_local['prop_des']; ?></label>
+                        <label><?php echo $houzez_local['prop_des']; ?></label>
                         <?php 
                         // default settings - Kv_front_editor.php
-                        $content = $prop_data->post_content;
+                        $content = '';
                         $editor_id = 'prop_des';
                         $settings =   array(
                             'wpautop' => true, // use wpautop?
                             'media_buttons' => false, // show insert/upload button(s)
                             'textarea_name' => $editor_id, // set the textarea name to something different, square brackets [] can be used here
-                            'textarea_rows' => get_option('default_post_edit_rows', 18), // rows="..."
+                            'textarea_rows' => get_option('default_post_edit_rows', 18 ), // rows="..."
                             'tabindex' => '',
                             'editor_css' => '', //  extra styles for both visual and HTML editors buttons, 
                             'editor_class' => '', // add extra class(es) to the editor textarea
@@ -46,14 +50,32 @@ $default_multi_currency = houzez_option('default_multi_currency');
         </div>
         <div class="add-tab-row push-padding-bottom">
             <div class="row">
-
                 <?php if( $hide_add_prop_fields['prop_type'] != 1 ) { ?>
                 <div class="col-sm-3">
                     <div class="form-group">
+
                         <label for="prop_type"><?php echo $houzez_local['prop_type'].houzez_required_field( $required_fields['prop_type'] ); ?></label>
                         <select name="prop_type" id="prop_type" class="selectpicker" data-live-search="false" data-live-search-style="begins">
-                            <?php houzez_get_taxonomies_for_edit_listing( $prop_data->ID, 'property_type'); ?>
+                            <option selected="selected" value=""><?php esc_html_e('None', 'houzez'); ?></option>
+                            <?php
+                            /* Property Type */
+                            $property_types_terms = get_terms (
+                                array(
+                                    "property_type"
+                                ),
+                                array(
+                                    'orderby' => 'name',
+                                    'order' => 'ASC',
+                                    'hide_empty' => false,
+                                    'parent' => 0
+                                )
+                            );
+
+                            houzez_get_taxonomies_with_id_value( 'property_type', $property_types_terms, -1);
+
+                            ?>
                         </select>
+
                     </div>
                 </div>
                 <?php } ?>
@@ -63,7 +85,24 @@ $default_multi_currency = houzez_option('default_multi_currency');
                     <div class="form-group">
                         <label for="prop_status"><?php echo $houzez_local['prop_status'].houzez_required_field( $required_fields['prop_status'] ); ?></label>
                         <select name="prop_status" id="prop_status" class="selectpicker" data-live-search="false" data-live-search-style="begins">
-                            <?php houzez_get_taxonomies_for_edit_listing( $prop_data->ID, 'property_status'); ?>
+                            <option selected="selected" value=""><?php esc_html_e('None', 'houzez'); ?></option>
+                            <?php
+                            /* Property Status */
+                            $property_status = get_terms (
+                                array(
+                                    "property_status"
+                                ),
+                                array(
+                                    'orderby' => 'name',
+                                    'order' => 'ASC',
+                                    'hide_empty' => false,
+                                    'parent' => 0
+                                )
+                            );
+
+                            houzez_get_taxonomies_with_id_value( 'property_status', $property_status, -1);
+
+                            ?>
                         </select>
                     </div>
                 </div>
@@ -72,9 +111,26 @@ $default_multi_currency = houzez_option('default_multi_currency');
                 <?php if( $hide_add_prop_fields['prop_lifestyle'] != 1 ) { ?>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="prop_lifestyles"><?php echo esc_html__('Lifestyle', 'houzez'); ?></label>
-                            <select name="prop_lifestyles" id="prop_lifestyles" class="selectpicker" data-live-search="false" data-live-search-style="begins">
-                                <?php houzez_get_taxonomies_for_edit_listing( $prop_data->ID, 'property_lifestyle'); ?>
+                            <label for="prop_lifestyle"><?php echo esc_html__('Lifestyle', 'houzez'); ?></label>
+                            <select name="prop_lifestyle" id="prop_lifestyle" class="selectpicker" data-live-search="false" data-live-search-style="begins">
+                                <option selected="selected" value=""><?php esc_html_e('None', 'houzez'); ?></option>
+                                <?php
+                                /* Property Label */
+                                $property_lifestyle = get_terms (
+                                    array(
+                                        "property_lifestyle"
+                                    ),
+                                    array(
+                                        'orderby' => 'name',
+                                        'order' => 'ASC',
+                                        'hide_empty' => false,
+                                        'parent' => 0
+                                    )
+                                );
+
+                                houzez_get_taxonomies_with_id_value( 'property_lifestyle', $property_lifestyle, -1);
+
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -83,9 +139,26 @@ $default_multi_currency = houzez_option('default_multi_currency');
                 <?php if( $hide_add_prop_fields['prop_region'] != 1 ) { ?>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="prop_regions"><?php echo esc_html__('Region', 'houzez'); ?></label>
-                            <select name="prop_regions" id="prop_regions" class="selectpicker" data-live-search="false" data-live-search-style="begins">
-                                <?php houzez_get_taxonomies_for_edit_listing( $prop_data->ID, 'property_region'); ?>
+                            <label for="prop_region"><?php echo esc_html__('Region', 'houzez'); ?></label>
+                            <select name="prop_region" id="prop_region" class="selectpicker" data-live-search="false" data-live-search-style="begins">
+                                <option selected="selected" value=""><?php esc_html_e('None', 'houzez'); ?></option>
+                                <?php
+                                /* Property Label */
+                                $property_region = get_terms (
+                                    array(
+                                        "property_region"
+                                    ),
+                                    array(
+                                        'orderby' => 'name',
+                                        'order' => 'ASC',
+                                        'hide_empty' => false,
+                                        'parent' => 0
+                                    )
+                                );
+
+                                houzez_get_taxonomies_with_id_value( 'property_region', $property_region, -1);
+
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -103,14 +176,10 @@ $default_multi_currency = houzez_option('default_multi_currency');
                             <select name="currency" class="selectpicker" data-live-search="false" data-live-search-style="begins">
                                 <option value=""><?php echo $houzez_local['choose_currency']; ?></option>
                                 <?php
-                                $currency_val = '';
-                                if( isset( $prop_meta_data['fave_currency'] ) ) { 
-                                    $currency_val = sanitize_text_field( $prop_meta_data['fave_currency'][0] ); 
-                                }
                                 $currencies = Houzez_Currencies::get_form_fields();
                                 foreach ($currencies as $currency) { ?>
 
-                                    <option <?php selected($currency->currency_code, $currency_val); ?> value="<?php esc_attr_e($currency->currency_code); ?>"><?php esc_attr_e($currency->currency_code); ?></option>
+                                    <option <?php selected($currency->currency_code, $default_multi_currency); ?> value="<?php esc_attr_e($currency->currency_code); ?>"><?php esc_attr_e($currency->currency_code); ?></option>
 
                                 <?php
                                 }
@@ -125,7 +194,7 @@ $default_multi_currency = houzez_option('default_multi_currency');
                     <div class="form-group">
                         <label for="prop_price"> <?php echo $houzez_local['prop_sale_rent_price'].houzez_required_field( $required_fields['sale_rent_price'] );
                             print esc_html(get_option('houzez_currency_symbol', '')) . ' ';?>  </label>
-                        <input type="text" id="prop_price" class="form-control" name="prop_price" value="<?php if( isset( $prop_meta_data['fave_property_price'] ) ) { echo sanitize_text_field( $prop_meta_data['fave_property_price'][0] ); } ?>" placeholder="<?php echo $houzez_local['prop_sale_rent_price_placeholder']; ?>">
+                        <input type="text" id="prop_price" class="form-control" name="prop_price" value="" placeholder="<?php echo $houzez_local['prop_sale_rent_price_placeholder']; ?>">
                     </div>
                 </div>
                 <?php } ?>
@@ -134,7 +203,7 @@ $default_multi_currency = houzez_option('default_multi_currency');
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="prop_sec_price"><?php echo $houzez_local['prop_second_price'].houzez_required_field( $required_fields['prop_second_price']); ?></label>
-                        <input type="text" id="prop_sec_price" class="form-control" value="<?php if( isset( $prop_meta_data['fave_property_sec_price'] ) ) { echo sanitize_text_field( $prop_meta_data['fave_property_sec_price'][0] ); } ?>" name="prop_sec_price" placeholder="<?php echo $houzez_local['prop_second_price_placeholder']; ?>">
+                        <input type="text" id="prop_sec_price" class="form-control" name="prop_sec_price" placeholder="<?php echo $houzez_local['prop_second_price_placeholder']; ?>">
                     </div>
                 </div>
                 <?php } ?>
@@ -143,7 +212,7 @@ $default_multi_currency = houzez_option('default_multi_currency');
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="prop_label"><?php echo $houzez_local['prop_price_label'].houzez_required_field( $required_fields['price_label'] ); ?></label>
-                        <input type="text" id="prop_label" class="form-control" name="prop_label" value="<?php if( isset( $prop_meta_data['fave_property_price_postfix'] ) ) { echo sanitize_text_field( $prop_meta_data['fave_property_price_postfix'][0] ); } ?>" placeholder="<?php echo $houzez_local['prop_price_label_placeholder']; ?>" >
+                        <input type="text" id="prop_label" class="form-control" name="prop_label" placeholder="<?php echo $houzez_local['prop_price_label_placeholder']; ?>" >
                     </div>
                 </div>
                 <?php } ?>
@@ -152,7 +221,7 @@ $default_multi_currency = houzez_option('default_multi_currency');
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label for="prop_price_prefix"><?php echo $houzez_local['prop_price_prefix']; ?></label>
-                            <input type="text" id="prop_price_prefix" class="form-control" name="prop_price_prefix" value="<?php if( isset( $prop_meta_data['fave_property_price_prefix'] ) ) { echo sanitize_text_field( $prop_meta_data['fave_property_price_prefix'][0] ); } ?>" placeholder="<?php echo $houzez_local['prop_price_prefix_placeholder']; ?>" >
+                            <input type="text" id="prop_price_prefix" class="form-control" name="prop_price_prefix" placeholder="<?php echo $houzez_local['prop_price_prefix_placeholder']; ?>" >
                         </div>
                     </div>
                 <?php } ?>

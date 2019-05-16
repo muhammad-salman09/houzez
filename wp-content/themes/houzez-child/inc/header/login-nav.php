@@ -22,7 +22,7 @@ if( empty( $user_custom_picture )) {
 }
 
 $dash_profile_link = houzez_get_template_link_2('template/user_dashboard_profile.php');
-$dashboard_listings = houzez_get_template_link_2('template/user_dashboard_properties.php');
+$dashboard_listings = houzez_get_template_link_2('template-user-dashboard-properties.php');
 $dashboard_add_listing = houzez_get_template_link_2('template/submit_property.php');
 $dashboard_favorites = houzez_get_template_link_2('template/user_dashboard_favorites.php');
 $dashboard_search = houzez_get_template_link_2('template/user_dashboard_saved_search.php');
