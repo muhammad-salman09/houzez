@@ -3974,4 +3974,46 @@ Listing ID:  %listing_id';
     houzez_emails_filter_replace( $email, $value_message, $value_subject, $args);
 }
 
+function houzez_delete_property()
+{
+
+    $nonce = $_REQUEST['security'];
+    if ( ! wp_verify_nonce( $nonce, 'delete_my_property_nonce' ) ) {
+        $ajax_response = array( 'success' => false , 'reason' => esc_html__( 'Security check failed!', 'houzez' ) );
+        echo json_encode( $ajax_response );
+        die;
+    }
+
+    if ( !isset( $_REQUEST['prop_id'] ) ) {
+        $ajax_response = array( 'success' => false , 'reason' => esc_html__( 'No Property ID found', 'houzez' ) );
+        echo json_encode( $ajax_response );
+        die;
+    }
+
+    $propID = $_REQUEST['prop_id'];
+    $post_author = get_post_field( 'post_author', $propID );
+
+    global $current_user;
+    wp_get_current_user();
+    $userID      =   $current_user->ID;
+
+    if ( $post_author == $userID ) {
+        wp_delete_post( $propID );
+
+        $listings = get_user_meta($userID, 'package_listings', true);
+
+        if ($listings != '' && $listings != -1)
+            update_user_meta($userID, 'package_listings', intval($listings) + 1);
+
+        $ajax_response = array( 'success' => true , 'mesg' => esc_html__( 'Property Deleted', 'houzez' ) );
+        echo json_encode( $ajax_response );
+        die;
+    } else {
+        $ajax_response = array( 'success' => false , 'reason' => esc_html__( 'Permission denied', 'houzez' ) );
+        echo json_encode( $ajax_response );
+        die;
+    }
+
+}
+
 ?>

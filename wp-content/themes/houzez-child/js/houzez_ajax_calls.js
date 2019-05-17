@@ -3785,13 +3785,13 @@ jQuery(document).ready(function ($) {
                         'prop_id': propID,
                         'security': propNonce
                     },
-                    success: function(data) {
-                        if ( data.success == true ) {
+                    success: function(data) {console.log(data);
+                        /*if ( data.success == true ) {
                             window.location.reload();
                         } else {
                             jQuery('#fave_modal').modal('hide');
                             alert( data.reason );
-                        }
+                        }*/
                     },
                     error: function(errorThrown) {
 
