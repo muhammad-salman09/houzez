@@ -73,7 +73,7 @@ $default_multi_currency = houzez_option('default_multi_currency');
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="prop_lifestyles"><?php echo esc_html__('Lifestyle', 'houzez'); ?></label>
-                            <select name="prop_lifestyles" id="prop_lifestyles" class="selectpicker" data-live-search="false" data-live-search-style="begins">
+                            <select name="prop_lifestyles[]" id="prop_lifestyles" class="selectpicker" data-live-search="false" data-live-search-style="begins" multiple>
                                 <?php houzez_get_taxonomies_for_edit_listing( $prop_data->ID, 'property_lifestyle'); ?>
                             </select>
                         </div>

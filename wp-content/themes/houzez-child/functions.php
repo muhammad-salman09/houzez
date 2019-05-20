@@ -3460,6 +3460,63 @@ function houzez_paypal_option_payment() {
 
 }
 
+function houzez_get_taxonomies_for_edit_listing( $listing_id, $taxonomy ){
+
+    $taxonomy_id = '';
+    $taxonomy_id_arr = array();
+
+    $taxonomy_terms = get_the_terms( $listing_id, $taxonomy );
+
+    if( !empty($taxonomy_terms) ){
+        foreach( $taxonomy_terms as $term ){
+            $taxonomy_id = $term->term_id;
+            array_push($taxonomy_id_arr, intval($taxonomy_id));
+        }
+    }
+
+    echo '<option value="-1">'.esc_html__( 'None', 'houzez').'</option>';
+
+    $parent_taxonomy = get_terms(
+        array(
+            $taxonomy
+        ),
+        array(
+            'orderby'       => 'name',
+            'order'         => 'ASC',
+            'hide_empty'    => false,
+            'parent' => 0
+        )
+    );
+
+    houzez_get_taxonomies_with_id_value( $taxonomy, $parent_taxonomy, $taxonomy_id_arr );
+
+}
+
+function houzez_get_taxonomies_with_id_value($taxonomy, $parent_taxonomy, $taxonomy_id_arr, $prefix = " " ){
+
+    if (!empty($parent_taxonomy)) {
+        foreach ($parent_taxonomy as $term) {
+            if (sizeof($taxonomy_id_arr) > 0) {
+                $flag = true;
+
+                for ($i = 0; $i < sizeof($taxonomy_id_arr); $i++) {
+                    if ($taxonomy_id_arr[$i] == $term->term_id) {
+                        $flag = false;   
+                    }
+                }
+
+                if ($flag) {
+                    echo '<option value="' . $term->term_id . '">' . $prefix . $term->name . '</option>';
+                } else {
+                    echo '<option value="' . $term->term_id . '" selected="selected">' . $prefix . $term->name . '</option>';
+                }
+            } else {
+                echo '<option value="' . $term->term_id . '">' . $prefix . $term->name . '</option>';
+            }
+        }
+    }
+}
+
 function houzez_submit_listing($new_property) {
     global $current_user;
 
@@ -3705,9 +3762,13 @@ function houzez_submit_listing($new_property) {
             wp_set_object_terms( $prop_id, intval( $_POST['prop_status'] ), 'property_status' );
         }
 
-        // Add property status
-        if( isset( $_POST['prop_labels'] ) ) {
-            wp_set_object_terms( $prop_id, intval( $_POST['prop_labels'] ), 'property_label' );
+        // Add property lifestyle
+        if( isset( $_POST['prop_lifestyles'] ) && sizeof($_POST['prop_lifestyles']) > 0 ) {
+            for ($i = 0; $i < sizeof($_POST['prop_lifestyles']); $i++) {
+                $_POST['prop_lifestyles'][$i] = intval( $_POST['prop_lifestyles'][$i] );
+            }
+
+            wp_set_object_terms( $prop_id, $_POST['prop_lifestyles'], 'property_lifestyle' );
         }
 
         

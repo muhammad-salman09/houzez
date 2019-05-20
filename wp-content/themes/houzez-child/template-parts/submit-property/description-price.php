@@ -111,8 +111,8 @@ if(empty($default_multi_currency)) {
                 <?php if( $hide_add_prop_fields['prop_lifestyle'] != 1 ) { ?>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="prop_lifestyle"><?php echo esc_html__('Lifestyle', 'houzez'); ?></label>
-                            <select name="prop_lifestyle" id="prop_lifestyle" class="selectpicker" data-live-search="false" data-live-search-style="begins">
+                            <label for="prop_lifestyles"><?php echo esc_html__('Lifestyle', 'houzez'); ?></label>
+                            <select name="prop_lifestyles[]" id="prop_lifestyles" class="selectpicker" data-live-search="false" data-live-search-style="begins" multiple>
                                 <option selected="selected" value=""><?php esc_html_e('None', 'houzez'); ?></option>
                                 <?php
                                 /* Property Label */
