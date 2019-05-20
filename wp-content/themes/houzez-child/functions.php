@@ -3474,7 +3474,9 @@ function houzez_get_taxonomies_for_edit_listing( $listing_id, $taxonomy ){
         }
     }
 
-    echo '<option value="-1">'.esc_html__( 'None', 'houzez').'</option>';
+    if( $taxonomy != 'property_lifestyle' ) {
+        echo '<option value="-1">'.esc_html__( 'None', 'houzez').'</option>';
+    }
 
     $parent_taxonomy = get_terms(
         array(

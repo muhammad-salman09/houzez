@@ -406,4 +406,20 @@ $(document).ready(function() {
             $('.solar16').attr('src', $('.solar-dir').val() + m16.azimuth + '.png');
         }
     }
+
+    $('.dropdown-toggle').each(function() {
+        if ($(this).data('id') == 'prop_lifestyles') {
+            var cnt = 0;
+
+            $(this).next().find('ul li').each(function() {
+                if ($(this).hasClass('selected'))
+                    cnt++;
+            });
+
+            if (cnt == 0) {
+                $(this).attr('title', 'None');
+                $(this).find('span.filter-option').text('None');
+            }
+        }
+    });
 });
