@@ -388,23 +388,21 @@ $(document).ready(function() {
         window.location.href = url.href;
     });
 
-    if ($('#singlePropertyMapSection').children().length > 0) {
-        var perspective = $('.map-perspective').val();
+    var perspective = $('.map-perspective').val();
 
-        if (typeof(perspective) !== 'undefined' && perspective != '') {
-            var LatLng = $('.map-location').val();
+    if (typeof(perspective) !== 'undefined' && perspective != '') {
+        var LatLng = $('.map-location').val();
 
-            LatLng = LatLng.split(',');
+        LatLng = LatLng.split(',');
 
-            var latitude = parseFloat(LatLng[0]);
-            var longitude = parseFloat(LatLng[1]);
+        var latitude = parseFloat(LatLng[0]);
+        var longitude = parseFloat(LatLng[1]);
 
-            var m12 = new Model(perspective, 12, latitude, longitude);
-            var m16 = new Model(perspective, 16, latitude, longitude);
-            
-            $('.solar12').attr('src', $('.solar-dir').val() + m12.azimuth + '.png');
-            $('.solar16').attr('src', $('.solar-dir').val() + m16.azimuth + '.png');
-        }
+        var m12 = new Model(perspective, 12, latitude, longitude);
+        var m16 = new Model(perspective, 16, latitude, longitude);
+        
+        $('.solar12').attr('src', $('.solar-dir').val() + m12.azimuth + '.png');
+        $('.solar16').attr('src', $('.solar-dir').val() + m16.azimuth + '.png');
     }
 
     $('.dropdown-toggle').each(function() {

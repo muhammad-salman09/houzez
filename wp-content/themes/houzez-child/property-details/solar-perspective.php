@@ -1,7 +1,5 @@
 <?php
 
-$google_map_address = get_post_meta( get_the_ID(), 'fave_property_map_address', true );
-
 $property_location    = get_post_meta( get_the_ID(), 'fave_property_location',true);
 $fave_perspective    = get_post_meta( get_the_ID(), 'fave_perspective',true);
 

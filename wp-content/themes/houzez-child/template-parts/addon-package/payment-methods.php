@@ -143,5 +143,5 @@ $enable_googlepay = houzez_option('enable_googlepay');
 	<?php esc_html_e( 'Complete Package Option', 'houzez' ); ?>
 </button>
 <span class="help-block">
-	<?php echo sprintf( wp_kses(__( 'By clicking "Complete Package Option" you agree to our <a target="_blank" href="%s">Terms & Conditions</a>', 'houzez' ), $allowed_html_array), get_permalink($terms_conditions) ); ?>
+	<?php echo sprintf( wp_kses(__( 'By clicking "Complete Package Option" you agree to our <a target="_blank" href="%s">Terms & Conditions</a>', 'houzez' ), $allowed_html_array), 'https://www.affordablemallorca.com/legal'/*get_permalink($terms_conditions)*/ ); ?>
 </span>

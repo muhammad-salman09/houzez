@@ -27,7 +27,7 @@ if( is_page_template( 'template/submit_property.php' ) ) {
     if ($enable_paid_submission == 'membership' && $remaining_listings != -1 && $remaining_listings < 1 && is_user_logged_in() ) {
         if (!houzez_user_has_membership($userID)) {
             print '<div class="user_package_status">
-                    <h4>' . esc_html__('Let\'s begin by chooseing a package!', 'houzez') . '</h4>
+                    <h4>' . esc_html__('Let\'s begin by choosing a package!', 'houzez') . '</h4>
                     <a class="btn btn-primary" href="' . $select_packages_link . '">' . esc_html__('Get Package', 'houzez') . '</a>
                     </div>';
         } else {

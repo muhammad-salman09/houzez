@@ -189,4 +189,4 @@ if($enable_paypal != 0 && !isset($_GET['state'])) {
 <button id="houzez_complete_membership" type="submit" class="btn btn-success btn-submit"> <?php esc_html_e( 'Complete Membership', 'houzez' ); ?> </button>
 <button id="houzez_complete_membership_2checkout" type="submit"
         class="btn btn-success btn-submit hidden"> <?php esc_html_e('Complete Membership', 'houzez'); ?> </button>
-<span class="help-block"><?php echo sprintf( wp_kses(__( 'By clicking "Complete Membership" you agree to our <a target="_blank" href="%s">Terms & Conditions</a>', 'houzez' ), $allowed_html_array), get_permalink($terms_conditions) ); ?></span>
+<span class="help-block"><?php echo sprintf( wp_kses(__( 'By clicking "Complete Membership" you agree to our <a target="_blank" href="%s">Terms & Conditions</a>', 'houzez' ), $allowed_html_array), 'https://www.affordablemallorca.com/legal'/*get_permalink($terms_conditions)*/ ); ?></span>
