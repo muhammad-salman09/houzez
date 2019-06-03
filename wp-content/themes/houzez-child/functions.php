@@ -3159,9 +3159,9 @@ function houzez_get_user_current_package( $user_id ) {
         echo '</ul>';
         echo '</div>';
 
-        if( ! is_page_template( 'template/user_dashboard_membership.php' ) ) {
+        /*if( ! is_page_template( 'template/user_dashboard_membership.php' ) ) {
             echo '<a href="' . esc_url($packages_page_link) . '" class="plan-link btn btn-primary btn-block"> ' . esc_html__('Change Membership Plan', 'houzez') . ' </a>';
-        }
+        }*/
 
     }
 }

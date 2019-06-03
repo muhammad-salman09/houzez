@@ -34,7 +34,7 @@ get_template_part( 'template-parts/dashboard', 'menu' );
                 <div class="col-lg-2 col-md-3 col-sm-12 dashboard-inner-right">
                     <?php
                     if( !empty($package_id) ) {
-                        echo '<a href="' . esc_url($packages_page_link) . '" class="plan-link btn btn-primary btn-block"> ' . esc_html__('Change Membership Plan', 'houzez') . ' </a>';
+                        /*echo '<a href="' . esc_url($packages_page_link) . '" class="plan-link btn btn-primary btn-block"> ' . esc_html__('Change Membership Plan', 'houzez') . ' </a>';
                         $stripe_profile_user    =   get_user_meta($userID,'fave_stripe_user_profile',true);
                         $subscription_id        =   get_user_meta( $userID, 'houzez_stripe_subscription_id', true );
                         $enable_stripe_status   =   houzez_option('enable_stripe');
@@ -42,7 +42,7 @@ get_template_part( 'template-parts/dashboard', 'menu' );
                         if( $stripe_profile_user != '' && $subscription_id != '' && $enable_stripe_status != 0 ) {
                             echo '<a id="houzez_stripe_cancel" data-message="'.esc_html__('Done: Subscription will be cancelled at the end of current period', 'houzez').'" class="plan-link btn btn-secondary btn-block">'.esc_html__('Cancel Stripe Subscription', 'houzez').'</a>';
                             echo '<span id="stripe_cancel_success"></span>';
-                        }
+                        }*/
                     } else {
                         echo '<a href="' . esc_url($packages_page_link) . '" class="plan-link btn btn-primary btn-block"> ' . esc_html__('Get Membership Plan', 'houzez') . ' </a>';
                     }
