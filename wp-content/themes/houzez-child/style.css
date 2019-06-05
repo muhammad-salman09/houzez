@@ -104,7 +104,7 @@ Template: houzez
 /* Advanced Search Style Start */
 .advanced-search-module {
 	margin: 0 auto;
-	width: 75%;
+	width: 80%;
 }
 .advance-title {
 	color: #001489;
@@ -121,6 +121,7 @@ Template: houzez
 .advanced-search .col-md-1,
 .advanced-search .col-md-2,
 .advanced-search .col-md-3,
+.advanced-search .col-md-4,
 .advanced-search .col-md-6,
 .advanced-search .col-md-9,
 .advanced-search .col-md-10 {
@@ -822,6 +823,14 @@ Template: houzez
 	color: #ffffff;
 }
 
+@media (min-width: 1366px) and (max-width: 1527px) {
+	.select-advanced-main .col-md-4 {
+		width: 30%;
+	}
+	.select-advanced-main .col-md-2 {
+		width: 20%;
+	}
+}
 @media (min-width: 1121px) and (max-width: 1366px) {
 	.advanced-search-module {
 		width: 100%;

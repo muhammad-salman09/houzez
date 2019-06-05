@@ -249,7 +249,7 @@ get_template_part( 'template-parts/mobile-header' );
             </div>
         </div>
         <div class="row">
-            <div class="col-md-7 col-sm-12 select-advanced-main">
+            <div class="col-md-8 col-sm-12 select-advanced-main">
                 <div class="col-md-3 col-sm-6">
                     <?php 
                         $lifestyle = isset($_GET['lifestyle']) ? $_GET['lifestyle'] : '';
@@ -273,7 +273,7 @@ get_template_part( 'template-parts/mobile-header' );
                     ?>
                     </select>
                 </div>
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-4 col-sm-6">
                     <?php 
                         $region = isset($_GET['region']) ? $_GET['region'] : '';
                     ?>
@@ -319,7 +319,7 @@ get_template_part( 'template-parts/mobile-header' );
                     ?>
                     </select>
                 </div>
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-2 col-sm-6">
                     <?php 
                         $searched_currency = isset($_GET['currency']) ? $_GET['currency'] : '';
                         $currencies = Houzez_Currencies::get_currency_codes();
@@ -334,13 +334,13 @@ get_template_part( 'template-parts/mobile-header' );
                     </select>
                 </div>
             </div>
-            <div class="col-md-5 col-sm-12 range-advanced-main">
-                <div class="range-text col-md-3">
+            <div class="col-md-4 col-sm-12 range-advanced-main">
+                <div class="range-text col-md-4 col-lg-3">
                     <input type="hidden" name="min-price" class="min-price-range-hidden range-input" readonly >
                     <input type="hidden" name="max-price" class="max-price-range-hidden range-input" readonly >
                     <span class="range-title"><?php echo $houzez_local['price_range']; ?></span>
                 </div>
-                <div class="range-wrap col-md-9">
+                <div class="range-wrap col-md-8 col-lg-9">
                     <span class="min-price-range"></span>
                     <div class="price-range"></div>
                     <span class="max-price-range"></span>

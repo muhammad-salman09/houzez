@@ -1083,7 +1083,7 @@ if( !function_exists('houzez_advance_search_update') ) {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-7 col-sm-12 select-advanced-main">
+                    <div class="col-md-8 col-sm-12 select-advanced-main">
                         <div class="col-md-3 col-sm-6">
                             <select class="selectpicker bs-select-hidden" name="lifestyle">
                             <?php
@@ -1104,7 +1104,7 @@ if( !function_exists('houzez_advance_search_update') ) {
                             ?>
                             </select>
                         </div>
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-md-4 col-sm-6">
                             <select class="selectpicker bs-select-hidden" name="region">
                             <?php
                                 echo '<option value="">' . esc_html__('Location') . '</option>';
@@ -1144,7 +1144,7 @@ if( !function_exists('houzez_advance_search_update') ) {
                             ?>
                             </select>
                         </div>
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-md-2 col-sm-6">
                             <?php 
                                 $searched_currency = isset($_GET['currency']) ? $_GET['currency'] : '';
                                 $currencies = Houzez_Currencies::get_currency_codes();
@@ -1159,7 +1159,7 @@ if( !function_exists('houzez_advance_search_update') ) {
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-5 col-sm-12 range-advanced-main">
+                    <div class="col-md-4 col-sm-12 range-advanced-main">
                         <?php if( $adv_search_price_slider != 0 ) { ?>
                             <div class="range-text col-md-4 col-lg-3">
                                 <input type="hidden" name="min-price" class="min-price-range-hidden range-input" readonly >
