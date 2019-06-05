@@ -28,6 +28,7 @@ $select_packages_link = houzez_get_template_link('template/template-packages.php
 $sticky_sidebar = houzez_option('sticky_sidebar');
 $allowed_html = array();
 $submit_form_type = houzez_option('submit_form_type');
+$properties_page = houzez_get_template_link('template-user-dashboard-properties.php');
 
 if( $submit_form_type == 'one_step' ) {
     $submit_form_main_class = 'houzez-one-step-form';
@@ -212,7 +213,7 @@ if( isset( $_POST['action'] ) ) {
                 houzez_email_type( $admin_email, 'admin_free_submission_listing', $args);
 
                 if (houzez_user_has_membership($userID)) {
-                    wp_redirect($thankyou_page_link);
+                    wp_redirect($properties_page);
                 } // end membership check
                 else {
                     $separator = (parse_url($select_packages_link, PHP_URL_QUERY) == NULL) ? '?' : '&';
@@ -308,7 +309,7 @@ if( isset( $_POST['action'] ) ) {
                  * */
                 houzez_email_type( $user_email, 'free_submission_listing', $args);
                 houzez_email_type( $admin_email, 'admin_free_submission_listing', $args);
-                wp_redirect($thankyou_page_link);
+                wp_redirect($properties_page);
             }
         }
 

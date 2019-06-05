@@ -3519,6 +3519,17 @@ function houzez_get_taxonomies_with_id_value($taxonomy, $parent_taxonomy, $taxon
     }
 }
 
+function houzez_user_has_membership( $user_id ) {
+    $has_package = get_the_author_meta( 'package_id', $user_id );
+    $has_listing = get_the_author_meta( 'package_listings', $user_id );
+    
+    if( !empty( $has_package ) && ( $has_listing != 0 || $has_listing != '' ) ) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function houzez_submit_listing($new_property) {
     global $current_user;
 
@@ -3575,12 +3586,12 @@ function houzez_submit_listing($new_property) {
             }
             if( $listings_admin_approved != 'yes' && ( $enable_paid_submission == 'no' || $enable_paid_submission == 'free_paid_listing' || $enable_paid_submission == 'membership' ) ) {
                 $new_property['post_status'] = 'publish';
-            } else {
+            }/* else {
                 $new_property['post_status'] = 'pending';
-            }
-        } elseif( $edit_listings_admin_approved == 'yes' ) {
+            }*/
+        }/* elseif( $edit_listings_admin_approved == 'yes' ) {
                 $new_property['post_status'] = 'pending';
-        }
+        }*/
         $prop_id = wp_update_post( $new_property );
 
     }
