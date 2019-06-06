@@ -662,7 +662,7 @@ function update_redux_options($sections){
     }
 
     for ($i = sizeof($sections); $i > $index; $i--) {
-        $sections[$i + 1] = $sections[$i];
+        $sections[$i + 2] = $sections[$i];
     }
 
     $sections[$index + 1] = array(
@@ -693,6 +693,30 @@ function update_redux_options($sections){
                 'desc' => '',
                 'section_id' => 'document-upload'
             ),
+        )
+    );
+
+    $sections[$index + 2] = array(
+        'title' => 'Document Share',
+        'id' => 'document-share',
+        'desc' => '',
+        'icon' => 'el el-envelope el el-small',
+        'priority' => $index + 2,
+        'fields' => array(
+            array(
+                'id' => 'share_subject',
+                'type' => 'text',
+                'title' => 'Sharing Email Subject',
+                'desc' => '',
+                'section_id' => 'document-share'
+            ),
+            array(
+                'id' => 'share_verbiage',
+                'type' => 'textarea',
+                'title' => 'Sharing Email Verbiage',
+                'desc' => '',
+                'section_id' => 'document-share'
+            )
         )
     );
 
@@ -3041,7 +3065,7 @@ function houzez_doc_remove() {
             if ($val[0] == $title && $val[1] == $filename) {
                 $wpdb->query("
                     DELETE FROM {$wpdb->prefix}postmeta WHERE post_id = " . $post_id . " AND meta_value LIKE '%" . $doc . "%'");
-                
+
                 delete_post_meta($post_id, 'doc' . $i);
             }
         }
@@ -3086,6 +3110,13 @@ function houzez_doc_share() {
         $url .= '?encrypt=' . $new_enc;
     }
 
+    $subject = houzez_option('share_subject');
+    if ($subject == '')
+        $subject = 'Affordable Real Estate';
+
+    $verbiage = houzez_option('share_verbiage');
+    $content = $verbiage . "\n" . $url;
+
     $headers = "Reply-To: <staging@unfstaging.com>\r\n"; 
     $headers .= "Return-Path: <staging@unfstaging.com>\r\n";
     $headers .= "From: <staging@unfstaging.comm>\r\n";
@@ -3094,7 +3125,7 @@ function houzez_doc_share() {
     $headers .= "X-Priority: 3\r\n";
     $headers .= "X-Mailer: PHP". phpversion() ."\r\n";
 
-    wp_mail($mail, 'Affordable Real Estate', $url, $headers);
+    wp_mail($mail, $subject, $content, $headers);
 
     return true;
 }
