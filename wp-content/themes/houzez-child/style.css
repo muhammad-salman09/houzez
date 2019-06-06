@@ -823,6 +823,11 @@ Template: houzez
 	color: #ffffff;
 }
 
+@media (min-width: 1366px) and (max-width: 1613px){
+	.item-wrap.prop_addon .item-info {
+		height: 150px;
+	}
+}
 @media (min-width: 1366px) and (max-width: 1527px) {
 	.select-advanced-main .col-md-4 {
 		width: 30%;
@@ -840,7 +845,7 @@ Template: houzez
 		font-size: 14px;
 	}
 }
-@media (min-width: 992px) and (max-width: 1264px) {
+@media (min-width: 992px) and (max-width: 1294px) {
 	.listing-area .grid-view .item-wrap .property-item-v2 .item-info {
 		height: 150px;
 	}
