@@ -226,7 +226,7 @@ Template: houzez
 
 /* Draw Map Search Style Start */
 #section-body.houzez-body-half {
-	width: 75%;
+	width: 80%;
     margin: 0 auto;
 }
 #section-body.houzez-body-half .draw-search {
@@ -831,12 +831,11 @@ Template: houzez
 		width: 20%;
 	}
 }
-@media (min-width: 1121px) and (max-width: 1366px) {
-	.advanced-search-module {
+@media (min-width: 992PX) and (max-width: 1366px) {
+	.advanced-search-module,
+	#section-body.houzez-body-half {
 		width: 100%;
 	}
-}
-@media (min-width: 992PX) and (max-width: 1366px) {
 	.header-section-4 .header-left .navi > ul > li > a {
 		font-size: 14px;
 	}
