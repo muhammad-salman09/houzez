@@ -3017,6 +3017,8 @@ function houzez_doc_upload() {
 }
 
 function houzez_doc_remove() {
+    global $wpdb;
+
     $post_id = $_POST['post_id'];
 
     $title = $_POST['title'];
@@ -3036,8 +3038,12 @@ function houzez_doc_remove() {
 
             $val = explode('/', $doc);
 
-            if ($val[0] == $title && $val[1] == $filename)
+            if ($val[0] == $title && $val[1] == $filename) {
+                $wpdb->query("
+                    DELETE FROM {$wpdb->prefix}postmeta WHERE post_id = " . $post_id . " AND meta_value LIKE '%" . $doc . "%'");
+                
                 delete_post_meta($post_id, 'doc' . $i);
+            }
         }
 
         $result = 'success';
