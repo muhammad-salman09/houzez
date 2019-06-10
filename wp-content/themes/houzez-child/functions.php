@@ -1310,18 +1310,16 @@ function houzez_map_search() {
         );
     }
 
-    if ( !empty($min_price) && !empty($max_price) ) {
-        $min_price = doubleval( houzez_clean( $min_price ) );
-        $max_price = doubleval( houzez_clean( $max_price ) );
+    $min_price = doubleval( houzez_clean( $min_price ) );
+    $max_price = doubleval( houzez_clean( $max_price ) );
 
-        if ( $min_price > 0 && $max_price > $min_price ) {
-            $meta_query[] = array(
-                'key' => 'fave_property_price',
-                'value' => array($min_price, $max_price),
-                'type' => 'NUMERIC',
-                'compare' => 'BETWEEN',
-            );
-        }
+    if ( $max_price > $min_price ) {
+        $meta_query[] = array(
+            'key' => 'fave_property_price',
+            'value' => array($min_price, $max_price),
+            'type' => 'NUMERIC',
+            'compare' => 'BETWEEN',
+        );
     }
 
     $meta_count = count($meta_query);

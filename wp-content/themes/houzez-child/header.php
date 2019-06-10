@@ -196,8 +196,8 @@ get_template_part( 'template-parts/mobile-header' );
 
     $status = 'for-sale';
     $lifestyle = $location = $type = '';
-    $min_price = '1,000';
-    $max_price = '1,000,000';
+    $min_price = houzez_option('advanced_search_widget_min_price');
+    $max_price = houzez_option('advanced_search_widget_max_price');
     
     if (isset($_GET['status'])) {
         $status = $_GET['status'];
