@@ -129,10 +129,20 @@ if ($userID == 0 && is_page_template('template/submit_property.php'))
 	                    		</a>
 	                    	</li>
 	                    	<li>
-	                    		<select>
-	                    			<option value="en">EN</option>
-	                    			<option value="es">ES</option>
-	                    			<option value="de">DE</option>
+                                <?php
+                                    $cur_lang = isset($_GET['lang']) ? $_GET['lang'] : 'en';
+                                    $lang_arr = get_option('wpml_language_switcher');
+                                    $langs = $lang_arr['languages_order'];
+                                ?>
+	                    		<select class="sel-lang">
+                                    <?php
+                                        foreach ($langs as $lang) {
+                                            if ($lang == $cur_lang)
+                                                echo '<option selected value="' . $lang . '">' . strtoupper($lang) . '</option>';
+                                            else
+                                                echo '<option value="' . $lang . '">' . strtoupper($lang) . '</option>';
+                                        }
+                                    ?>
 	                    		</select>
 	                    	</li>
 	                    </ul>

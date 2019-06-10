@@ -44,6 +44,14 @@ $(document).ready(function() {
         $('.block-success-inner a').text('Add New Property')
     }
 
+    $('.sel-lang').change(function() {
+        var url_string = window.location;
+        var url = new URL(url_string);
+
+        url.searchParams.set('lang', $(this).val());
+        window.location.href = url.href;
+    });
+
     var url = new URL(window.location.href);
     var login = url.searchParams.get('login');
 
