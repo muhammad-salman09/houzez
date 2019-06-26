@@ -29,7 +29,7 @@ $dashboard_search = houzez_get_template_link_2('template/user_dashboard_saved_se
 $dashboard_invoices = houzez_get_template_link_2('template/user_dashboard_invoices.php');
 $dashboard_msgs = houzez_get_template_link_2('template/user_dashboard_messages.php');
 $dashboard_documents = houzez_get_template_link_2('template-user-dashboard-document.php');
-$dashboard_membership = houzez_get_template_link_2('template/user_dashboard_membership.php');
+$dashboard_membership = houzez_get_template_link_2('template-user-dashboard-membership.php');
 $dashboard_gdpr = houzez_get_template_link_2('template/user_dashboard_gdpr.php');
 $dashboard_seen_msgs = add_query_arg( 'view', 'seen', $dashboard_msgs );
 $dashboard_unseen_msgs = add_query_arg( 'view', 'unseen', $dashboard_msgs );
@@ -59,7 +59,7 @@ if( is_page_template( 'template/user_dashboard_profile.php' ) ) {
     $ac_msgs = 'class=active';
 } elseif ( is_page_template( 'template-user-dashboard-document.php' ) ) {
     $ac_documents = 'class=active';
-} elseif ( is_page_template( 'template/user_dashboard_membership.php' ) ) {
+} elseif ( is_page_template( 'template-user-dashboard-membership.php' ) ) {
     $ac_mem = 'class=active';
 } elseif ( is_page_template( 'template/user_dashboard_gdpr.php' ) ) {
     $ac_gdpr = 'class=active';
