@@ -3743,6 +3743,11 @@ function houzez_submit_listing($new_property) {
             update_post_meta( $prop_id, 'fave_video_url', sanitize_text_field( $_POST['prop_video_url'] ) );
         }
 
+        // Property Solar Perspective
+        if( isset( $_POST['prop_perspective'] ) ) {
+            update_post_meta( $prop_id, 'fave_perspective', sanitize_text_field( $_POST['prop_perspective'] ) );
+        }
+
         // property video image - in case of update
         $property_video_image = "";
         $property_video_image_id = 0;
