@@ -1236,6 +1236,7 @@ vc_map( array(
  */
 function houzez_map_search() {
     global $wp_query;
+    global $wpdb;
 
     $status = $_GET['status'];
     $city = $_GET['city'];
@@ -1301,15 +1302,6 @@ function houzez_map_search() {
         $search_query['tax_query'] = $tax_query;
     }
 
-    if ( !empty($currency) ) {
-        $meta_query[] = array(
-            'key' => 'fave_currency',
-            'value' => $currency,
-            'type' => 'CHAR',
-            'compare' => '=',
-        );
-    }
-
     $min_price = doubleval( houzez_clean( $min_price ) );
     $max_price = doubleval( houzez_clean( $max_price ) );
 
@@ -1365,34 +1357,65 @@ function houzez_map_search() {
         $wp_query = new WP_Query( $args );
     }
 
+    $result = $wpdb->get_results("SELECT currency_symbol FROM " . $wpdb->prefix . "houzez_currencies where currency_code='$currency'");
+
+    if (sizeof($result) > 0)
+        $symbol = $result[0]->currency_symbol;
+    else
+        $symbol = '€';
+
     if ( $wp_query->have_posts() ) {
         while ( $wp_query->have_posts() ) : $wp_query->the_post();
 
             $location = get_post_meta(get_the_ID(), 'fave_property_location', true);
             array_push($location_arr, $location);
 
+            $curr = get_post_meta(get_the_ID(), 'fave_currency', true);
+
+            if ($curr == '')
+                $curr = 'EUR';
+
             $price = get_post_meta(get_the_ID(), 'fave_property_price', true);
-            $price = number_format ( $price , 0, '', ',' );
 
-            $currency = get_post_meta(get_the_ID(), 'fave_currency', true);
+            if ($currency == '') {
+                $result = $wpdb->get_results("SELECT currency_symbol FROM " . $wpdb->prefix . "houzez_currencies where currency_code='$curr'");
 
-            switch ($currency) {
-                case 'EUR':
-                    $price = '€' . $price;
-                    break;
-                case 'USD':
-                    $price = '$' . $price;
-                    break;
-                case 'GBP':
-                    $price = '£' . $price;
-                    break;
-                case 'XBT':
-                    $price = '฿' . $price;
-                    break;
-                case '':
-                    $price = '€' . $price;
-                    break;
+                if (sizeof($result) > 0)
+                    $symbol = $result[0]->currency_symbol;
+                else
+                    $symbol = '€';
+            } else {
+                if ($curr == 'XBT')
+                    $from = 'BTC';
+                else
+                    $from = $curr;
+
+                if ($currency == 'XBT')
+                    $to = 'BTC';
+                else
+                    $to = $currency;
+
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, 'https://api.coinbase.com/v2/exchange-rates?currency=' . $from);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+                $result = curl_exec($ch);
+
+                curl_close($ch);
+
+                $result = json_decode($result);
+                $arr = array();
+
+                foreach ($result->data->rates as $key => $value) {
+                    $arr[$key] = $value;
+                }
+
+                $price = $price * $arr[$to];
             }
+
+            $price = number_format ( $price , 0, '', ',' );
+            $price = $symbol . $price;
 
             array_push($price_arr, $price);
             array_push($id_arr, get_the_ID());
@@ -1410,9 +1433,19 @@ function houzez_map_search() {
 }
 
 function houzez_map_listing() {
+    global $wpdb;
+
     $result = array();
 
     $id_arr = $_POST['ids'];
+    $currency = $_POST['currency'];
+
+    $data = $wpdb->get_results("SELECT currency_symbol FROM " . $wpdb->prefix . "houzez_currencies where currency_code='$currency'");
+
+    if (sizeof($data) > 0)
+        $symbol = $data[0]->currency_symbol;
+    else
+        $symbol = '€';
 
     if (sizeof($id_arr) > 0) {
         for ($i = 0; $i < sizeof($id_arr); $i++) {
@@ -1477,28 +1510,52 @@ function houzez_map_listing() {
             $content .= '</div>';
             $content .= '<div class="item-price-block"><span class="item-price">';
 
+            $curr = get_post_meta($id_arr[$i], 'fave_currency', true);
+
+            if ($curr == '')
+                $curr = 'EUR';
+
             $price = get_post_meta($id_arr[$i], 'fave_property_price', true);
-            $price = number_format ( $price , 0, '', ',' );
 
-            $currency = get_post_meta($id_arr[$i], 'fave_currency', true);
+            if ($currency == '') {
+                $data = $wpdb->get_results("SELECT currency_symbol FROM " . $wpdb->prefix . "houzez_currencies where currency_code='$curr'");
 
-            switch ($currency) {
-                case 'EUR':
-                    $price = '€' . $price;
-                    break;
-                case 'USD':
-                    $price = '$' . $price;
-                    break;
-                case 'GBP':
-                    $price = '£' . $price;
-                    break;
-                case 'XBT':
-                    $price = '฿' . $price;
-                    break;
-                case '':
-                    $price = '€' . $price;
-                    break;
+                if (sizeof($data) > 0)
+                    $symbol = $data[0]->currency_symbol;
+                else
+                    $symbol = '€';
+            } else {
+                if ($curr == 'XBT')
+                    $from = 'BTC';
+                else
+                    $from = $curr;
+
+                if ($currency == 'XBT')
+                    $to = 'BTC';
+                else
+                    $to = $currency;
+
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, 'https://api.coinbase.com/v2/exchange-rates?currency=' . $from);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+                $data = curl_exec($ch);
+
+                curl_close($ch);
+
+                $data = json_decode($data);
+                $arr = array();
+
+                foreach ($data->data->rates as $key => $value) {
+                    $arr[$key] = $value;
+                }
+
+                $price = $price * $arr[$to];
             }
+
+            $price = number_format ( $price , 0, '', ',' );
+            $price = $symbol . $price;
 
             $status = wp_get_post_terms($id_arr[$i], 'property_status', array('fields' => 'slugs'));
             $status = $status[0];

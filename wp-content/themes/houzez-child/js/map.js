@@ -150,11 +150,14 @@ function enable(){
 }
 
 function getListing(id_arr) {
+	var url = new URL(window.location.href);
+	var currency = url.searchParams.get('currency');
+
 	$.ajax({
         type: 'POST',
         url: '/wp-json/v1/houzez_map_listing',
         dataType: 'JSON',
-        data: {ids: id_arr},
+        data: {ids: id_arr, currency: currency},
         success: function(data) {
         	container = '';
 
