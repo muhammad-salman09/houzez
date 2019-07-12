@@ -644,6 +644,11 @@ function register_api() {
       'methods' => 'POST',
       'callback' => 'houzez_doc_remove',
     ));
+
+    register_rest_route( 'v1', 'houzez_get_rate', array(
+      'methods' => 'POST',
+      'callback' => 'houzez_get_rate',
+    ));
 }
 
 /**
@@ -1305,6 +1310,32 @@ function houzez_map_search() {
     $min_price = doubleval( houzez_clean( $min_price ) );
     $max_price = doubleval( houzez_clean( $max_price ) );
 
+    if ($currency != '' && $currency != 'EUR') {
+        if ($currency == 'XBT')
+            $from = 'BTC';
+        else
+            $from = $currency;
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://api.coinbase.com/v2/exchange-rates?currency=' . $from);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+
+        $result = json_decode($result);
+        $arr = array();
+
+        foreach ($result->data->rates as $key => $value) {
+            $arr[$key] = $value;
+        }
+
+        $min_price = $min_price * $arr['EUR'];
+        $max_price = $max_price * $arr['EUR'];
+    }
+
     if ( $max_price > $min_price ) {
         $meta_query[] = array(
             'key' => 'fave_property_price',
@@ -1465,7 +1496,7 @@ function houzez_map_listing() {
             if ($featured == '1')
                 $content .= '<span class="label-featured label">Featured</span>';
 
-            $content .= get_the_post_thumbnail($id_arr[$i], 150, 120);
+            $content .= get_the_post_thumbnail($id_arr[$i], 'houzez-property-thumb-image-v2');
             $content .= '<ul class="actions">';
             $content .= '<li><span class="add_fav" data-placement="top" data-toggle="tooltip"';
             $content .= ' data-original-title="Favorite" data-propid="' . $id_arr[$i] . '">';
@@ -3183,6 +3214,35 @@ function houzez_doc_share() {
     wp_mail($mail, $subject, $content, $headers);
 
     return true;
+}
+
+function houzez_get_rate() {
+    $from = $_POST['from'];
+    $to = $_POST['to'];
+
+    if ($from == 'XBT')
+        $from = 'BTC';
+
+    if ($to == 'XBT')
+        $to = 'BTC';
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'https://api.coinbase.com/v2/exchange-rates?currency=' . $from);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+    $result = curl_exec($ch);
+
+    curl_close($ch);
+
+    $result = json_decode($result);
+    $arr = array();
+
+    foreach ($result->data->rates as $key => $value) {
+        $arr[$key] = $value;
+    }
+
+    return $arr[$to];
 }
 
 /**

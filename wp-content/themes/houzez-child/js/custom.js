@@ -80,16 +80,62 @@ $(document).ready(function() {
         $('#pop-login .tab-content .tab-pane:last-child').addClass('in active');
     }
 
+    var from = $('select[name="currency"]').val();
+    if (from == '')
+        from = 'EUR';
+    var to = from;
+
     var min_price = '';
     var max_price = '';
     min_price = parseInt($('#min_price').val());
     max_price = parseInt($('#max_price').val());
 
+    $('select[name="currency"]').change(function() {
+        to = $(this).val();
+
+        if (to == '')
+            to = 'EUR';
+
+        $.ajax({
+            type: 'POST',
+            url: '/wp-json/v1/houzez_get_rate',
+            data: {from: from, to: to},
+            success: function(result) {
+                var rate = parseFloat(result);
+
+                min_price = parseInt(min_price * rate);
+                max_price = parseInt(max_price * rate);
+
+                rangeSlider(min_price, max_price, rate);
+
+                from = to;
+            }
+        });
+
+    });
+
     if (!isNaN(min_price) && !isNaN(max_price)) {
+        from = 'EUR';
+
+        $.ajax({
+            type: 'POST',
+            url: '/wp-json/v1/houzez_get_rate',
+            data: {from: from, to: to},
+            success: function(result) {
+                var rate = parseFloat(result);
+
+                rangeSlider(min_price, max_price, rate);
+
+                from = to;
+            }
+        });
+    }
+
+    function rangeSlider(min_price, max_price, rate) {
         $(".price-range").slider({
             range: true,
             min: 0,
-            max: 500000,
+            max: parseInt(500000 * rate),
             values: [min_price, max_price],
             slide: function (event, ui) {
                 var min_price_range = addCommas(ui.values[0]);
