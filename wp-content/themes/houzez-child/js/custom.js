@@ -96,6 +96,9 @@ $(document).ready(function() {
         if (to == '')
             to = 'EUR';
 
+        min_price = parseInt($('.min-price-range-hidden').val().replace(',', ''));
+        max_price = parseInt($('.max-price-range-hidden').val().replace(',', ''));
+
         $.ajax({
             type: 'POST',
             url: '/wp-json/v1/houzez_get_rate',
@@ -106,7 +109,7 @@ $(document).ready(function() {
                 min_price = parseInt(min_price * rate);
                 max_price = parseInt(max_price * rate);
 
-                rangeSlider(min_price, max_price, rate);
+                rangeSlider(min_price, max_price, to);
 
                 from = to;
             }
@@ -124,18 +127,28 @@ $(document).ready(function() {
             success: function(result) {
                 var rate = parseFloat(result);
 
-                rangeSlider(min_price, max_price, rate);
+                rangeSlider(min_price, max_price, to);
 
                 from = to;
             }
         });
     }
 
-    function rangeSlider(min_price, max_price, rate) {
+    function rangeSlider(min_price, max_price, to) {
+        var max_val = 500000;
+
+        if (to == 'XBT')
+            max_val = 50;
+        if (to == 'ETH')
+            max_val = 2000;
+
+        if (max_price > max_val)
+            max_price = max_val;
+
         $(".price-range").slider({
             range: true,
             min: 0,
-            max: parseInt(500000 * rate),
+            max: max_val,
             values: [min_price, max_price],
             slide: function (event, ui) {
                 var min_price_range = addCommas(ui.values[0]);
