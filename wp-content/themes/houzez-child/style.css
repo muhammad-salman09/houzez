@@ -400,6 +400,9 @@ Template: houzez
 .grid-view .item-wrap.prop_addon .item-amenities li img {
 	width: 25px;
 }
+.item-wrap.prop_addon .property-item-v2 .item-body .item-detail {
+	min-height: 72px;
+}
 .item-wrap.prop_addon .property-item-v2 .item-amenities li img {
 	width: 50px;
 }
@@ -921,6 +924,9 @@ Template: houzez
 	}
 }
 @media (min-width: 768px) and (max-width: 1199px) {
+	.item-wrap.prop_addon .property-item-v2 .item-body .item-detail {
+		min-height: 120px;
+	}
 	.list-view .property-item .item-detail {
 		height: 115px;
 		overflow: hidden;
@@ -939,6 +945,9 @@ Template: houzez
 	}
 }
 @media (max-width: 767px) {
+	.item-wrap.prop_addon .property-item-v2 .item-body .item-detail p {
+		font-size: 16px;
+	}
 	.advanced-search .buy-btn,
 	.advanced-search .rent-btn {
 		padding: 0 0 5px;
