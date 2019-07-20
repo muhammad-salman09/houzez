@@ -35,6 +35,8 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
             } else {
                 $args = array(
                     'post_type'       => 'houzez_packages',
+                    'orderby'         => 'menu_order',
+                    'order'           => 'ASC',
                     'posts_per_page'  => -1,
                     'meta_query'      =>  array(
                         array(
