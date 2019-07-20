@@ -34,7 +34,7 @@ jQuery(document).ready(function() {
     	if (jQuery(this).closest('.payment').hasClass('selected')) {
     		var ajaxurl = houzez_admin_vars.ajaxurl;
 	    	var postID = jQuery('#post_ID').val();
-	    	var metaKey = jQuery(this).closest('.rwmb-column').prev().find('input').attr('id');
+	    	var metaKey = jQuery(this).closest('.rwmb-column').prev().prev().find('input').attr('id');
 
 	    	jQuery.ajax({
 	            type: 'POST',
