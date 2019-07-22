@@ -43,6 +43,29 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                             'key' => 'fave_package_visible',
                             'value' => 'yes',
                             'compare' => '=',
+                        ),
+                        array(
+                            'relation' => 'OR',
+                            array(
+                                'key' => 'fave_payment_option1',
+                                'value' => '',
+                                'compare' => '!='
+                            ),
+                            array(
+                                'key' => 'fave_payment_option2',
+                                'value' => '',
+                                'compare' => '!='
+                            ),
+                            array(
+                                'key' => 'fave_payment_option3',
+                                'value' => '',
+                                'compare' => '!='
+                            ),
+                            array(
+                                'key' => 'fave_payment_option4',
+                                'value' => '',
+                                'compare' => '!='
+                            )
                         )
                     )
                 );

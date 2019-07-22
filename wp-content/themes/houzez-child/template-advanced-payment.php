@@ -67,9 +67,6 @@ if (isset($_GET['selected_package']) && $_GET['selected_package'] != '') {
     wp_redirect( home_url() );
 }
 
-$doc_page_link = houzez_get_template_link('template-document-upload.php');
-
-$doc_page_link = add_query_arg( 'selected_package', $pack_id, $doc_page_link );
 ?>
 
 <div class="user-dashboard-right <?php echo esc_attr($panel_class);?>">
