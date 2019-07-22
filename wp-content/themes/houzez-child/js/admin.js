@@ -40,6 +40,9 @@ jQuery(document).ready(function() {
         jQuery(this).closest('.payment').hide();
         jQuery('#fave_billing_time_unit').find('option[value=' + option + ']').show();
 
+        jQuery('#fave_payment_' + option).val('');
+        jQuery('#fave_plan_' + option).val('');
+
     	if (jQuery(this).closest('.payment').hasClass('selected')) {
     		var ajaxurl = houzez_admin_vars.ajaxurl;
 	    	var postID = jQuery('#post_ID').val();
