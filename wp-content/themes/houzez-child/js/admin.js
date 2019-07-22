@@ -9,6 +9,9 @@ jQuery(document).ready(function() {
 
     for (var i = 1; i < 5; i++) {
     	if (jQuery('#fave_payment_option' + i).val() != '') {
+            if (i > 1)
+                jQuery('#fave_billing_unit').closest('.rwmb-column').hide();
+
     		jQuery('#fave_payment_option' + i).closest('.rwmb-row').addClass('selected');
     		jQuery('#fave_billing_time_unit').find('option[value=option' + i + ']').hide();
     	}
@@ -20,6 +23,9 @@ jQuery(document).ready(function() {
     	if (option == '') {
     		jQuery('#fave_billing_time_unit').css('border', '1px solid #ff0000');
     	} else {
+            if (option != 'option1')
+                jQuery('#fave_billing_unit').closest('.rwmb-column').hide();
+
     		jQuery('#fave_billing_time_unit').css('border', '1px solid #ddd');
     		jQuery('#fave_payment_' + option).closest('.payment').show();
     		jQuery('#fave_billing_time_unit').val('');
@@ -30,6 +36,9 @@ jQuery(document).ready(function() {
     jQuery('.payment_option button').click(function() {
     	var len = jQuery(this).attr('id').length;
 	    var option = 'option' + jQuery(this).attr('id').substring(len - 1, len );
+
+        jQuery(this).closest('.payment').hide();
+        jQuery('#fave_billing_time_unit').find('option[value=' + option + ']').show();
 
     	if (jQuery(this).closest('.payment').hasClass('selected')) {
     		var ajaxurl = houzez_admin_vars.ajaxurl;
@@ -46,13 +55,18 @@ jQuery(document).ready(function() {
 	                'metaKey' : metaKey
 	            },
 	            success: function(data) {
-	            	jQuery('#' + metaKey).closest('.payment').hide();
-	    			jQuery('#fave_billing_time_unit').find('option[value=' + option + ']').show();
 	            }
 	        });
-    	} else {
-	    	jQuery(this).closest('.payment').hide();
-	    	jQuery('#fave_billing_time_unit').find('option[value=' + option + ']').show();
     	}
+
+        jQuery(this).closest('.payment').removeClass('selected');
+        
+        var disArr = [];
+        jQuery('.payment').each(function() {
+            disArr.push(jQuery(this).css('display'));
+        });
+
+        if (disArr[1] == 'none' && disArr[2] == 'none' && disArr[3] == 'none')
+            jQuery('#fave_billing_unit').closest('.rwmb-column').show();
     });
 });
