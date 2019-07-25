@@ -29,6 +29,10 @@ Template: houzez
 #sidebar .widget-title {
 	color: #001489;
 }
+.widget .widget-body .item-wrap.prop_addon .item-body h2 {
+	text-overflow: ellipsis;
+    white-space: normal;
+}
 .widget .widget-body .item-wrap.prop_addon .item-body a.btn {
 	background-color: #009da5;
 	border: none;
