@@ -1267,14 +1267,6 @@ function houzez_map_search() {
         );
     }
 
-    /*if ( !empty($city) ) {
-        $tax_query[] = array(
-            'taxonomy' => 'property_city',
-            'field' => 'slug',
-            'terms' => $city
-        );
-    }*/
-
     if ( !empty($lifestyle) ) {
         $tax_query[] = array(
             'taxonomy' => 'property_lifestyle',
