@@ -249,7 +249,10 @@ get_template_part( 'template-parts/mobile-header' );
         <div class="row">
             <div class="col-md-10 col-sm-8 has-search">
                 <span class="fa fa-search form-control-feedback"></span>
-                <input type="text" name="city" class="form-control" 
+                <?php 
+                    $city = isset($_GET['city']) ? $_GET['city'] : '';
+                ?>
+                <input type="text" name="city" class="form-control" value="<?php echo $city; ?>"
                     placeholder="<?php echo esc_html__('Neighborhood, City'); ?>" />
             </div>
             <div class="col-md-2 col-sm-4">
