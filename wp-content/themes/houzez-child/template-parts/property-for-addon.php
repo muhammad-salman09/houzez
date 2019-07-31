@@ -68,7 +68,7 @@ $disable_photo_count = houzez_option('disable_photo_count');
         <div class="item-body">
             <div class="item-title">
                 <?php
-                    echo '<h2 class="property-title">'. esc_attr( get_the_title() ). '</h2>';
+                    echo '<h2 class="property-title">'. esc_attr( wp_trim_words(get_the_title(), 4) ). '</h2>';
                 ?>
             </div>
 
