@@ -67,7 +67,14 @@ $disable_photo_count = houzez_option('disable_photo_count');
         </div>
         <div class="item-body">
             <div class="item-detail">
-                <p><?php echo wp_trim_words( get_the_content(), 20 ); ?></p>
+                <p>
+                <?php
+                    echo substr( get_the_content(), 0, 120 ); 
+
+                    if (strlen(get_the_content()) > 120)
+                        echo ' ...';
+                ?>
+                </p>
             </div>
 
             <div class="item-title">

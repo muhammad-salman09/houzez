@@ -76,7 +76,14 @@ $disable_photo_count = houzez_option('disable_photo_count');
                 <?php if( $prop_week == 1 ) { ?>
                     <p><?php echo wp_trim_words( get_the_content(), 50 ); ?></p>
                 <?php } else { ?>
-                    <p><?php echo wp_trim_words( get_the_content(), 15 ); ?></p>
+                    <p>
+                    <?php
+                        echo substr( get_the_content(), 0, 120 ); 
+
+                        if (strlen(get_the_content()) > 120)
+                            echo ' ...';
+                    ?>
+                    </p>
                 <?php } ?>
             </div>
 
