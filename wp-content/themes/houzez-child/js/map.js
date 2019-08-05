@@ -193,7 +193,7 @@ function getListing(id_arr) {
 
 function initMap(locations) {  
 	map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 10,
+		zoom: 9,
 		center: new google.maps.LatLng(39.6, 2.95),
 		gestureHandling: 'greedy',
 		fullscreenControl: false,
