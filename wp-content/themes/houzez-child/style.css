@@ -838,6 +838,9 @@ Template: houzez
 .home.page-template .header-mobile .mobile-nav span {
 	color: #ffffff;
 }
+.wpml-ls-legacy-list-vertical.wpml-ls-statics-footer {
+	display: none;
+}
 
 @media (min-width: 1366px) and (max-width: 1613px){
 	.item-wrap.prop_addon .item-info {
