@@ -22,8 +22,17 @@ Template: houzez
 #section-body {
 	padding-bottom: 0;
 }
+.user-dashboard-left {
+	width: 220px;
+}
+.user-dashboard-right {
+	padding-left: 220px;
+}
 .dashboard-content-area .container {
 	padding-bottom: 0;
+}
+.board-header {
+	padding: 9px 0;
 }
 /* Widget Style Start */
 #sidebar .widget-title {

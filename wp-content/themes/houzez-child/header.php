@@ -181,7 +181,12 @@ get_template_part( 'template-parts/mobile-header' );
         get_page_template_slug() != 'template/user_dashboard_membership.php'
     ) {
     
-    $search_template = home_url() . '/advanced-search';
+    $lang = '';
+
+    if (get_site_url() != home_url())
+        $lang = substr(home_url(), strlen(get_site_url()) + 7);
+
+    $search_template = get_site_url() . '/advanced-search';
 
     $measurement_unit_adv_search = houzez_option('measurement_unit_adv_search');
     if( $measurement_unit_adv_search == 'sqft' ) {
@@ -229,6 +234,10 @@ get_template_part( 'template-parts/mobile-header' );
     <?php } ?>
 
     <form autocomplete="off" method="get" action="<?php echo esc_url($search_template); ?>">
+        <?php if ($lang != '') { ?>
+        <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
+        <?php } ?>
+        
         <div class="row">
             <input type="hidden" id="type" name="status" value="<?php echo $status; ?>" />
             <div class="col-md-2 col-sm-6 buy-btn">

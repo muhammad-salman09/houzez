@@ -1077,7 +1077,13 @@ if( !function_exists('houzez_advance_search_update') ) {
 
         ob_start();
 
-        $search_template = home_url() . '/advanced-search';
+        $lang = '';
+
+        if (get_site_url() != home_url())
+            $lang = substr(home_url(), strlen(get_site_url()) + 7);
+
+        $search_template = get_site_url() . '/advanced-search';
+
         $houzez_local = houzez_get_localization();
         $adv_search_price_slider = houzez_option('adv_search_price_slider');
         $hide_empty = false;
@@ -1090,6 +1096,10 @@ if( !function_exists('houzez_advance_search_update') ) {
             <h3 class="advance-title"><?php echo esc_html__('Search Properties for Sale'); ?></h3>
 
             <form autocomplete="off" method="get" action="<?php echo esc_url($search_template); ?>">
+                <?php if ($lang != '') { ?>
+                <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
+                <?php } ?>
+                
                 <div class="row">
                     <input type="hidden" id="type" name="status" value="for-sale" />
                     <div class="col-md-2 col-sm-6 buy-btn">
