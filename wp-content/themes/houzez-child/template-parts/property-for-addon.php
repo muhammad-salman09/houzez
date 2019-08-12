@@ -68,7 +68,20 @@ $disable_photo_count = houzez_option('disable_photo_count');
         <div class="item-body">
             <div class="item-title">
                 <?php
-                    echo '<h2 class="property-title">'. esc_attr( wp_trim_words(get_the_title(), 4) ). '</h2>';
+                    $flag = true;
+                    $len = 4;
+
+                    while ($flag) {
+                        $titleLength = strlen(wp_trim_words(get_the_title(), $len));
+
+                        if ($titleLength < 50) {
+                            $flag = false;
+                        } else {
+                            $len--;
+                        }
+                    }
+                    
+                    echo '<h2 class="property-title">'. esc_attr( wp_trim_words(get_the_title(), $len) ) . '</h2>';
                 ?>
             </div>
 
