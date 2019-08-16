@@ -69,9 +69,9 @@ $disable_photo_count = houzez_option('disable_photo_count');
             <div class="item-detail">
                 <p>
                 <?php
-                    echo substr( get_the_content(), 0, 120 ); 
+                    echo substr( get_the_content(), 0, 110 ); 
 
-                    if (strlen(get_the_content()) > 120)
+                    if (strlen(get_the_content()) > 110)
                         echo ' ...';
                 ?>
                 </p>

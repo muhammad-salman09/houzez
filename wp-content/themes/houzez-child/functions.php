@@ -2245,6 +2245,7 @@ function houzez_properties_sort($atts, $content = null)
     ), $atts));
 
     ob_start();
+
     global $paged;
     if (is_front_page()) {
         $paged = (get_query_var('page')) ? get_query_var('page') : 1;
@@ -2260,9 +2261,8 @@ function houzez_properties_sort($atts, $content = null)
         $css_classes = "grid-view grid-view-3-col";
     }
 
-    
     $the_query = houzez_data_source::get_wp_query($atts, $paged);
-    
+
     if ($the_query->have_posts()) :
         $arr = array();
         $featured = array();
@@ -2286,9 +2286,55 @@ function houzez_properties_sort($atts, $content = null)
         wp_reset_postdata();
     endif;
 
-    $args = array('post_type' => 'property', 'post__in'=> $arr, 'orderby'=>'post__in');
+    if (sizeof($arr) < $atts['posts_limit']) {
+        $diff = $atts['posts_limit'] - sizeof($arr);
 
-    $the_query = new WP_Query( $args );
+        global $wpdb;
+        global $sitepress;
+
+        $enProps = array();
+
+        for ($i = 0; $i < sizeof($arr); $i++)
+            array_push($enProps, icl_object_id( $arr[$i], 'property', false, 'en'));
+
+        $lang = substr(home_url(), strlen(get_site_url()) + 7);
+
+        $langProps = array();
+
+        $properties = $wpdb->get_results( "
+                SELECT id FROM wp_posts WHERE post_type = 'property' AND post_status = 'publish' ORDER BY id DESC" );
+
+        foreach ($properties as $property) {
+            if ($lang == 'de')
+                $result = icl_object_id($property->id, 'property', false, 'es');
+
+            if ($lang == 'es')
+                $result = icl_object_id($property->id, 'property', false, 'de');
+
+            if (!is_null($result) && !in_array($result, $langProps))
+                array_push($langProps, $result);
+        }
+
+        $langProps = array_merge($langProps, $enProps);
+
+        foreach ($properties as $property) {
+            if ($diff > 0 && !in_array($property->id, $arr) && !in_array($property->id, $langProps)) {
+                $prop_featured = get_post_meta( $property->id, 'fave_featured', true );
+                $prop_week     = get_post_meta( $property->id, 'fave_week', true );
+
+                if ($prop_featured == 1)
+                    array_push($featured, $property->id);
+                else if ($prop_week == 1)
+                    array_push($week, $property->id);
+                else
+                    array_push($normal, $property->id);
+
+                $diff--;
+            }
+        }
+
+        $arr = array_merge($week, $featured, $normal);
+    }
 
     ?>
     <div id="properties_module_section" class="houzez-module property-item-module">
@@ -2297,16 +2343,176 @@ function houzez_properties_sort($atts, $content = null)
 
                 <?php
                 if( $prop_grid_style == "v_2" ) {
-                    if ($the_query->have_posts()) :
-                        while ($the_query->have_posts()) : $the_query->the_post();
+                    for ($i = 0; $i < sizeof($arr); $i++) {
+                        $args = array('post_type' => 'property', 'p'=> $arr[$i]);
 
-                            get_template_part('template-parts/property-for-listing-v2');
+                        $the_query = new WP_Query( $args );
 
-                        endwhile;
-                        wp_reset_postdata();
-                    else:
-                        get_template_part('template-parts/property', 'none');
-                    endif;
+                        if ($the_query->have_posts()) :
+                            while ($the_query->have_posts()) : $the_query->the_post();
+
+                                get_template_part('template-parts/property-for-listing-v2');
+
+                            endwhile;
+                        else:
+                            $prop_featured = get_post_meta( $arr[$i], 'fave_featured', true );
+                            $prop_week     = get_post_meta( $arr[$i], 'fave_week', true );
+
+                            $disable_favorite = houzez_option('disable_favorite');
+                            $disable_photo_count = houzez_option('disable_photo_count');
+                ?>
+                <div id="ID-<?php echo $arr[$i]; ?>" class="item-wrap infobox_trigger prop_addon">
+                    <div class="property-item-v2">
+                        <div class="figure-block">
+                            <figure class="item-thumb">
+
+                                <?php if( $prop_featured == 1 ) { ?>
+                                    <span class="label-featured label">
+                                        <?php echo esc_html__( 'Featured', 'houzez' ); ?>
+                                    </span>
+                                <?php } ?>
+                                <?php if( $prop_week == 1 ) { ?>
+                                    <span class="label-week label">
+                                        <?php echo esc_html__( 'Property of the Week', 'houzez' ); ?>
+                                    </span>
+                                <?php } ?>
+
+                                <div class="label-wrap label-right">
+                                <?php
+                                    $term_id = '';
+                                    $term_status = wp_get_post_terms( $arr[$i], 'property_status', array("fields" => "all"));
+                                    $label_id = '';
+                                    $term_label = wp_get_post_terms( $arr[$i], 'property_label', array("fields" => "all"));
+
+                                    if( !empty($term_status) ) {
+                                        foreach( $term_status as $status ) {
+                                            $status_id = $status->term_id;
+                                            $status_name = $status->name;
+                                            echo '<span class="label-status label-status-'.intval($status_id).' label label-default"><a href="'.get_term_link($status_id).'">'.esc_attr($status_name).'</a></span>';
+                                        }
+                                    }
+
+                                    if( !empty($term_label) ) {
+                                        foreach( $term_label as $label ) {
+                                            $label_id = $label->term_id;
+                                            $label_name = $label->name;
+                                            echo '<span class="label label-default label-color-'.intval($label_id).'"><a href="'.get_term_link($label_id).'">'.esc_attr($label_name).'</a></span>';
+                                        }
+                                    }
+                                ?>
+                                </div>
+
+                                <a href="<?php echo get_permalink($arr[$i]); ?>" class="hover-effect">
+                                    <?php
+                                    if( has_post_thumbnail( $arr[$i] ) ) {
+                                        echo get_the_post_thumbnail( $arr[$i], 'houzez-property-thumb-image-v2' );
+                                    }else{
+                                        houzez_image_placeholder( 'houzez-property-thumb-image-v2' );
+                                    }
+                                    ?>
+                                </a>
+
+                                <ul class="actions">
+
+                                    <?php if( $disable_favorite != 0 ) { ?>
+                                    <li>
+                                        <span class="add_fav" data-placement="top" data-toggle="tooltip" data-original-title="<?php esc_html_e('Favorite', 'houzez'); ?>" data-propid="<?php echo intval( $post->ID ); ?>">
+                                            <i class="fa fa-heart"></i>
+                                        </span>
+                                    </li>
+                                    <?php } ?>
+
+                                    <?php if( $disable_photo_count != 0 ) { ?>
+                                    <li>
+                                        <span data-toggle="tooltip" data-placement="top" title="(<?php echo count( $prop_images ); ?>) <?php echo $houzez_local['photos']; ?>">
+                                            <i class="fa fa-camera"></i>
+                                        </span>
+                                    </li>
+                                    <?php } ?>
+                                </ul>
+                            </figure>
+                        </div>
+                        <div class="item-body">
+                            <div class="item-detail">
+                                <p>
+                                <?php
+                                    echo substr( get_post_field('post_content', $arr[$i]), 0, 110 ); 
+
+                                    if (strlen(get_post_field('post_content', $arr[$i])) > 110)
+                                        echo ' ...';
+                                ?>
+                                </p>
+                            </div>
+
+                            <div class="item-title">
+                                <?php
+                                    echo '<h2 class="property-title">'. esc_attr( get_the_title($arr[$i]) ). '</h2>';
+                                ?>
+                            </div>
+
+                            <div class="item-info">
+                                <?php 
+                                    $prop_bed = get_post_meta( $arr[$i], 'fave_property_bedrooms', true );
+                                    $prop_bath = get_post_meta( $arr[$i], 'fave_property_bathrooms', true );
+                                    $prop_size = get_post_meta( $arr[$i], 'fave_property_size', true );
+
+                                    if (empty($prop_bed)) $prop_bed = 0;
+                                    if (empty($prop_bath)) $prop_bath = 0;
+                                    if (empty($prop_size)) $prop_size = 0;
+                                ?>
+                                <ul class="item-amenities">
+                                    <li>
+                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/rooms.png">
+                                        <span><?php echo $prop_bed; ?></span>
+                                    </li>
+                                    <li>
+                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/bathtub.png">
+                                        <span><?php echo $prop_bath; ?></span>
+                                    </li>
+                                    <li>
+                                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/house.png">
+                                        <span><?php echo $prop_size; ?> m²</span>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo esc_url( get_permalink($arr[$i]) ); ?>" class="btn btn btn-primary">
+                                            <?php echo esc_html__( 'Details >', 'houzez' ); ?>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                             <div class="item-price-block">
+                                <span class="item-price">
+                                <?php
+                                    global $wpdb;
+
+                                    $currency_code = get_post_meta( $arr[$i], 'fave_currency', true);
+
+                                    $result = $wpdb->get_results(" SELECT currency_symbol FROM " . $wpdb->prefix . "houzez_currencies where currency_code='$currency_code'");
+
+                                    if (sizeof($result) > 0)
+                                        $symbol = $result[0]->currency_symbol;
+                                    else
+                                        $symbol = '€';
+
+                                    $sale_price = get_post_meta( $arr[$i], 'fave_property_price', true );
+                                    $sale_price = number_format( $sale_price , 0, '', ',' );
+                                    
+                                    $status = get_the_terms( $arr[$i], 'property_status' );
+                                    
+                                    if ($status[0]->slug == 'for-rent')
+                                        echo $symbol . $sale_price . '/mo';
+                                    else
+                                        echo $symbol . $sale_price;
+                                ?>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php
+                        endif;
+                    }
                 } else {
                     if ($the_query->have_posts()) :
                         while ($the_query->have_posts()) : $the_query->the_post();
@@ -3092,33 +3298,34 @@ function houzez_doc_upload() {
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
 
     $increment = '';
-    $basename = '';
 
-    $ftp_server = houzez_option('ftp_url');
-    $conn_id = ftp_connect($ftp_server);
-    ftp_login($conn_id, houzez_option('ftp_username'), houzez_option('ftp_password'));
+    $ftp_url = "ftp://" . houzez_option('ftp_username') . ":" . houzez_option('ftp_password') 
+                . "@" . houzez_option('ftp_url') . "/";
 
-    ftp_mkdir($conn_id, $post_id);
+    $path = $ftp_url . $post_id;
+    mkdir($path);
 
-    $path = '/' . $post_id . '/';
-    $check_file_exist = $path . $filename;
-    $contents_on_server = ftp_nlist($conn_id, $path);
+    $filelist = scandir($path, 1);
 
-    if (in_array($check_file_exist, $contents_on_server)) {
+    if (in_array($filename, $filelist)) {
         $increment = 1;
 
-        while (in_array($path . $name . '_' . $increment . '.' . $extension, $contents_on_server)) {
+        while (in_array($name . '_' . $increment . '.' . $extension, $fielist)) {
             $increment++;
         }
 
         $filename = $name . '_' . $increment . '.' . $extension;
     }
+    
+    $fp = fopen ( $_FILES['file']['tmp_name'], 'r' );
+    $data = fread ( $fp, filesize ( $_FILES['file']['tmp_name'] ) );
+    fclose ( $fp );
 
-    $basename = $path . $filename;
+    $fp = fopen ( $path . "/" . $filename, 'wt' );
+    if ($fp) {
+        fwrite ( $fp, $data );
+        fclose ( $fp );
 
-    $result = '';
-
-    if (ftp_put($conn_id, $basename, $_FILES['file']['tmp_name'], FTP_ASCII)) {
         $flag = true;
         $i = 1;
 
@@ -3144,10 +3351,8 @@ function houzez_doc_upload() {
 
         $result = $filename . '/' . $key;
     } else {
-        $result = 'fail';
+        return 'fail';
     }
-
-    ftp_close($conn_id);
 
     return $result;
 }
