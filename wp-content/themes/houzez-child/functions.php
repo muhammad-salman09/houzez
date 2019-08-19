@@ -1252,6 +1252,9 @@ vc_map( array(
 function houzez_map_search() {
     global $wp_query;
     global $wpdb;
+    global $sitepress;
+
+    $lang = $_GET['lang'];
 
     $status = $_GET['status'];
     $city = $_GET['city'];
@@ -1357,127 +1360,115 @@ function houzez_map_search() {
 
     $wp_query = new WP_Query( $search_query );
 
-    $arr = array();
+    $query = $wp_query->request;
+    $query = str_replace('wp_posts.*', 'wp_posts.id', $query);
 
-    if ($wp_query->have_posts()) {
-        $featured = array();
-        $week = array();
-        $normal = array();
+    $propIDs = get_props($city, $query);
 
-        while ($wp_query->have_posts()) : $wp_query->the_post();
-            $flag = false;
+    if ($lang != 'en') {
+        $enProps = array();
 
-            if ( empty($city) ) {
-                $flag = true;
-            } else {
-                $cities = get_the_terms(get_the_ID(), 'property_city');
-                $city_arr = wp_list_pluck($cities, 'name');
+        for ($i = 0; $i < sizeof($propIDs); $i++)
+            array_push($enProps, strval(icl_object_id($propIDs[$i], 'property', false, 'en')));
 
-                if (in_array($city, $city_arr))
-                    $flag = true;
+        $term = get_term_by('slug', $status, 'property_status');
+        $term_id = $term->term_id;
 
-                $title = get_the_title(get_the_ID());
+        $data = $wpdb->get_results("SELECT term_id FROM " . $wpdb->prefix . "terms where slug='$status'");
+        $en_term_id = $data[0]->term_id;
 
-                if (strpos(strtolower($title), strtolower($city)) !== false)
-                    $flag = true;
+        $search = "wp_term_relationships.term_taxonomy_id IN (" . $term_id .")";
+        $replace = "wp_term_relationships.term_taxonomy_id IN (" . $en_term_id .")";
 
-                $address = get_post_meta( get_the_ID(), 'fave_property_map_address', true );
+        $enQuery = str_replace($search, $replace, $query);
 
-                if (strpos(strtolower($address), strtolower($city)) !== false)
-                    $flag = true;
-            }
+        $search = "( wpml_translations.language_code = '" . $lang . "' OR 0 ) AND";
+        $replace = "( wpml_translations.language_code = 'en' OR 0 ) AND";
 
-            if ($flag) {
-                $prop_featured = get_post_meta( get_the_ID(), 'fave_featured', true );
-                $prop_week     = get_post_meta( get_the_ID(), 'fave_week', true );
+        $enQuery = str_replace($search, $replace, $enQuery);
 
-                if ($prop_featured == 1)
-                    array_push($featured, get_the_ID());
-                else if ($prop_week == 1)
-                    array_push($week, get_the_ID());
-                else
-                    array_push($normal, get_the_ID());
-            }
-        endwhile;
+        $enPropIDs = get_props($city, $enQuery);
 
-        $arr = array_merge($week, $featured, $normal);
-        
-        wp_reset_postdata();
+        $enPropIDs = array_diff($enPropIDs, $enProps);
+
+        $propIDs = array_merge($propIDs, $enPropIDs);
     }
+
+    $featured = array();
+    $week = array();
+    $normal = array();
+
+    foreach ($propIDs as $property){
+        $prop_featured = get_post_meta( $property, 'fave_featured', true );
+        $prop_week     = get_post_meta( $property, 'fave_week', true );
+
+        if ($prop_featured == 1)
+            array_push($featured, $property);
+        else if ($prop_week == 1)
+            array_push($week, $property);
+        else
+            array_push($normal, $property);
+    }
+
+    $propIDs = array_merge($week, $featured, $normal);
 
     $location_arr = array();
     $price_arr = array();
     $id_arr = array();
 
-    if (sizeof($arr) > 0) {
-        $args = array('post_type' => 'property', 'post__in'=> $arr, 'orderby'=>'post__in');
+    foreach ($propIDs as $property) {
+        $location = get_post_meta($property, 'fave_property_location', true);
+        array_push($location_arr, $location);
 
-        $wp_query = new WP_Query( $args );
-        $result = $wpdb->get_results("SELECT currency_symbol FROM " . $wpdb->prefix . "houzez_currencies where currency_code='$currency'");
+        $curr = get_post_meta($property, 'fave_currency', true);
 
-        if (sizeof($result) > 0)
-            $symbol = $result[0]->currency_symbol;
-        else
-            $symbol = '€';
+        if ($curr == '')
+            $curr = 'EUR';
 
-        if ( $wp_query->have_posts() ) {
-            while ( $wp_query->have_posts() ) : $wp_query->the_post();
+        $price = get_post_meta($property, 'fave_property_price', true);
 
-                $location = get_post_meta(get_the_ID(), 'fave_property_location', true);
-                array_push($location_arr, $location);
+        if ($currency == '') {
+            $result = $wpdb->get_results("SELECT currency_symbol FROM " . $wpdb->prefix . "houzez_currencies where currency_code='$curr'");
 
-                $curr = get_post_meta(get_the_ID(), 'fave_currency', true);
+            if (sizeof($result) > 0)
+                $symbol = $result[0]->currency_symbol;
+            else
+                $symbol = '€';
+        } else {
+            if ($curr == 'XBT')
+                $from = 'BTC';
+            else
+                $from = $curr;
 
-                if ($curr == '')
-                    $curr = 'EUR';
+            if ($currency == 'XBT')
+                $to = 'BTC';
+            else
+                $to = $currency;
 
-                $price = get_post_meta(get_the_ID(), 'fave_property_price', true);
+            $ch = curl_init();
 
-                if ($currency == '') {
-                    $result = $wpdb->get_results("SELECT currency_symbol FROM " . $wpdb->prefix . "houzez_currencies where currency_code='$curr'");
+            curl_setopt($ch, CURLOPT_URL, 'https://api.coinbase.com/v2/exchange-rates?currency=' . $from);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-                    if (sizeof($result) > 0)
-                        $symbol = $result[0]->currency_symbol;
-                    else
-                        $symbol = '€';
-                } else {
-                    if ($curr == 'XBT')
-                        $from = 'BTC';
-                    else
-                        $from = $curr;
+            $result = curl_exec($ch);
 
-                    if ($currency == 'XBT')
-                        $to = 'BTC';
-                    else
-                        $to = $currency;
+            curl_close($ch);
 
-                    $ch = curl_init();
+            $result = json_decode($result);
+            $curArr = array();
 
-                    curl_setopt($ch, CURLOPT_URL, 'https://api.coinbase.com/v2/exchange-rates?currency=' . $from);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            foreach ($result->data->rates as $key => $value) {
+                $curArr[$key] = $value;
+            }
 
-                    $result = curl_exec($ch);
-
-                    curl_close($ch);
-
-                    $result = json_decode($result);
-                    $arr = array();
-
-                    foreach ($result->data->rates as $key => $value) {
-                        $arr[$key] = $value;
-                    }
-
-                    $price = $price * $arr[$to];
-                }
-
-                $price = number_format ( $price , 0, '', ',' );
-                $price = $symbol . $price;
-
-                array_push($price_arr, $price);
-                array_push($id_arr, get_the_ID());
-            endwhile;
-            wp_reset_postdata();
+            $price = $price * $curArr[$to];
         }
+
+        $price = number_format ( $price , 0, '', ',' );
+        $price = $symbol . $price;
+
+        array_push($price_arr, $price);
+        array_push($id_arr, $property);
     }
 
     $result = array(
@@ -1487,6 +1478,43 @@ function houzez_map_search() {
     );
 
     return $result;
+}
+
+function get_props($city, $query) {
+    global $wpdb;
+
+    $arr = array();
+
+    $properties = $wpdb->get_results($query);
+
+    foreach ($properties as $property) {
+        $flag = false;
+
+        if ( empty($city) ) {
+            $flag = true;
+        } else {
+            $cities = get_the_terms($property->id, 'property_city');
+            $city_arr = wp_list_pluck($cities, 'name');
+
+            if (in_array($city, $city_arr))
+                $flag = true;
+
+            $title = get_the_title($property->id);
+
+            if (strpos(strtolower($title), strtolower($city)) !== false)
+                $flag = true;
+
+            $address = get_post_meta( $property->id, 'fave_property_map_address', true );
+
+            if (strpos(strtolower($address), strtolower($city)) !== false)
+                $flag = true;
+        }
+
+        if ($flag)
+            array_push($arr, $property->id);
+    }
+
+    return $arr;
 }
 
 function houzez_map_listing() {
@@ -2261,14 +2289,14 @@ function houzez_properties_sort($atts, $content = null)
         $css_classes = "grid-view grid-view-3-col";
     }
 
+    $arr = array();
+    $featured = array();
+    $week = array();
+    $normal = array();
+
     $the_query = houzez_data_source::get_wp_query($atts, $paged);
 
     if ($the_query->have_posts()) :
-        $arr = array();
-        $featured = array();
-        $week = array();
-        $normal = array();
-
         while ($the_query->have_posts()) : $the_query->the_post();
             $prop_featured = get_post_meta( get_the_ID(), 'fave_featured', true );
             $prop_week     = get_post_meta( get_the_ID(), 'fave_week', true );

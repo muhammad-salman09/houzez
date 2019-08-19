@@ -168,14 +168,12 @@ function getListing(id_arr) {
        		content = '';
 
         	if (data.length > 0) {
-        		var limit = (data.length > 10) ? 10: data.length;
-
         		content += '<div class="draw-search-result"><h2>Search Results</h2>';
-        		content += '<span>Showing ' + limit + ' of ' + data.length + ' Homes</span></div>';
+        		content += '<span>Showing ' + data.length + ' Homes</span></div>';
 
         		content += container;
 
-        		for (var i = 0; i < limit; i++)
+        		for (var i = 0; i < data.length; i++)
         			content += data[i];
 
         		content += '</div></div></div>';
@@ -237,14 +235,17 @@ function initMap(locations) {
 
 	var markers = [];
 	var current_marker;
+	var j = 0;
 
 	for (var i = 0; i < locations.length; i++) {
-		markers[i] = new RichMarker({
-			position: new google.maps.LatLng(locations[i][0], locations[i][1]),
-			map: map,
-			draggable: false,
-			content: '<div><div id="' + locations[i][3] + '" class="label_content">' + locations[i][2] + '</div></div>'
-		});
+		if (locations[i][0] !== '' && locations[i][1] !== '') {
+			markers[j++] = new RichMarker({
+				position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+				map: map,
+				draggable: false,
+				content: '<div><div id="' + locations[i][3] + '" class="label_content">' + locations[i][2] + '</div></div>'
+			});
+		}
 	}
 
 	google.maps.event.addListener(map, 'idle', function() {
@@ -291,6 +292,11 @@ $(document).ready(function() {
 	var url_string = window.location;
 	var url = new URL(url_string);
 
+	var lang = url.searchParams.get('lang');
+	
+	if (lang === null)
+		lang = 'en';
+
 	var status = url.searchParams.get('status');
 	var city = url.searchParams.get('city');
 	var lifestyle = url.searchParams.get('lifestyle');
@@ -305,6 +311,7 @@ $(document).ready(function() {
         url: '/wp-json/v1/houzez_map_search',
         dataType: 'JSON',
         data: {
+        	lang: lang,
         	status: status,
         	city: city,
         	lifestyle: lifestyle,
