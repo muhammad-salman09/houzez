@@ -581,7 +581,7 @@ function houzez_listing_price() {
 
     $status = get_the_terms( get_the_ID(), 'property_status' );
 
-    if ($status[0]->slug == 'for-rent')
+    if ($status[0]->slug == 'for-rent' || $status[0]->slug == 'vermietung' || $status[0]->slug == 'alquiler')
         echo $symbol . $sale_price . '/mo';
     else
         echo $symbol . $sale_price;
@@ -604,10 +604,33 @@ function houzez_listing_price_v1() {
     
     $status = get_the_terms( get_the_ID(), 'property_status' );
     
-    if ($status[0]->slug == 'for-rent')
+    if ($status[0]->slug == 'for-rent' || $status[0]->slug == 'vermietung' || $status[0]->slug == 'alquiler')
         return $symbol . $sale_price . '/mo';
     else
         return $symbol . $sale_price;
+}
+
+function houzez_listing_price_v2($post_id) {
+    global $wpdb;
+
+    $currency_code = get_post_meta( $post_id, 'fave_currency', true);
+
+    $result = $wpdb->get_results(" SELECT currency_symbol FROM " . $wpdb->prefix . "houzez_currencies where currency_code='$currency_code'");
+
+    if (sizeof($result) > 0)
+        $symbol = $result[0]->currency_symbol;
+    else
+        $symbol = '€';
+
+    $sale_price = get_post_meta( $post_id, 'fave_property_price', true );
+    $sale_price = number_format( $sale_price , 0, '', ',' );
+
+    $status = get_the_terms( $post_id, 'property_status' );
+
+    if ($status[0]->slug == 'for-rent' || $status[0]->slug == 'vermietung' || $status[0]->slug == 'alquiler')
+        echo $symbol . $sale_price . '/mo';
+    else
+        echo $symbol . $sale_price;
 }
 
 /**
