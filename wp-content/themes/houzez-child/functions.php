@@ -1252,7 +1252,6 @@ vc_map( array(
 function houzez_map_search() {
     global $wp_query;
     global $wpdb;
-    global $sitepress;
 
     $lang = $_GET['lang'];
 
@@ -2318,7 +2317,6 @@ function houzez_properties_sort($atts, $content = null)
         $diff = $atts['posts_limit'] - sizeof($arr);
 
         global $wpdb;
-        global $sitepress;
 
         $enProps = array();
 
