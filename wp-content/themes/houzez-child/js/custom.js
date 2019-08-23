@@ -45,7 +45,7 @@ $(document).ready(function() {
         $('.block-success-inner a').text('Add New Property')
     }
 
-    $('.sel-lang').change(function() {
+    $('.account-action li select').change(function() {
         var url_string = window.location;
         var url = new URL(url_string);
 
@@ -54,7 +54,18 @@ $(document).ready(function() {
     });
 
     var url = new URL(window.location.href);
+
+    var lang = url.searchParams.get('lang');
+
     var login = url.searchParams.get('login');
+
+    if (!lang)
+        lang = 'en';
+
+    $('.account-action li select option').each(function() {
+        if ($(this).val() == lang)
+            $(this).prop('selected', true);
+    });
 
     if (login && login == 'required') {
         $('.header-right .user a').click();
