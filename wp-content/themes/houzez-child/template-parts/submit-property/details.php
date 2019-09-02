@@ -5,11 +5,14 @@
  * Date: 18/01/16
  * Time: 5:46 PM
  */
-global $hide_add_prop_fields, $required_fields, $is_multi_steps;
+global $hide_add_prop_fields, $required_fields, $is_multi_steps, $current_user;
 $year_built_calender = houzez_option('year_built_calender');
 $auto_property_id = houzez_option('auto_property_id');
 $area_prefix_default = houzez_option('area_prefix_default');
 $area_prefix_changeable = houzez_option('area_prefix_changeable');
+
+$package_id = houzez_get_user_package_id( $current_user->ID );
+$video_upload = get_post_meta( $package_id, 'fave_video_upload', true );
 
 if( $area_prefix_default == 'SqFt' ) {
     $area_prefix_default = houzez_option('measurement_unit_sqft_text');
@@ -127,7 +130,7 @@ if( $area_prefix_default == 'SqFt' ) {
                 </div>
                 <?php } ?>
 
-                <?php if( $hide_add_prop_fields['video_url'] != 1 ) { ?>
+                <?php if( $video_upload == 1 ) { ?>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="prop_video_url"><?php esc_html_e( 'Video URL', 'houzez' ); ?></label>

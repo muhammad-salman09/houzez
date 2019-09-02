@@ -1023,9 +1023,19 @@ function update_custom_metabox($meta_boxes) {
             ksort($meta_boxes[$j]['fields']);
 
             $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields']) - 1]['columns'] = 12;
+
             $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields'])] = array(
                 'id' => 'fave_encrypt_doc',
                 'name' => 'Encryption and Document Storage',
+                'type' => 'checkbox',
+                'desc' => 'Enable',
+                'std' => '',
+                'columns' => 6
+            );
+
+            $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields']) + 1] = array(
+                'id' => 'fave_video_upload',
+                'name' => 'Video Upload',
                 'type' => 'checkbox',
                 'desc' => 'Enable',
                 'std' => '',
