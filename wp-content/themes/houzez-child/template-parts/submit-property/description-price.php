@@ -111,10 +111,13 @@ if(empty($default_multi_currency)) {
                 <?php if( $hide_add_prop_fields['prop_lifestyle'] != 1 ) { ?>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="prop_lifestyles"><?php echo esc_html__('Lifestyle', 'houzez'); ?></label>
+                            <label for="prop_lifestyles">
+                                <?php echo esc_html__('Lifestyle', 'houzez'); ?>
+                                <?php echo houzez_required_field( $required_fields['prop_lifestyle'] ) ?>
+                            </label>
                             <select name="prop_lifestyles[]" id="prop_lifestyles" class="selectpicker" data-live-search="false" data-live-search-style="begins" multiple>
                                 <?php
-                                /* Property Label */
+                                
                                 $property_lifestyle = get_terms (
                                     array(
                                         "property_lifestyle"
@@ -138,11 +141,15 @@ if(empty($default_multi_currency)) {
                 <?php if( $hide_add_prop_fields['prop_region'] != 1 ) { ?>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="prop_region"><?php echo esc_html__('Region', 'houzez'); ?></label>
+                            <label for="prop_region">
+                                <?php echo esc_html__('Region', 'houzez'); ?>
+                                <?php echo houzez_required_field( $required_fields['prop_region'] ) ?>
+                            </label>
+                            <a href="" style="float: right;">Don't know the Region?</a>
                             <select name="prop_region" id="prop_region" class="selectpicker" data-live-search="false" data-live-search-style="begins">
                                 <option selected="selected" value=""><?php esc_html_e('None', 'houzez'); ?></option>
                                 <?php
-                                /* Property Label */
+                                
                                 $property_region = get_terms (
                                     array(
                                         "property_region"

@@ -682,6 +682,24 @@ function update_redux_options($sections){
     $i = 1;
     $index = 0;
     while ($index == 0) {
+        if ($sections[$i]['id'] == 'property-required-fields') {
+            $keys = (array_keys($sections[$i]['fields']));
+
+            $options = $sections[$i]['fields'][$keys[0]]['options'];
+
+            $arr = array();
+            foreach ($options as $key => $value) {
+                if ($key == 'prop_labels') {
+                    $arr['prop_lifestyle'] = 'Lifestyle';
+                    $arr['prop_region'] = 'Region';
+                }
+
+                $arr[$key] = $value;
+            }
+
+            $sections[$i]['fields'][$keys[0]]['options'] = $arr;
+        }
+
         if ($sections[$i]['id'] == 'property-lightbox') {
             $index = $i;
         }
