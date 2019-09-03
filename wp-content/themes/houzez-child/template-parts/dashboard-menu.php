@@ -131,7 +131,7 @@ if( isset( $_GET['agents'] ) && $_GET['agents'] == 'list' ) {
                 echo '<li ' . esc_attr($ac_msgs) . '> <a href="' . esc_url($dashboard_msgs) . '"> <i class="fa fa-comments-o"></i>' . esc_html__('Messages', 'houzez') . houzez_messages_notification() . '</a></li>';
             }
             if( !empty($dashboard_documents) ) {
-                echo '<li ' . esc_attr($ac_documents) . '> <a href="' . esc_url($dashboard_documents) . '"> <i class="fa fa-file"></i>' . esc_html__('Documents', 'houzez') . '</a></li>';
+                echo '<li ' . esc_attr($ac_documents) . '> <a href="' . esc_url($dashboard_documents) . '"> <i class="fa fa-file"></i>' . esc_html__('Files Shared to Me', 'houzez') . '</a></li>';
             }
             if( !empty($dashboard_gdpr) ) {
                 echo '<li ' . esc_attr($ac_gdpr) . '> <a href="' . esc_url($dashboard_gdpr) . '"> <i class="fa fa-envelope"></i>' . esc_html__('GDPR Data Request', 'houzez').'</a></li>';

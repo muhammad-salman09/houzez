@@ -84,6 +84,12 @@ get_template_part( 'template-parts/dashboard', 'menu' );
 	<div class="dashboard-content-area dashboard-fix">
             <div class="container">
                 <div class="row">
+                	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                		<span><b>
+                			If you are looking to add documents to your listing, from your listing profile, select Actions  and Document Upload.
+                		</b></span>
+                	</div>
+
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     	<?php if (sizeof($docs) > 0) { ?>
                     	<div class="doc_content container">
@@ -110,6 +116,10 @@ get_template_part( 'template-parts/dashboard', 'menu' );
 	                            </tbody>
 	                        </table>
 	                    </div>
+	                <?php } else { ?>
+	                	<div class="container">
+	                		<span>No documents have been shared with you at this time.</span>
+	                	</div>
 	                <?php } ?>
                     </div>
                 </div>
