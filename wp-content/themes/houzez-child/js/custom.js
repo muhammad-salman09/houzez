@@ -337,7 +337,7 @@ $(document).ready(function() {
             var doc_size = Math.ceil(fileObject['size'] / 1024 / 1024);
             var doc_type = fileObject['type'];
 
-            if (doc_size < 10 && doc_type == 'application/pdf') {
+            if (doc_size < 50 && doc_type == 'application/pdf') {
                 data.append('file', fileObject);
                 data.append('title', title);
                 data.append('post_id', post_id);
