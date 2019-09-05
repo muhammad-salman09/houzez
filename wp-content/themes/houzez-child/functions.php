@@ -533,6 +533,99 @@ function my_scripts() {
         
         wp_enqueue_script( 'map', get_stylesheet_directory_uri() . '/js/map.js', array('jquery') );
     }
+
+    if (is_page_template('template/user_dashboard_invoices.php') || is_page_template('template/user_dashboard_properties.php') || is_page_template('template/user_dashboard_messages.php') || is_page_template('template/submit_property.php') || is_page_template('template/submit_property_without_login.php') || is_page_template('template/user_dashboard_floor_plans.php') || is_page_template('template/user_dashboard_multi_units.php')) {
+            wp_dequeue_script('houzez_property');
+            wp_deregister_script('houzez_property');
+
+            wp_enqueue_script('plupload');
+            wp_enqueue_script('jquery-ui-sortable');
+
+            wp_enqueue_script('validate.min', get_template_directory_uri() . '/js/jquery.validate.min.js', array('jquery'), '1.14.0', true);
+
+            wp_enqueue_script('houzez_property', get_stylesheet_directory_uri() . '/js/houzez_property.js', array('jquery', 'plupload', 'jquery-ui-sortable'));
+
+            $prop_req_fields = houzez_option('required_fields');
+            $enable_paid_submission = houzez_option('enable_paid_submission');
+
+            if( $enable_paid_submission == 'membership') {
+                $user_package_id = houzez_get_user_package_id($userID);
+                $package_images = get_post_meta( $user_package_id, 'fave_package_images', true );
+                $package_unlimited_images = get_post_meta( $user_package_id, 'fave_unlimited_images', true );
+                if( $package_unlimited_images != 1 && !empty($package_images)) {
+                    $max_prop_images = $package_images;
+                } else {
+                    $max_prop_images = houzez_option('max_prop_images');
+                }
+            } else {
+                $max_prop_images = houzez_option('max_prop_images');
+            }
+
+            $is_edit_property = isset($_GET['edit_property']) ? $_GET['edit_property'] : 'no';
+
+            $prop_data = array(
+                'ajaxURL' => admin_url('admin-ajax.php'),
+                'verify_nonce' => wp_create_nonce('verify_gallery_nonce'),
+                'verify_file_type' => esc_html__('Valid file formats', 'houzez'),
+                'msg_digits' => esc_html__('Please enter only digits', 'houzez'),
+                'max_prop_images' => $max_prop_images,
+                'image_max_file_size' => houzez_option('image_max_file_size'),
+                'plan_title_text' => esc_html__('Plan Title', 'houzez'),
+                'plan_size_text' => esc_html__('Plan Size', 'houzez'),
+                'plan_bedrooms_text' => esc_html__('Plan Bedrooms', 'houzez'),
+                'plan_bathrooms_text' => esc_html__('Plan Bathrooms', 'houzez'),
+                'plan_price_text' => esc_html__('Plan Price', 'houzez'),
+                'plan_price_postfix_text' => esc_html__('Price Postfix', 'houzez'),
+                'plan_image_text' => esc_html__('Plan Image', 'houzez'),
+                'plan_description_text' => esc_html__('Plan Description', 'houzez'),
+                'plan_upload_text' => esc_html__('Upload', 'houzez'),
+
+                'mu_title_text' => esc_html__('Title', 'houzez'),
+                'mu_type_text' => esc_html__('Property Type', 'houzez'),
+                'mu_beds_text' => esc_html__('Bedrooms', 'houzez'),
+                'mu_baths_text' => esc_html__('Bathrooms', 'houzez'),
+                'mu_size_text' => esc_html__('Property Size', 'houzez'),
+                'mu_size_postfix_text' => esc_html__('Size Postfix', 'houzez'),
+                'mu_price_text' => esc_html__('Property Price', 'houzez'),
+                'mu_price_postfix_text' => esc_html__('Price Postfix', 'houzez'),
+                'mu_availability_text' => esc_html__('Availability Date', 'houzez'),
+
+                'prop_title' => $prop_req_fields['title'],
+                //'description' => $prop_req_fields['description'],
+                'prop_type' => $prop_req_fields['prop_type'],
+                'prop_status' => $prop_req_fields['prop_status'],
+                'prop_lifestyle' => $prop_req_fields['prop_lifestyle'],
+                'prop_region' => $prop_req_fields['prop_region'],
+                'prop_labels' => $prop_req_fields['prop_labels'],
+                'prop_price' => $prop_req_fields['sale_rent_price'],
+                'prop_sec_price' => $prop_req_fields['prop_second_price'],
+                'price_label' => $prop_req_fields['price_label'],
+                'prop_id' => $prop_req_fields['prop_id'],
+                'bedrooms' => $prop_req_fields['bedrooms'],
+                'bathrooms' => $prop_req_fields['bathrooms'],
+                'area_size' => $prop_req_fields['area_size'],
+                'land_area' => $prop_req_fields['land_area'],
+                'garages' => $prop_req_fields['garages'],
+                'year_built' => $prop_req_fields['year_built'],
+                'property_map_address' => $prop_req_fields['property_map_address'],
+                /*'neighborhood' => $prop_req_fields['neighborhood'],
+                'city' => $prop_req_fields['city'],
+                'state' => $prop_req_fields['state'],*/
+                'houzez_logged_in' => $houzez_logged_in,
+                'process_loader_refresh' => 'fa fa-spin fa-refresh',
+                'process_loader_spinner' => 'fa fa-spin fa-spinner',
+                'process_loader_circle' => 'fa fa-spin fa-circle-o-notch',
+                'process_loader_cog' => 'fa fa-spin fa-cog',
+                'success_icon' => 'fa fa-check',
+                'login_loading' => esc_html__('Sending user info, please wait...', 'houzez'),
+                'processing_text' => esc_html__('Processing, Please wait...', 'houzez'),
+                'add_listing_msg' => esc_html__('Submitting, Please wait...', 'houzez'),
+                'is_edit_property' => $is_edit_property,
+
+            );
+
+            wp_localize_script('houzez_property', 'houzezProperty', $prop_data);
+    }
 }
 
 add_action('admin_enqueue_scripts', 'custom_scripts');
