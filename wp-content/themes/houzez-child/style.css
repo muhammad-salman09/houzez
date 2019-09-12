@@ -615,24 +615,36 @@ Template: houzez
 	padding-top: 0;
 }
 .houzez-module>div {
+	margin-bottom: 20px;
 	margin-top: 20px;
+}
+.houzez-module>p {
+	width: 100%;
 }
 .houzez-module .package-block {
 	box-shadow: 0 0 0 1px #dddddd;
 	height: 100%;
+	padding: 30px 20px 10px;
+}
+.houzez-module .package-block .package-head {
+	border-bottom: 3px solid #009da5;
+	margin: 0 0 10px;
+	padding-bottom: 10px;
+}
+.houzez-module .package-block .package-head .package-title {
+	margin: 10px 0;
+	text-align: left;
+}
+.houzez-module .package-block .package-head .package-link {
+	float: right;
+}
+.houzez-module .package-block .package-head .package-link a {
+	border-radius: 0;
+	padding: 10px 30px;
 }
 .houzez-module .package-block .package-content {
 	padding: 0 10px 20px;
 	margin-bottom: 20px;
-}
-.houzez-module .package-block .package-content p:first-child {
-    text-align: center;
-}
-.houzez-module .package-block .package-link {
-	bottom: 20px;
-    margin: 0;
-	position: absolute;
-	width: 100%;
 }
 .houzez-module .container>div {
 	padding-right: 20px;

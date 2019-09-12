@@ -16,10 +16,27 @@ function custom_styles() {
     .rwmb-button-wrapper .rwmb-input {
         text-align: center;
     }
+    .billing.rwmb-row .rwmb-column {
+        margin-right: 1%;
+    }
+    .billing.rwmb-row .rwmb-column:nth-child(2) {
+        width: 6%;
+    }
+    .billing.rwmb-row .rwmb-column-2 {
+        width: 15%;
+    }
+    .billing.rwmb-row .rwmb-column-6 {
+        float: right;
+        margin: 0 0 0 2.5%;
+    }
+    #fave_billing_custom_value,
+    #fave_billing_custom_option,
     #fave_billing_unit_add,
     .payment_option {
         margin-top: 25px;
     }
+    .billing.rwmb-row>div:nth-child(2),
+    .billing.rwmb-row>div:nth-child(3),
     .payment:not(.selected) {
         display: none;
     }
@@ -1044,35 +1061,41 @@ function array_insert_after( array $array, $key, array $new ) {
 add_filter('rwmb_meta_boxes', 'update_custom_metabox', 1000);
 function update_custom_metabox($meta_boxes) {
     $options = array(
-        'One-Time', 'Monthly (recurring basis)',
-        'Quarterly (recurring basis)', 'Semi-Annually (recurring basis)'
+        'Daily', 'Weekly', 'Monthly', 'Every 3 months',
+        'Every 6 months', 'Yearly', 'Custom'
     );
 
     for ($j = 0; $j < sizeof($meta_boxes); $j++) {
         // Package Creation
         if ($meta_boxes[$j]['pages'][0] == 'houzez_packages') {
-            for ($i = sizeof($meta_boxes[$j]['fields']) + 16; $i > 2; $i--) {
-                if ($i > 18) {
-                    $meta_boxes[$j]['fields'][$i] = $meta_boxes[$j]['fields'][$i - 17];
+            for ($i = sizeof($meta_boxes[$j]['fields']) + 28; $i > 4; $i--) {
+                if ($i > 32) {
+                    $meta_boxes[$j]['fields'][$i] = $meta_boxes[$j]['fields'][$i - 31];
                 } else {
-                    $index = floor($i / 4);
+                    $index = floor(($i - 1) / 4);
 
                     switch ($i) {
-                        case 3:
-                        case 7:
-                        case 11:
-                        case 15:
+                        case 5:
+                        case 9:
+                        case 13:
+                        case 17:
+                        case 21:
+                        case 25:
+                        case 29:
                             $meta_boxes[$j]['fields'][$i] = array(
-                                'name' => 'Payment Option:',
+                                'name' => 'Billing Interval:',
                                 'type' => 'custom_html',
-                                'std' => '<span>' . $options[$index] . '</span>',
+                                'std' => '<span>' . $options[$index - 1] . '</span>',
                                 'columns' => 4
                             );
                             break;
-                        case 4:
-                        case 8:
-                        case 12:
-                        case 16:
+                        case 6:
+                        case 10:
+                        case 14:
+                        case 18:
+                        case 22:
+                        case 26:
+                        case 30:
                             $meta_boxes[$j]['fields'][$i] = array(
                                 'id' => 'fave_payment_option' . $index,
                                 'name' => 'Amount',
@@ -1081,10 +1104,13 @@ function update_custom_metabox($meta_boxes) {
                                 'columns' => 3
                             );
                             break;
-                        case 5:
-                        case 9:
-                        case 13:
-                        case 17:
+                        case 7:
+                        case 11:
+                        case 15:
+                        case 19:
+                        case 23:
+                        case 27:
+                        case 31:
                             $meta_boxes[$j]['fields'][$i] = array(
                                 'id' => 'fave_plan_option' . $index,
                                 'name' => 'Plan ID',
@@ -1093,10 +1119,13 @@ function update_custom_metabox($meta_boxes) {
                                 'columns' => 3
                             );
                             break;
-                        case 6:
-                        case 10:
-                        case 14:
-                        case 18:
+                        case 8:
+                        case 12:
+                        case 16:
+                        case 20:
+                        case 24:
+                        case 28:
+                        case 32:
                             $meta_boxes[$j]['fields'][$i] = array(
                                 'id' => 'fave_payment_btn' . $index,
                                 'name' => '',
@@ -1110,26 +1139,52 @@ function update_custom_metabox($meta_boxes) {
                 }
             }
 
-            $meta_boxes[$j]['fields'][2] = $meta_boxes[$j]['fields'][1];
+            $meta_boxes[$j]['fields'][4] = $meta_boxes[$j]['fields'][1];
+
+            $meta_boxes[$j]['fields'][0]['name'] = 'Billing Interval';
+            $meta_boxes[$j]['fields'][0]['options'] = array(
+                '' => 'Select from the following',
+                'option1' => 'Daily',
+                'option2' => 'Weekly',
+                'option3' => 'Monthly',
+                'option4' => 'Every 3 months',
+                'option5' => 'Every 6 months',
+                'option6' => 'Yearly',
+                'option7' => 'Custom'
+            );
+
+            $meta_boxes[$j]['fields'][0]['columns'] = 2;
 
             $meta_boxes[$j]['fields'][1] = array(
+                'id' => 'fave_billing_custom_value',
+                'name' => '',
+                'type' => 'number',
+                'std' => '0',
+                'columns' => 1
+            );
+
+            $meta_boxes[$j]['fields'][2] = array(
+                'id' => 'fave_billing_custom_option',
+                'name' => '',
+                'type' => 'select',
+                'std' => '',
+                'options' => array(
+                    '' => 'Select from the following',
+                    'custom1' => 'days',
+                    'custom2' => 'weeks',
+                    'custom3' => 'months'
+                ),
+                'columns' => 2
+            );
+
+            $meta_boxes[$j]['fields'][3] = array(
                 'id' => 'fave_billing_unit_add',
                 'name' => '',
                 'type' => 'button',
                 'std' => 'Add',
-                'columns' => 2
+                'class' => 'billing',
+                'columns' => 1
             );
-
-            $meta_boxes[$j]['fields'][0]['name'] = 'Payment Options';
-            $meta_boxes[$j]['fields'][0]['options'] = array(
-                '' => 'Select from the following',
-                'option1' => 'One-Time',
-                'option2' => 'Monthly (recurring basis)',
-                'option3' => 'Quarterly (recurring basis)',
-                'option4' => 'Semi-Annually (recurring basis)'
-            );
-
-            $meta_boxes[$j]['fields'][0]['columns'] = 4;
 
             ksort($meta_boxes[$j]['fields']);
 

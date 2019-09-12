@@ -5,9 +5,10 @@
  */
 
 jQuery(document).ready(function() {
+    jQuery('.billing').closest('.rwmb-row').addClass('billing');
     jQuery('.payment_option').closest('.rwmb-row').addClass('payment');
 
-    for (var i = 1; i < 5; i++) {
+    for (var i = 1; i < 8; i++) {
     	if (jQuery('#fave_payment_option' + i).val() != '') {
             if (i > 1)
                 jQuery('#fave_billing_unit').closest('.rwmb-column').hide();
@@ -16,6 +17,21 @@ jQuery(document).ready(function() {
     		jQuery('#fave_billing_time_unit').find('option[value=option' + i + ']').hide();
     	}
     }
+
+    if (jQuery('#fave_payment_option7').closest('.payment').hasClass('selected')) {
+        jQuery('#fave_payment_option7').closest('.payment').find('.rwmb-column:first-child .rwmb-input span')
+        .text(jQuery('#fave_billing_custom_value').val() + ' ' + jQuery('#fave_billing_custom_option option:selected').text());
+    }
+
+    jQuery('#fave_billing_time_unit').change(function() {
+        if (jQuery(this).val() == 'option7') {
+            jQuery('.billing.rwmb-row>div:nth-child(2)').show();
+            jQuery('.billing.rwmb-row>div:nth-child(3)').show();
+        } else {
+            jQuery('.billing.rwmb-row>div:nth-child(2)').hide();
+            jQuery('.billing.rwmb-row>div:nth-child(3)').hide();
+        }
+    });
 
     jQuery('#fave_billing_unit_add').click(function() {
     	var option = jQuery('#fave_billing_time_unit').val();
@@ -26,10 +42,37 @@ jQuery(document).ready(function() {
             if (option != 'option1')
                 jQuery('#fave_billing_unit').closest('.rwmb-column').hide();
 
-    		jQuery('#fave_billing_time_unit').css('border', '1px solid #ddd');
-    		jQuery('#fave_payment_' + option).closest('.payment').show();
-    		jQuery('#fave_billing_time_unit').val('');
-    		jQuery('#fave_billing_time_unit').find('option[value=' + option + ']').hide();
+            var flag = true;
+
+            if (option == 'option7') {
+                var cVal = jQuery('#fave_billing_custom_value').val();
+                var cOpt = jQuery('#fave_billing_custom_option').val();
+
+                if (cVal == '' || cVal == 0) {
+                    jQuery('#fave_billing_custom_value').css('border', '1px solid #ff0000');
+                    flag = false;
+                }
+
+                if (cOpt == '') {
+                    jQuery('#fave_billing_custom_option').css('border', '1px solid #ff0000');
+                    flag = false;
+                }
+
+                if (flag) {
+                    jQuery('.billing.rwmb-row>div:nth-child(2)').hide();
+                    jQuery('.billing.rwmb-row>div:nth-child(3)').hide();
+
+                    jQuery('#fave_payment_' + option).closest('.payment').find('.rwmb-column:first-child .rwmb-input span')
+                        .text(cVal + ' ' + jQuery('#fave_billing_custom_option option:selected').text());
+                }
+            }
+
+            if (flag) {
+                jQuery('#fave_billing_time_unit').css('border', '1px solid #ddd');
+                jQuery('#fave_billing_time_unit').val('');
+                jQuery('#fave_billing_time_unit').find('option[value=' + option + ']').hide();
+                jQuery('#fave_payment_' + option).closest('.payment').show();
+            }
     	}
     });
 
