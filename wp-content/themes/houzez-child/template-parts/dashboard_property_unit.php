@@ -31,6 +31,9 @@ $price_per_submission = floatval($price_per_submission);
 $price_featured_submission = floatval($price_featured_submission);
 $currency = houzez_option('currency_paid_submission');
 
+$package_id = houzez_get_user_package_id( $userID );
+$enableDoc = get_post_meta( $package_id, 'fave_encrypt_doc', true );
+
 $add_floor_plans = houzez_get_template_link_2('template/user_dashboard_floor_plans.php');
 $payment_page = houzez_get_template_link('template/template-payment.php');
 $payment_page_link = add_query_arg( 'prop-id', $post_id, $payment_page );
@@ -152,7 +155,9 @@ if( $property_status_text != 'expired' ) {
                             <?php } ?>
 
                         <?php } ?>
+                        <?php if ($enableDoc == 1) { ?>
                         <li><a href="<?php echo esc_url($upload_link); ?>"><i class="fa fa-upload"></i> <?php esc_html_e('Document Upload', 'houzez'); ?></a></li>
+                        <?php } ?>
                     </ul>
                 </div>
                 <?php

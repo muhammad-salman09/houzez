@@ -15,6 +15,9 @@ $edit_link      = houzez_dashboard_add_listing();
 $paid_submission_type = esc_html ( houzez_option('enable_paid_submission','') );
 $packages_page_link = houzez_get_template_link('template-advanced-package.php');
 
+$package_id = houzez_get_user_package_id( $userID );
+$enableDoc = get_post_meta( $package_id, 'fave_encrypt_doc', true );
+
 get_header();
 
 $lang = isset($_GET['lang']) ? $_GET['lang'] : 'en';
@@ -330,7 +333,9 @@ if ($lang != 'en') {
                                                                 <?php } ?>
 
                                                             <?php } ?>
+                                                            <?php if ($enableDoc == 1) { ?>
                                                             <li><a href="<?php echo esc_url($upload_link); ?>"><i class="fa fa-upload"></i> <?php esc_html_e('Document Upload', 'houzez'); ?></a></li>
+                                                            <?php } ?>
                                                         </ul>
                                                     </div>
                                                     <?php
