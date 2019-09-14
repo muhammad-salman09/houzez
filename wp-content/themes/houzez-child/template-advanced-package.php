@@ -20,12 +20,6 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
             <?php get_template_part('template-parts/create-listing-top'); ?>
 
             <div class="houzez-module package-table-module">
-
-                <p>
-                    Looking to list more than one property with Affordable Mallorca?&nbsp;
-                    <a href="https://amstaging.unfstaging.com/contact">Contact Us</a> to learn about Enterprise Packages. 
-                </p>
-
             <?php
             if( have_posts() ):
                 while( have_posts() ): the_post();
@@ -59,30 +53,7 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                 $total_packages = 0;
 
                 while( $fave_qry->have_posts() ): $fave_qry->the_post();
-                    $option1 = get_post_meta( get_the_ID(), 'fave_payment_option1', true );
-                    $option2 = get_post_meta( get_the_ID(), 'fave_payment_option2', true );
-                    $option3 = get_post_meta( get_the_ID(), 'fave_payment_option3', true );
-                    $option4 = get_post_meta( get_the_ID(), 'fave_payment_option4', true );
-                    $option5 = get_post_meta( get_the_ID(), 'fave_payment_option5', true );
-                    $option6 = get_post_meta( get_the_ID(), 'fave_payment_option6', true );
-                    $option7 = get_post_meta( get_the_ID(), 'fave_payment_option7', true );
-
-                    $flag = false;
-
-                    if ($option1 != '' && $option1 > 0)
-                        $flag = true;
-                    if ($option2 != '' && $option2 > 0)
-                        $flag = true;
-                    if ($option3 != '' && $option3 > 0)
-                        $flag = true;
-                    if ($option4 != '' && $option4 > 0)
-                        $flag = true;
-                    if ($option5 != '' && $option5 > 0)
-                        $flag = true;
-                    if ($option6 != '' && $option6 > 0)
-                        $flag = true;
-                    if ($option7 != '' && $option7 > 0)
-                        $flag = true;
+                    $flag = houzez_payment_option(get_the_ID());
 
                     if ($flag)
                         $total_packages++;
@@ -116,27 +87,15 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                     $option5 = get_post_meta( get_the_ID(), 'fave_payment_option5', true );
                     $option6 = get_post_meta( get_the_ID(), 'fave_payment_option6', true );
                     $option7 = get_post_meta( get_the_ID(), 'fave_payment_option7', true );
-                    $cValue  = get_post_meta( get_the_ID(), 'fave_billing_custom_value', true );
-                    $cOption = get_post_meta( get_the_ID(), 'fave_billing_custom_option', true );
 
-                    $flag = false;
-
-                    if ($option1 != '' && $option1 > 0)
-                        $flag = true;
-                    if ($option2 != '' && $option2 > 0)
-                        $flag = true;
-                    if ($option3 != '' && $option3 > 0)
-                        $flag = true;
-                    if ($option4 != '' && $option4 > 0)
-                        $flag = true;
-                    if ($option5 != '' && $option5 > 0)
-                        $flag = true;
-                    if ($option6 != '' && $option6 > 0)
-                        $flag = true;
-                    if ($option7 != '' && $option7 > 0)
-                        $flag = true;
+                    $flag = houzez_payment_option(get_the_ID());
 
                     if ($flag) {
+                        $price = get_post_meta( get_the_ID(), 'fave_package_price', true );
+
+                        $cValue  = get_post_meta( get_the_ID(), 'fave_billing_custom_value', true );
+                        $cOption = get_post_meta( get_the_ID(), 'fave_billing_custom_option', true );
+
                         $i++;
 
                         $process_link = '';
@@ -157,6 +116,7 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                             <div class="package-head row">
                                 <div class="col-md-6">                                    
                                     <h3 class="package-title"><?php the_title(); ?></h3>
+                                    <h3 class="package-title"><?php echo '€' . $price; ?></h3>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="package-link">
@@ -239,7 +199,7 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                                             'custom3' => 'months'
                                         );
 
-                                        $str = $cValue . $arr[$cOption];
+                                        $str = $cValue . ' ' . $arr[$cOption];
 
                                         echo esc_attr($str . ' €' . $option7);
                                     ?>
@@ -252,9 +212,13 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                 <?php endwhile; ?>
                 <?php wp_reset_postdata(); ?>
             <?php } ?>
+                <p style="font-size: 20px;">
+                    Looking to list more than one property with Affordable Mallorca?&nbsp;
+                    <a href="https://amstaging.unfstaging.com/contact">Contact Us</a> to learn about Enterprise Packages. 
+                </p>
 
-                <p>
-                    Affordable Mallorca reserves the right to remove any listings deemed to be added without authorization of property owner.<br />
+                <p style="font-size: 12px;">
+                    Affordable Mallorca reserves the right to remove any listings deemed to be added without authorization of property owner.&nbsp;
                     Furthermore, we reserve the right to remove any duplicate listings regardless of intent.
                 </p>
             </div>

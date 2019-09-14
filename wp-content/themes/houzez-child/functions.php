@@ -671,6 +671,35 @@ if (is_admin() ){
     }
 }
 
+function houzez_payment_option($post_id) {
+    $option1 = get_post_meta( $post_id, 'fave_payment_option1', true );
+    $option2 = get_post_meta( $post_id, 'fave_payment_option2', true );
+    $option3 = get_post_meta( $post_id, 'fave_payment_option3', true );
+    $option4 = get_post_meta( $post_id, 'fave_payment_option4', true );
+    $option5 = get_post_meta( $post_id, 'fave_payment_option5', true );
+    $option6 = get_post_meta( $post_id, 'fave_payment_option6', true );
+    $option7 = get_post_meta( $post_id, 'fave_payment_option7', true );
+
+    $flag = false;
+
+    if ($option1 != '' && $option1 > 0)
+        $flag = true;
+    if ($option2 != '' && $option2 > 0)
+        $flag = true;
+    if ($option3 != '' && $option3 > 0)
+        $flag = true;
+    if ($option4 != '' && $option4 > 0)
+        $flag = true;
+    if ($option5 != '' && $option5 > 0)
+        $flag = true;
+    if ($option6 != '' && $option6 > 0)
+        $flag = true;
+    if ($option7 != '' && $option7 > 0)
+        $flag = true;
+
+    return $flag;
+}
+
 /**
  * Override function to display price with currency symbol
  */
@@ -1099,7 +1128,7 @@ function update_custom_metabox($meta_boxes) {
                             $meta_boxes[$j]['fields'][$i] = array(
                                 'id' => 'fave_payment_option' . $index,
                                 'name' => 'Amount',
-                                'type' => 'number',
+                                'type' => 'text',
                                 'std' => '',
                                 'columns' => 3
                             );

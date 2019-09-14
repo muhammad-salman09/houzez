@@ -632,11 +632,12 @@ Template: houzez
 	padding-bottom: 10px;
 }
 .houzez-module .package-block .package-head .package-title {
-	margin: 10px 0;
+	margin: 0;
 	text-align: left;
 }
 .houzez-module .package-block .package-head .package-link {
 	float: right;
+	margin-top: 10px;
 }
 .houzez-module .package-block .package-head .package-link a {
 	border-radius: 0;
@@ -645,6 +646,9 @@ Template: houzez
 .houzez-module .package-block .package-content {
 	padding: 0 10px 20px;
 	margin-bottom: 20px;
+}
+.houzez-module .package-block .package-content p {
+	margin-bottom: 5px;
 }
 .houzez-module .container>div {
 	padding-right: 20px;
