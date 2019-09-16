@@ -7,7 +7,36 @@ $select_packages_link = houzez_get_template_link('template-advanced-package.php'
 
 if( isset( $_GET['selected_package'] ) || isset( $_GET['state'] ) ) {
     $selected_package_id     = isset( $_GET['selected_package'] ) ? $_GET['selected_package'] : '';
-    $option = (isset($_GET['option'])) ? $_GET['option'] : 'option1';
+
+    $payment1 = get_post_meta( $selected_package_id, 'fave_payment_option1', true );
+    $payment2 = get_post_meta( $selected_package_id, 'fave_payment_option2', true );
+    $payment3 = get_post_meta( $selected_package_id, 'fave_payment_option3', true );
+    $payment4 = get_post_meta( $selected_package_id, 'fave_payment_option4', true );
+    $payment5 = get_post_meta( $selected_package_id, 'fave_payment_option5', true );
+    $payment6 = get_post_meta( $selected_package_id, 'fave_payment_option6', true );
+    $payment7 = get_post_meta( $selected_package_id, 'fave_payment_option7', true );
+
+    $pack_title = get_the_title( $selected_package_id ) . ' Package';
+
+    if (isset($_GET['option'])) {
+        $option = $_GET['option'];
+    } else {
+        if ($payment7 != '' && $payment7 > 0)
+            $option = 'option7';
+        if ($payment6 != '' && $payment6 > 0)
+            $option = 'option6';
+        if ($payment5 != '' && $payment5 > 0)
+            $option = 'option5';
+        if ($payment4 != '' && $payment4 > 0)
+            $option = 'option4';
+        if ($payment3 != '' && $payment3 > 0)
+            $option = 'option3';
+        if ($payment2 != '' && $payment2 > 0)
+            $option = 'option2';
+        if ($payment1 != '' && $payment1 > 0)
+            $option = 'option1';
+    }
+    
     $pack_price = get_post_meta( $selected_package_id, 'fave_payment_' . $option, true );
 
     if (isset($_GET['state'])) {
