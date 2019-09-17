@@ -91,20 +91,7 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                     $flag = houzez_payment_option(get_the_ID());
 
                     if ($flag) {
-                        if ($option7 != '' && $option7 > 0)
-                            $price = $option7;
-                        if ($option6 != '' && $option6 > 0)
-                            $price = $option6;
-                        if ($option5 != '' && $option5 > 0)
-                            $price = $option5;
-                        if ($option4 != '' && $option4 > 0)
-                            $price = $option4;
-                        if ($option3 != '' && $option3 > 0)
-                            $price = $option3;
-                        if ($option2 != '' && $option2 > 0)
-                            $price = $option2;
-                        if ($option1 != '' && $option1 > 0)
-                            $price = $option1;
+                        $price = get_post_meta( get_the_ID(), 'fave_package_price', true );
 
                         $cValue  = get_post_meta( get_the_ID(), 'fave_billing_custom_value', true );
                         $cOption = get_post_meta( get_the_ID(), 'fave_billing_custom_option', true );
