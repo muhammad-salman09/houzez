@@ -22,9 +22,13 @@ $allowed_html = array(
     )
 );
 
+$active_date = get_the_author_meta( 'package_activation', $userID );
+$today = date('Y-m-d H:i:s');
+
 if( is_page_template( 'template/submit_property.php' ) ) {
 
-    if ($enable_paid_submission == 'membership' && $remaining_listings != -1 && $remaining_listings < 1 && is_user_logged_in() ) {
+    if ( ($active_date < $today && is_user_logged_in()) || 
+        ($enable_paid_submission == 'membership' && $remaining_listings != -1 && $remaining_listings < 1 && is_user_logged_in()) ) {
         if (!houzez_user_has_membership($userID)) {
             print '<div class="user_package_status">
                     <h4>' . esc_html__('Let\'s begin by choosing a package!', 'houzez') . '</h4>

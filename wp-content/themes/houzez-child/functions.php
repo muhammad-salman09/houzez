@@ -3752,28 +3752,9 @@ function houzez_get_user_current_package( $user_id ) {
         $pack_listings = get_post_meta( $package_id, 'fave_package_listings', true );
         $pack_unmilited_listings = get_post_meta( $package_id, 'fave_unlimited_listings', true );
         $pack_featured_listings = get_post_meta( $package_id, 'fave_package_featured_listings', true );
-        $pack_billing_period = get_post_meta( $package_id, 'fave_billing_time_unit', true );
-        $pack_billing_frequency = get_post_meta( $package_id, 'fave_billing_unit', true );
         $pack_date = strtotime ( get_user_meta( $user_id, 'package_activation',true ) );
 
-        switch ( $pack_billing_period ) {
-            case 'Day':
-                $seconds = 60*60*24;
-                break;
-            case 'Week':
-                $seconds = 60*60*24*7;
-                break;
-            case 'Month':
-                $seconds = 60*60*24*30;
-                break;
-            case 'Year':
-                $seconds = 60*60*24*365;
-                break;
-        }
-
-        $pack_time_frame = $seconds * $pack_billing_frequency;
-        $expired_date    = $pack_date + $pack_time_frame;
-        $expired_date = date_i18n( get_option('date_format'),  $expired_date );
+        $expired_date = date_i18n( get_option('date_format'),  $pack_date );
 
         echo '<div class="pkgs-status">';
         echo '<h4 class="pkgs-status-title">'.esc_html__( 'Your Current Package', 'houzez' ).'</h4>';
@@ -3801,6 +3782,87 @@ function houzez_get_user_current_package( $user_id ) {
         }*/
 
     }
+}
+
+function houzez_membership_package_update($user_id, $package_id, $payment_option) {
+    $pack_listings            =   get_post_meta( $package_id, 'fave_package_listings', true );
+    $pack_featured_listings   =   get_post_meta( $package_id, 'fave_package_featured_listings', true );
+    $pack_unlimited_listings  =   get_post_meta( $package_id, 'fave_unlimited_listings', true );
+
+    $user_current_posted_listings           =   houzez_get_user_num_posted_listings ( $user_id );
+
+    $user_current_posted_featured_listings  =   houzez_get_user_num_posted_featured_listings( $user_id );
+
+    if( houzez_check_user_existing_package_status( $user_id, $package_id ) ) {
+        $new_pack_listings           =  $pack_listings - $user_current_posted_listings;
+        $new_pack_featured_listings  =  $pack_featured_listings -  $user_current_posted_featured_listings;
+    } else {
+        $new_pack_listings           =  $pack_listings;
+        $new_pack_featured_listings  =  $pack_featured_listings;
+    }
+
+    if( $new_pack_listings < 0 ) {
+        $new_pack_listings = 0;
+    }
+
+    if( $new_pack_featured_listings < 0 ) {
+        $new_pack_featured_listings = 0;
+    }
+
+    if ( $pack_unlimited_listings == 1 ) {
+        $new_pack_listings = -1 ;
+    }
+
+    update_user_meta( $user_id, 'package_listings', $new_pack_listings) ;
+    update_user_meta( $user_id, 'package_featured_listings', $new_pack_featured_listings);
+
+    $user_submit_has_no_membership = get_the_author_meta( 'user_submit_has_no_membership', $user_id );
+    if( !empty( $user_submit_has_no_membership ) ) {
+        houzez_update_package_listings( $user_id );
+        houzez_update_property_from_draft( $user_submit_has_no_membership );
+
+        delete_user_meta( $user_id, 'user_submit_has_no_membership' );
+    }
+
+    switch ( $payment_option ) {
+        case 'option1':
+            $seconds = 60*60*24;
+            break;
+        case 'option2':
+            $seconds = 60*60*24*7;
+            break;
+        case 'option3':
+            $seconds = 60*60*24*30;
+            break;
+        case 'option4':
+            $seconds = 60*60*24*30*3;
+            break;
+        case 'option5':
+            $seconds = 60*60*24*30*6;
+            break;
+        case 'option6':
+            $seconds = 60*60*24*365;
+            break;
+        case 'option7':
+            $arr = array(
+               'custom1' => 60*60*24,
+               'custom2' => 60*60*24*7,
+               'custom3' => 60*60*24*30
+            );
+
+            $value = get_post_meta( $package_id, 'fave_billing_custom_value', true );
+            $option = get_post_meta( $package_id, 'fave_billing_custom_option', true );
+
+            $seconds = $value * $arr[$option];
+            break;
+    }
+
+    $date = strtotime(date('Y-m-d H:i:s'));
+    $update = $date + $seconds;
+
+    update_user_meta( $user_id, 'package_activation', date('Y-m-d H:i:s', $update) );
+
+    update_user_meta( $user_id, 'package_id', $package_id );
 }
 
 /**

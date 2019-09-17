@@ -18,6 +18,8 @@ $paymentMethod = 'Stripe';
 $time = time();
 $date = date('Y-m-d H:i:s',$time);
 
+$payment_option = $_POST['payment_option'];
+
 $stripe_secret_key = houzez_option('stripe_secret_key');
 $stripe_publishable_key = houzez_option('stripe_publishable_key');
 $stripe = array(
@@ -73,9 +75,9 @@ if($input_json_decode != '') {
             houzez_save_user_packages_record($update_user_id);
             if( houzez_check_user_existing_package_status($update_user_id, $pack_id) ){
                 houzez_downgrade_package( $update_user_id, $pack_id );
-                houzez_update_membership_package($update_user_id, $pack_id);
+                houzez_membership_package_update($update_user_id, $pack_id, $payment_option);
             }else{
-                houzez_update_membership_package($update_user_id, $pack_id);
+                houzez_membership_package_update($update_user_id, $pack_id, $payment_option);
             }    
         
         }else{
@@ -256,9 +258,9 @@ if ( isset ($_POST['submission_pay'])  && $_POST['submission_pay'] == 1  ) {
         houzez_save_user_packages_record($userID);
         if( houzez_check_user_existing_package_status($current_user->ID, $pack_id) ){
             houzez_downgrade_package( $current_user->ID, $pack_id );
-            houzez_update_membership_package($userID, $pack_id);
+            houzez_membership_package_update($userID, $pack_id, $payment_option);
         }else{
-            houzez_update_membership_package($userID, $pack_id);
+            houzez_membership_package_update($userID, $pack_id, $payment_option);
         }
 
         $invoiceID = houzez_generate_invoice( 'package', 'recurring', $pack_id, $date, $userID, 0, 0, '', $paymentMethod );
@@ -362,9 +364,9 @@ if ( isset ($_POST['submission_pay'])  && $_POST['submission_pay'] == 1  ) {
         	houzez_save_user_packages_record($userID);
 	        if( houzez_check_user_existing_package_status($current_user->ID,$pack_id) ){
 	            houzez_downgrade_package( $current_user->ID, $pack_id );
-	            houzez_update_membership_package($userID, $pack_id);
+	            houzez_membership_package_update($userID, $pack_id, $payment_option);
 	        }else{
-	            houzez_update_membership_package($userID, $pack_id);
+	            houzez_membership_package_update($userID, $pack_id, $payment_option);
 	        }
 
 	        $invoiceID = houzez_generate_invoice( 'package', 'one_time', $pack_id, $date, $userID, 0, 0, '', $paymentMethod );
