@@ -6,19 +6,6 @@
 
 $ = jQuery;
 
-function resizeFunc() {        
-    $('.account-block .add-tab-row .form-group').each(function() {
-        if ($(this).find('a').hasClass('region')) {
-            var width = $(this).width() - 70;
-
-            if (width > 175)
-                width = 175;
-
-            $(this).find('a').width(width);
-        }
-    });
-}
-
 $(document).ready(function() {
 	var left = parseInt($('.header-left').width());
 	var logo = parseInt($('.logo').width());
@@ -57,12 +44,6 @@ $(document).ready(function() {
         $('.block-success-inner a').attr('href', direct);
         $('.block-success-inner a').text('Add New Property')
     }
-
-    resizeFunc();
-
-    $(window).resize(function() {
-        resizeFunc();
-    });
 
     $('.account-action li select').change(function() {
         var url_string = window.location;
