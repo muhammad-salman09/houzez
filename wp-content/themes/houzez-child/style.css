@@ -1070,3 +1070,11 @@ Template: houzez
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+/* Add New Property Mobile/Tablet Start */
+@media (max-width: 991px) {
+	.user-dashboard-right {
+	    padding-left: 0;
+	}
+}
+/* Add New Property Mobile/Tablet End */
