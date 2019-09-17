@@ -51,7 +51,7 @@ if(empty($default_multi_currency)) {
         <div class="add-tab-row push-padding-bottom">
             <div class="row">
                 <?php if( $hide_add_prop_fields['prop_type'] != 1 ) { ?>
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <div class="form-group">
 
                         <label for="prop_type"><?php echo $houzez_local['prop_type'].houzez_required_field( $required_fields['prop_type'] ); ?></label>
@@ -81,7 +81,7 @@ if(empty($default_multi_currency)) {
                 <?php } ?>
 
                 <?php if( $hide_add_prop_fields['prop_status'] != 1 ) { ?>
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <div class="form-group">
                         <label for="prop_status"><?php echo $houzez_local['prop_status'].houzez_required_field( $required_fields['prop_status'] ); ?></label>
                         <select name="prop_status" id="prop_status" class="selectpicker" data-live-search="false" data-live-search-style="begins">
@@ -109,7 +109,7 @@ if(empty($default_multi_currency)) {
                 <?php } ?>
 
                 <?php if( $hide_add_prop_fields['prop_lifestyle'] != 1 ) { ?>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <div class="form-group">
                             <label for="prop_lifestyles">
                                 <?php echo esc_html__('Lifestyle', 'houzez'); ?>
@@ -139,7 +139,7 @@ if(empty($default_multi_currency)) {
                 <?php } ?>
 
                 <?php if( $hide_add_prop_fields['prop_region'] != 1 ) { ?>
-                    <div class="col-sm-3">
+                    <div class="col-sm-6">
                         <div class="form-group">
                             <label for="prop_region">
                                 <?php echo esc_html__('Region', 'houzez'); ?>

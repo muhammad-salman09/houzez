@@ -1064,13 +1064,6 @@ Template: houzez
 }
 /* Homepage Mobile/Tablet Header Layout End */
 
-.region {
-	float: right;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
 /* Add New Property Mobile/Tablet Start */
 @media (max-width: 991px) {
 	.user-dashboard-right {
