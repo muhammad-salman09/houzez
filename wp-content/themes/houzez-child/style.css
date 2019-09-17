@@ -396,6 +396,9 @@ Template: houzez
   	text-overflow: ellipsis;
   	white-space: normal;
 }
+.grid-view .item-wrap.prop_addon .property-item-v2 .item-body .item-detail * {
+	margin: 0;
+}
 .item-wrap.prop_addon .item-info {
 	clear: both;
 	height: 120px;
