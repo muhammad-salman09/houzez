@@ -22,10 +22,6 @@ $dashboard_unseen_msgs = add_query_arg( 'view', 'sent', $dashboard_msgs );
 $home_link = home_url('/');
 $enable_paid_submission = houzez_option('enable_paid_submission');
 
-$userID = $current_user->ID;
-$package_id = houzez_get_user_package_id( $userID );
-$enableDoc = get_post_meta( $package_id, 'fave_encrypt_doc', true );
-
 $ac_profile = $ac_props = $ac_add_prop = $ac_fav = $ac_search = $ac_invoices = $ac_msgs = $ac_mem = $ac_gdpr = '';
 if( is_page_template( 'template/user_dashboard_profile.php' ) ) {
     $ac_profile = 'class=active';
@@ -134,7 +130,7 @@ if( isset( $_GET['agents'] ) && $_GET['agents'] == 'list' ) {
             if( !empty($dashboard_msgs) ) {
                 echo '<li ' . esc_attr($ac_msgs) . '> <a href="' . esc_url($dashboard_msgs) . '"> <i class="fa fa-comments-o"></i>' . esc_html__('Messages', 'houzez') . houzez_messages_notification() . '</a></li>';
             }
-            if( !empty($dashboard_documents) && $enableDoc == 1 ) {
+            if( !empty($dashboard_documents) ) {
                 echo '<li ' . esc_attr($ac_documents) . '> <a href="' . esc_url($dashboard_documents) . '"> <i class="fa fa-file"></i>' . esc_html__('Files Shared to Me', 'houzez') . '</a></li>';
             }
             if( !empty($dashboard_gdpr) ) {

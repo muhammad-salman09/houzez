@@ -36,9 +36,6 @@ $dashboard_unseen_msgs = add_query_arg( 'view', 'unseen', $dashboard_msgs );
 $home_link = home_url('/');
 $enable_paid_submission = houzez_option('enable_paid_submission');
 
-$package_id = houzez_get_user_package_id( $userID );
-$enableDoc = get_post_meta( $package_id, 'fave_encrypt_doc', true );
-
 $header_create_listing_template = houzez_get_template_link('template/submit_property.php');
 $create_listing_button_required_login = houzez_option('create_listing_button');
 $create_lisiting_enable = houzez_option('create_lisiting_enable');
@@ -149,7 +146,7 @@ if( isset( $_GET['agents'] ) && $_GET['agents'] == 'list' ) {
                     if( !empty($dashboard_msgs) ) {
                         echo '<li ' . esc_attr($ac_msgs) . '> <a href="' . esc_url($dashboard_msgs) . '"> <i class="fa fa-comments-o"></i>' . esc_html__('Messages', 'houzez') . houzez_messages_notification() . '</a></li>';
                     }
-                    if( !empty($dashboard_documents) && $enableDoc == 1 ) {
+                    if( !empty($dashboard_documents) ) {
                         echo '<li ' . esc_attr($ac_documents) . '> <a href="' . esc_url($dashboard_documents) . '"> <i class="fa fa-file"></i>' . esc_html__('Files Shared to Me', 'houzez') . '</a></li>';
                     }
                     if( !empty($dashboard_membership) && $enable_paid_submission == 'membership' && houzez_check_role() ) {
