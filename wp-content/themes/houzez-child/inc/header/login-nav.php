@@ -6,7 +6,6 @@ $first_name  =  $current_user->first_name;
 $last_name  =  $current_user->last_name;
 $display_name = $current_user->display_name;
 
-//$user_custom_picture =  get_the_author_meta( 'fave_author_custom_picture' , $userID );
 $author_picture_id      =   get_the_author_meta( 'fave_author_picture_id' , $userID );
 $user_custom_picture = wp_get_attachment_image_src( $author_picture_id, array( 270, 270 ) );
 $user_custom_picture = $user_custom_picture[0];
