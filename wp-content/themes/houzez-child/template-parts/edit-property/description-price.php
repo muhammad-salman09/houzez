@@ -90,7 +90,7 @@ $default_multi_currency = houzez_option('default_multi_currency');
                                 <?php echo esc_html__('Region', 'houzez'); ?>
                                 <?php echo houzez_required_field( $required_fields['prop_region'] ) ?>
                             </label>
-                            <a class="region" href="<?php echo get_site_url(); ?>" target="_blank">Don't know the Region?</a>
+                            <a class="region" href="#" data-toggle="modal" data-target="#pop-region">Don't know the Region?</a>
                             <select name="prop_region" id="prop_region" class="selectpicker" data-live-search="false" data-live-search-style="begins">
                                 <?php houzez_get_taxonomies_for_edit_listing( $prop_data->ID, 'property_region'); ?>
                             </select>

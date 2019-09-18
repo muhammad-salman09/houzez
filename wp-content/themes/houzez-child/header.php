@@ -28,6 +28,8 @@ if ($userID == 0 && is_page_template('template/submit_property.php'))
 <div id="fb-root"></div>
 
 <?php get_template_part( '../houzez/inc/header/login-register-popup' ); ?>
+<?php get_template_part( 'inc/header/region-popup' ); ?>
+
 <?php if ( !is_page_template( '../houzez/template/template-splash.php' ) ) { 
 
 	global $current_user, $post;
