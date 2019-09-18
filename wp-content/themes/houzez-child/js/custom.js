@@ -23,6 +23,7 @@ $(document).ready(function() {
         $('body').hasClass('page-template-template-user-dashboard-document') ||
         $('body').hasClass('page-template-template-document-upload') ||
         $('body').hasClass('page-template-template-advanced-thankyou') ||
+        $('body').hasClass('page-template-template-advanced-paypal-thankyou') ||
         $('body').hasClass('page-template-template-advanced-package') ||
         $('body').hasClass('page-template-template-addon-thankyou') ||
         $('body').hasClass('houzez-dashboard')

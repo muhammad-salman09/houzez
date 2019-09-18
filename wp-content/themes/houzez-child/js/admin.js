@@ -69,7 +69,7 @@ jQuery(document).ready(function() {
 
             if (flag) {
                 jQuery('#fave_billing_time_unit').css('border', '1px solid #ddd');
-                jQuery('#fave_billing_time_unit').val('');
+                
                 jQuery('#fave_billing_time_unit').find('option[value=' + option + ']').hide();
                 jQuery('#fave_payment_' + option).closest('.payment').show();
             }
@@ -107,12 +107,14 @@ jQuery(document).ready(function() {
 
         jQuery(this).closest('.payment').removeClass('selected');
         
-        var disArr = [];
+        var flag = true;
+
         jQuery('.payment').each(function() {
-            disArr.push(jQuery(this).css('display'));
+            if (jQuery(this).css('display') != 'none')
+                flag = false;
         });
 
-        if (disArr[1] == 'none' && disArr[2] == 'none' && disArr[3] == 'none')
+        if (flag)
             jQuery('#fave_billing_unit').closest('.rwmb-column').show();
     });
 });

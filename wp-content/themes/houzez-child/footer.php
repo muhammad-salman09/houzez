@@ -22,6 +22,7 @@ global $houzez_local;
         !is_page_template('template-addon-thankyou.php') &&
         !is_page_template('template-advanced-package.php') &&
         !is_page_template('template-advanced-payment.php') &&
+        !is_page_template('template-advanced-paypal-thankyou.php') &&
         !is_page_template('template-advanced-thankyou.php') &&
         !is_page_template('template-document-upload.php') &&
         !is_page_template('template-map-search.php') ) { ?>
@@ -39,6 +40,7 @@ if (!is_page_template('template-user-dashboard-properties.php') &&
     !is_page_template('template-addon-thankyou.php') &&
     !is_page_template('template-advanced-package.php') &&
     !is_page_template('template-advanced-payment.php') &&
+    !is_page_template('template-advanced-paypal-thankyou.php') &&
     !is_page_template('template-advanced-thankyou.php') &&
     !is_page_template('template-document-upload.php')) {
 

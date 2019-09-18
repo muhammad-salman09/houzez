@@ -71,13 +71,16 @@ if ($userID == 0 && is_page_template('template/submit_property.php'))
 	}
 	if( houzez_is_dashboard() ||
         is_page_template('template-addon-payment.php') ||
+        is_page_template('template-addon-thankyou.php') ||
+        is_page_template('template-advanced-package.php') ||
+        is_page_template('template-advanced-payment.php') ||
+        is_page_template('template-advanced-paypal-thankyou.php') ||
+        is_page_template('template-advanced-thankyou.php') ||
+        is_page_template('template-document-upload.php') ||
         is_page_template('template-user-dashboard-properties.php') ||
         is_page_template('template-user-dashboard-package.php') ||
         is_page_template('template-user-dashboard-membership.php') ||
-        is_page_template('template-user-dashboard-document.php') ||
-        is_page_template('template-advanced-package.php') ||
-        is_page_template('template-advanced-payment.php') ||
-        is_page_template('template-document-upload.php') ) {
+        is_page_template('template-user-dashboard-document.php') ) {
 	    $header_layout = 'container-fluid';
 	}
 	?>
@@ -169,6 +172,7 @@ get_template_part( 'template-parts/mobile-header' );
         get_page_template_slug() != 'template-addon-thankyou.php' &&
         get_page_template_slug() != 'template-advanced-package.php' &&
         get_page_template_slug() != 'template-advanced-payment.php' &&
+        get_page_template_slug() != 'template-advanced-paypal-thankyou.php' &&
         get_page_template_slug() != 'template-advanced-thankyou.php' &&
         get_page_template_slug() != 'template-user-dashboard-package.php' &&
         get_page_template_slug() != 'template-user-dashboard-membership.php' &&
@@ -396,6 +400,7 @@ if( houzez_is_landing_page() ) { $section_body .='landing-page';}
         !is_page_template('template-addon-thankyou.php') &&
         !is_page_template('template-advanced-package.php') &&
         !is_page_template('template-advanced-payment.php') &&
+        !is_page_template('template-advanced-paypal-thankyou.php') &&
         !is_page_template('template-advanced-thankyou.php') &&
         !is_page_template('template-document-upload.php') &&
         !is_page_template('template-map-search.php') ) { ?>

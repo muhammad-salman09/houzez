@@ -671,6 +671,80 @@ if (is_admin() ){
     }
 }
 
+add_action( 'save_post', 'my_save_post_function', 10, 3 );
+
+function my_save_post_function( $post_ID, $post, $update ) {
+    if ($post->post_type == 'houzez_packages') {
+        $time = get_post_meta($post_ID, 'fave_billing_time_unit');
+        $option = $time[0];
+
+        $opt = get_post_meta($post_ID, 'fave_billing_custom_option');
+        $cOpt = $opt[0];
+
+        switch ($option) {
+            case '':
+                $option1 = get_post_meta( $post_ID, 'fave_payment_option1', true );
+                $option2 = get_post_meta( $post_ID, 'fave_payment_option2', true );
+                $option3 = get_post_meta( $post_ID, 'fave_payment_option3', true );
+                $option4 = get_post_meta( $post_ID, 'fave_payment_option4', true );
+                $option5 = get_post_meta( $post_ID, 'fave_payment_option5', true );
+                $option6 = get_post_meta( $post_ID, 'fave_payment_option6', true );
+                $option7 = get_post_meta( $post_ID, 'fave_payment_option7', true );
+
+                if ($option1 != '' && $option1 > 0)
+                    update_post_meta($post_ID, 'fave_billing_time_unit', 'DAY');
+                if ($option2 != '' && $option2 > 0)
+                    update_post_meta($post_ID, 'fave_billing_time_unit', 'WEEK');
+                if ($option3 != '' && $option3 > 0)
+                    update_post_meta($post_ID, 'fave_billing_time_unit', 'MONTH');
+                if ($option4 != '' && $option4 > 0)
+                    update_post_meta($post_ID, 'fave_billing_time_unit', 'MONTH');
+                if ($option5 != '' && $option5 > 0)
+                    update_post_meta($post_ID, 'fave_billing_time_unit', 'MONTH');
+                if ($option6 != '' && $option6 > 0)
+                    update_post_meta($post_ID, 'fave_billing_time_unit', 'YEAR');
+                if ($option7 != '' && $option7 > 0) {
+                    if ($cOpt == 'custom1')
+                        update_post_meta($post_ID, 'fave_billing_time_unit', 'DAY');
+                    else if ($cOpt == 'custom2')
+                        update_post_meta($post_ID, 'fave_billing_time_unit', 'WEEK');
+                    else if ($cOpt == 'custom3')
+                        update_post_meta($post_ID, 'fave_billing_time_unit', 'MONTH');
+                }
+
+                break;
+            case 'option1':
+                update_post_meta($post_ID, 'fave_billing_time_unit', 'DAY');
+                break;
+            case 'option2':
+                update_post_meta($post_ID, 'fave_billing_time_unit', 'WEEK');
+                break;
+            case 'option3':
+            case 'option4':
+            case 'option5':
+                update_post_meta($post_ID, 'fave_billing_time_unit', 'MONTH');
+                break;
+            case 'option6':
+                update_post_meta($post_ID, 'fave_billing_time_unit', 'YEAR');
+                break;
+            case 'option7':
+                if ($cOpt == 'custom1')
+                    update_post_meta($post_ID, 'fave_billing_time_unit', 'DAY');
+                else if ($cOpt == 'custom2')
+                    update_post_meta($post_ID, 'fave_billing_time_unit', 'WEEK');
+                else if ($cOpt == 'custom3')
+                    update_post_meta($post_ID, 'fave_billing_time_unit', 'MONTH');
+
+                break;
+        }
+
+        $unit = get_post_meta($post_ID, 'fave_billing_unit');
+
+        if ($unit[0] == '0')
+            update_post_meta($post_ID, 'fave_billing_unit', '1');
+    }
+}
+
 function houzez_payment_option($post_id) {
     $option1 = get_post_meta( $post_id, 'fave_payment_option1', true );
     $option2 = get_post_meta( $post_id, 'fave_payment_option2', true );
@@ -1285,6 +1359,7 @@ function update_custom_metabox($meta_boxes) {
 function houzez_remove_page_templates( $templates ) {
     unset( $templates['template/template-packages.php'] );
     unset( $templates['template/template-payment.php'] );
+    unset( $templates['template/template-thankyou.php'] );
     unset( $templates['template/user_dashboard_membership.php'] );
     unset( $templates['template/user_dashboard_properties.php'] );
     return $templates;
