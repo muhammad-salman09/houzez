@@ -8,6 +8,8 @@
  */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
+$option = $_SESSION['option'];
+
 if ( !is_user_logged_in() ) {
     wp_redirect( home_url() );
 }
@@ -182,9 +184,9 @@ else if( $enable_paid_submission == 'membership' ) {
                     houzez_save_user_packages_record($userID);
                     if( houzez_check_user_existing_package_status( $current_user->ID, $pack_id ) ){
                         houzez_downgrade_package( $current_user->ID, $pack_id );
-                        houzez_update_membership_package( $userID, $pack_id);
+                        houzez_membership_package_update( $userID, $pack_id, $option );
                     }else{
-                        houzez_update_membership_package($userID, $pack_id);
+                        houzez_membership_package_update($userID, $pack_id, $option );
                     }
 
                     $invoiceID = houzez_generate_invoice( 'package', 'one_time', $pack_id, $date, $userID, 0, 0, '', $paymentMethod );
@@ -210,9 +212,9 @@ else if( $enable_paid_submission == 'membership' ) {
                 houzez_save_user_packages_record($userID);
                 if( houzez_check_user_existing_package_status( $current_user->ID, $pack_id ) ) {
                     houzez_downgrade_package( $current_user->ID, $pack_id );
-                    houzez_update_membership_package( $userID, $pack_id );
+                    houzez_membership_package_update( $userID, $pack_id, $option );
                 }else{
-                    houzez_update_membership_package( $userID, $pack_id );
+                    houzez_membership_package_update( $userID, $pack_id, $option );
                 }
 
                 delete_post_meta($pack_id, 'houzez_paypal_billing_plan_'.$is_paypal_live);

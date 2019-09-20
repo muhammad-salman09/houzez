@@ -1,4 +1,7 @@
 <?php
+if(!session_id()) {
+	session_start();
+}
 
 $option = '';
 $selected_package_id = $_GET['selected_package'];
@@ -40,6 +43,7 @@ if (isset($_GET['option'])) {
 		$option = 'option1';
 }
 
+$_SESSION['option'] = $option;
 ?>
 
 <div class="info-title">
