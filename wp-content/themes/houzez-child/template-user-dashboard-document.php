@@ -85,9 +85,7 @@ get_template_part( 'template-parts/dashboard', 'menu' );
             <div class="container">
                 <div class="row">
                 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                		<span><b>
-                			If you are looking to add documents to your listing, from your listing profile, select Actions  and Document Upload.
-                		</b></span>
+                		<?php the_content(); ?>
                 	</div>
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
