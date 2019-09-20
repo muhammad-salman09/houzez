@@ -8,10 +8,6 @@ $userID = $current_user->ID;
 if ($userID == 0 && is_page_template('template/submit_property.php'))
     wp_redirect(esc_url(add_query_arg('login', 'required', home_url())));
 
-if (is_front_page() && isset($_GET['token'])) {
-    var_dump($_POST);exit;
-}
-
 /**
  * @package Houzez
  * @since Houzez 1.0
