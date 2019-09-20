@@ -1359,7 +1359,6 @@ function update_custom_metabox($meta_boxes) {
 function houzez_remove_page_templates( $templates ) {
     unset( $templates['template/template-packages.php'] );
     unset( $templates['template/template-payment.php'] );
-    unset( $templates['template/template-thankyou.php'] );
     unset( $templates['template/user_dashboard_membership.php'] );
     unset( $templates['template/user_dashboard_properties.php'] );
     return $templates;
