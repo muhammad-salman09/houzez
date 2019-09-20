@@ -15,8 +15,6 @@ $userID = $current_user->ID;
 $user_email = $current_user->user_email;
 $admin_email      =  get_bloginfo('admin_email');
 
-$payment_option = $_POST['payment_option'];
-
 $allowed_html   =   array();
 
 $enable_paid_submission = houzez_option('enable_paid_submission');
@@ -37,7 +35,7 @@ if( $enable_paid_submission == 'membership' ) {
         $pack_id = $value[1];
         $option = $value[2];
 
-        houzez_membership_package_update( $userID, $pack_id, $payment_option );
+        houzez_membership_package_update( $userID, $pack_id, $option );
 
         if ($option == 'option1')
             $invoice_billing_type = 'One Time';
@@ -70,10 +68,11 @@ if( $enable_paid_submission == 'membership' ) {
 
         $pack_id = $_GET['id'];
         $price = $_GET['price'];
+        $option = $_GET['option'];
 
-        houzez_membership_package_update( $userID, $pack_id, $payment_option );
+        houzez_membership_package_update( $userID, $pack_id, $option );
 
-        if ($_GET['option'] == 'option1')
+        if ($option == 'option1')
             $invoice_billing_type = 'One Time';
         else
             $invoice_billing_type = 'Recurring';
