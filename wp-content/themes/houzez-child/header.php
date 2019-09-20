@@ -8,6 +8,10 @@ $userID = $current_user->ID;
 if ($userID == 0 && is_page_template('template/submit_property.php'))
     wp_redirect(esc_url(add_query_arg('login', 'required', home_url())));
 
+if (is_front_page() && isset($_GET['token'])) {
+    var_dump($_POST);exit;
+}
+
 /**
  * @package Houzez
  * @since Houzez 1.0
@@ -76,7 +80,6 @@ if ($userID == 0 && is_page_template('template/submit_property.php'))
         is_page_template('template-addon-thankyou.php') ||
         is_page_template('template-advanced-package.php') ||
         is_page_template('template-advanced-payment.php') ||
-        is_page_template('template-advanced-paypal-thankyou.php') ||
         is_page_template('template-advanced-thankyou.php') ||
         is_page_template('template-document-upload.php') ||
         is_page_template('template-user-dashboard-properties.php') ||
@@ -174,7 +177,6 @@ get_template_part( 'template-parts/mobile-header' );
         get_page_template_slug() != 'template-addon-thankyou.php' &&
         get_page_template_slug() != 'template-advanced-package.php' &&
         get_page_template_slug() != 'template-advanced-payment.php' &&
-        get_page_template_slug() != 'template-advanced-paypal-thankyou.php' &&
         get_page_template_slug() != 'template-advanced-thankyou.php' &&
         get_page_template_slug() != 'template-user-dashboard-package.php' &&
         get_page_template_slug() != 'template-user-dashboard-membership.php' &&
@@ -402,7 +404,6 @@ if( houzez_is_landing_page() ) { $section_body .='landing-page';}
         !is_page_template('template-addon-thankyou.php') &&
         !is_page_template('template-advanced-package.php') &&
         !is_page_template('template-advanced-payment.php') &&
-        !is_page_template('template-advanced-paypal-thankyou.php') &&
         !is_page_template('template-advanced-thankyou.php') &&
         !is_page_template('template-document-upload.php') &&
         !is_page_template('template-map-search.php') ) { ?>
