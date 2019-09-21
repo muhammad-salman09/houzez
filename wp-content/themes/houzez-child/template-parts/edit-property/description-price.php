@@ -132,7 +132,7 @@ $default_multi_currency = houzez_option('default_multi_currency');
                     <div class="form-group">
                         <label for="prop_price"> <?php echo $houzez_local['prop_sale_rent_price'].houzez_required_field( $required_fields['sale_rent_price'] );
                             print esc_html(get_option('houzez_currency_symbol', '')) . ' ';?>  </label>
-                        <input type="text" id="prop_price" class="form-control" name="prop_price" value="<?php if( isset( $prop_meta_data['fave_property_price'] ) ) { echo sanitize_text_field( $prop_meta_data['fave_property_price'][0] ); } ?>" placeholder="<?php echo $houzez_local['prop_sale_rent_price_placeholder']; ?>">
+                        <input type="number" id="prop_price" class="form-control" name="prop_price" value="<?php if( isset( $prop_meta_data['fave_property_price'] ) ) { echo sanitize_text_field( $prop_meta_data['fave_property_price'][0] ); } ?>" placeholder="<?php echo $houzez_local['prop_sale_rent_price_placeholder']; ?>">
                     </div>
                 </div>
                 <?php } ?>
@@ -141,7 +141,7 @@ $default_multi_currency = houzez_option('default_multi_currency');
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="prop_sec_price"><?php echo $houzez_local['prop_second_price'].houzez_required_field( $required_fields['prop_second_price']); ?></label>
-                        <input type="text" id="prop_sec_price" class="form-control" value="<?php if( isset( $prop_meta_data['fave_property_sec_price'] ) ) { echo sanitize_text_field( $prop_meta_data['fave_property_sec_price'][0] ); } ?>" name="prop_sec_price" placeholder="<?php echo $houzez_local['prop_second_price_placeholder']; ?>">
+                        <input type="number" id="prop_sec_price" class="form-control" value="<?php if( isset( $prop_meta_data['fave_property_sec_price'] ) ) { echo sanitize_text_field( $prop_meta_data['fave_property_sec_price'][0] ); } ?>" name="prop_sec_price" placeholder="<?php echo $houzez_local['prop_second_price_placeholder']; ?>">
                     </div>
                 </div>
                 <?php } ?>
