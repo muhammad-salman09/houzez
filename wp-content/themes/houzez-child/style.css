@@ -431,7 +431,9 @@ Template: houzez
 	width: 25px;
 }
 .item-wrap.prop_addon .property-item-v2 .item-body .item-detail {
-	min-height: 72px;
+    height: 72px;
+	overflow: hidden;
+    text-overflow: ellipsis;
 }
 .item-wrap.prop_addon .property-item-v2 .item-amenities li img {
 	width: 50px;
