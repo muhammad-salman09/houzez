@@ -45,6 +45,22 @@ $(document).ready(function() {
         $('.block-success-inner a').text('Add New Property')
     }
 
+    imageResize();
+
+    function imageResize() {
+        var h = 0;
+        $('.grid-view-3-col .prop_addon .item-thumb img').each(function() {
+            if ($(this).attr('width') == 380)
+                h = $(this).height();
+            else
+                $(this).height(h);
+        });
+    }
+
+    $(window).resize(function() {
+        imageResize();
+    });
+
     $('.account-action li select').change(function() {
         var url_string = window.location;
         var url = new URL(url_string);

@@ -399,6 +399,9 @@ Template: houzez
 .grid-view .item-wrap.prop_addon .property-item-v2 .item-body .item-detail * {
 	margin: 0;
 }
+.grid-view .item-wrap.prop_addon .property-item-v2 .item-body .item-detail ul {
+	margin-left: 20px;
+}
 .item-wrap.prop_addon .item-info {
 	clear: both;
 	height: 120px;
@@ -431,9 +434,7 @@ Template: houzez
 	width: 25px;
 }
 .item-wrap.prop_addon .property-item-v2 .item-body .item-detail {
-    height: 72px;
-	overflow: hidden;
-    text-overflow: ellipsis;
+    min-height: 72px;
 }
 .item-wrap.prop_addon .property-item-v2 .item-amenities li img {
 	width: 50px;
