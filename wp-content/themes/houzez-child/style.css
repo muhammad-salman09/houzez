@@ -34,6 +34,9 @@ Template: houzez
 .board-header {
 	padding: 9px 0;
 }
+.validate-errors-loc {
+	display: none;
+}
 /* Widget Style Start */
 #sidebar .widget-title {
 	color: #001489;

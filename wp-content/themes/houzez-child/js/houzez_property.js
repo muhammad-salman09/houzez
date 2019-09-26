@@ -464,6 +464,7 @@ jQuery(document).ready( function($) {
 
             var errorBlock      = $(".validate-errors");
             var errorBlockGal   = $(".validate-errors-gal");
+            var errorBlockLoc   = $(".validate-errors-loc");
             var galThumbs       = $(".property-thumb");
 
             $('.steps-total').html(formStep.length);
@@ -522,10 +523,37 @@ jQuery(document).ready( function($) {
                         }
                     }
                     if(form.valid()){
-                        formStep.removeClass('active').css({display:'none'});
-                        formStep.eq(current++).addClass('active').css({display:'block'});
-                        setProgress(current);
-                        errorBlock.hide();
+                        var flag = true;
+
+                        if (current == 5) {
+                            var lat = parseFloat($('#latitude').val());
+                            var lng = parseFloat($('#longitude').val());
+
+                            if (lat < 39.26 || lat > 39.97) {
+                                flag = false;
+                                $('#latitude').addClass('error');
+                            }
+
+                            if (lng < 2.3 || lng > 3.48) {
+                                flag = false;
+                                $('#longitude').addClass('error');
+                            }
+
+                            if (!flag) {
+                                $('#geocomplete').addClass('error');
+                                errorBlockLoc.show();
+                            }
+                        }
+
+                        if (flag) {
+                            formStep.removeClass('active').css({display:'none'});
+                            formStep.eq(current++).addClass('active').css({display:'block'});
+
+                            setProgress(current);
+
+                            errorBlock.hide();
+                            errorBlockLoc.hide();
+                        }
                     }else{
                         if (current == 1) {
                             if (prop_type == 1 && $('#prop_type').val() == '') {
@@ -556,9 +584,18 @@ jQuery(document).ready( function($) {
             // Back button click action
             btnback.click(function(){
                 errorBlock.hide();
+                errorBlockLoc.hide();
+
                 $(".dashboard-content-area").animate({ scrollTop: 0 }, "slow");
                 if(current > 1){
+                    if (current == 5) {
+                        $('#latitude').removeClass('error');
+                        $('#longitude').removeClass('error');
+                        $('#geocomplete').removeClass('error');
+                    }
+
                     current = current - 2;
+                    
                     if(current < formStep.length){
                         formStep.removeClass('active').css({display:'none'});
                         formStep.eq(current++).addClass('active').css({display:'block'});

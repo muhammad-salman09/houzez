@@ -51,6 +51,10 @@ if( is_page_template( 'template/submit_property.php' ) ) {
                 <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <?php echo wp_kses(__( '<strong>Error!</strong> Upload at least one image.', 'houzez' ), $allowed_html); ?>
             </div>
+            <div class="validate-errors-loc alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-hide="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <?php echo wp_kses(__( '<strong>Error!</strong> Please enter the location of Mallorca in Spain.', 'houzez' ), $allowed_html); ?>
+            </div>
 
             <div class="submit-form-wrap">
             <?php

@@ -31,8 +31,12 @@ if( $geo_country_limit != 0 ) {
                 });
 
                 geo_input.bind("geocode:dragged", function (event, latLng) {
+                    $("input[name=lat]").removeClass('error');
                     $("input[name=lat]").val(latLng.lat());
+
+                    $("input[name=lng]").removeClass('error');
                     $("input[name=lng]").val(latLng.lng());
+
                     $("#reset").show();
 
                     var map = geo_input.geocomplete("map");
@@ -53,7 +57,10 @@ if( $geo_country_limit != 0 ) {
 
                 geo_input.on('focus',function(){
                     var map = geo_input.geocomplete("map");
-                    google.maps.event.trigger(map, 'resize')
+                    google.maps.event.trigger(map, 'resize');
+
+                    $("input[name=lat]").removeClass('error');
+                    $("input[name=lng]").removeClass('error');
                 });
                 $("#reset").on("click",function () {
                     geo_input.geocomplete("resetMarker");
