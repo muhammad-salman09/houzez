@@ -6,25 +6,25 @@ $package = add_query_arg( array('option' => $_GET['option'], 'post' => $_GET['po
 if (isset($_GET['state'])) {
     $value = explode(',', urldecode($_GET['state']));
     
-    if ($value[0] == '750') {
+    if ($value[0] == '15') {
         $addon = 'Featured:';
-        $price = 750;
+        $price = 15;
     }
 
-    if ($value[0] == '1000') {
+    if ($value[0] == '25') {
         $addon = 'Property of the Week:';
-        $price = 1000;
+        $price = 25;
     }
 }
 
 if ($_GET['option'] == 'featured') {
     $addon = 'Featured:';
-    $price = 750;
+    $price = 15;
 }
 
 if ($_GET['option'] == 'week') {
     $addon = 'Property of the Week:';
-    $price = 1000;
+    $price = 25;
 }
 
 ?>

@@ -12,12 +12,12 @@ $allowed_html_array = array(
 
 if ($_GET['option'] == 'week') {
     $title = 'Property of the Week';
-    $price = '1000';
+    $price = '25';
 }
 
 if ($_GET['option'] == 'featured') {
     $title = 'Featured Property';
-    $price = '750';
+    $price = '15';
 }
 
 $enable_paypal = houzez_option('enable_paypal');

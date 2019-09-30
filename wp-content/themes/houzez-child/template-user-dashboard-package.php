@@ -112,7 +112,7 @@ get_template_part( 'template-parts/dashboard', 'menu' );
     								<p>
     									Property of the Week is featured on the Homepage as well as sidebar positoning throughout the site. Users searching for propertes on aﬀordablemallorca.com will see Property of the Week listngs on search results pages and other views. Selected listngs will show randomly for 168 hours from the tme of purchase. Propertes are displayed at random based on individual user session.
     								</p>
-    								<span>€1,000/week per listing</span>
+    								<span>€25.00 per week</span>
   								</div>
   								<div>
     								<input type="radio" class="addon-type" name="addon-type" id="featured" value="featured"
@@ -121,7 +121,7 @@ get_template_part( 'template-parts/dashboard', 'menu' );
     								<p>
     									Agencies and Agent Users should be able to Purchase Featured Property Listngs – A Featured Property shows in all featured property sectons at random as well as on Search results pages to match search. Order is random on search results pages when more than one Featured property are a match. Limit 2 per sidebar. Selected listngs will show randomly for 168 hours from the tme of purchase. Propertes are displayed at random based on individual user session.
     								</p>
-    								<span>€750/week per listing</span>
+    								<span>€15.00 per week</span>
   								</div>
   							</div>
 							</div>

@@ -40,8 +40,8 @@ if (isset($_GET['token'])) {
     $property_option = $save_data[$userID]['property_option'];
 
     $price = array(
-    	'featured' => 750,
-    	'week'     => 1000
+    	'featured' => 15,
+    	'week'     => 25
     );
 
     $recursive = 0;
