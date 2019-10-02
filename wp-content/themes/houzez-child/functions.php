@@ -1805,6 +1805,11 @@ function get_props($city, $query) {
             if (strpos(strtolower($title), strtolower($city)) !== false)
                 $flag = true;
 
+            $desc = $desc = get_post_field('post_content', $property->id);
+
+            if (strpos(strtolower($desc), strtolower($city)) !== false)
+                $flag = true;
+
             $address = get_post_meta( $property->id, 'fave_property_map_address', true );
 
             if (strpos(strtolower($address), strtolower($city)) !== false)
