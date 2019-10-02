@@ -4180,6 +4180,9 @@ function houzez_paypal_option_payment() {
             "cancel_url" => $dash_profile_link
         ),
         'payer' => array("payment_method" => "paypal"),
+        'application_context' => array(
+            "shipping_preference" => "NO_SHIPPING"
+        )
     );
 
     $payment['transactions'][0] = array(
