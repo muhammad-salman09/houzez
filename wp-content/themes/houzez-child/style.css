@@ -175,6 +175,7 @@ Template: houzez
 	content: "";
 }
 .advanced-search .bootstrap-select.btn-group .dropdown-menu.open {
+	max-height: unset !important;
 	overflow-y: hidden !important;
 }
 .advanced-search .buy-btn {
