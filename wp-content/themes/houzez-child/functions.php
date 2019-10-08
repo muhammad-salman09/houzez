@@ -1445,7 +1445,7 @@ if( !function_exists('houzez_advance_search_update') ) {
                             ?>
                             </select>
                         </div>
-                        <div class="col-md-4 col-sm-6">
+                        <div class="col-md-3 col-sm-6">
                             <select class="selectpicker bs-select-hidden" name="region">
                             <?php
                                 echo '<option value="">' . esc_html__('Location') . '</option>';
@@ -1485,7 +1485,7 @@ if( !function_exists('houzez_advance_search_update') ) {
                             ?>
                             </select>
                         </div>
-                        <div class="col-md-2 col-sm-6">
+                        <div class="col-md-3 col-sm-6">
                             <?php 
                                 $searched_currency = isset($_GET['currency']) ? $_GET['currency'] : '';
                                 $currencies = Houzez_Currencies::get_currency_codes();
@@ -1502,12 +1502,12 @@ if( !function_exists('houzez_advance_search_update') ) {
                     </div>
                     <div class="col-md-4 col-sm-12 range-advanced-main">
                         <?php if( $adv_search_price_slider != 0 ) { ?>
-                            <div class="range-text col-md-4 col-lg-3">
+                            <div class="range-text col-md-6 col-lg-4">
                                 <input type="hidden" name="min-price" class="min-price-range-hidden range-input" readonly >
                                 <input type="hidden" name="max-price" class="max-price-range-hidden range-input" readonly >
                                 <span class="range-title"><?php echo $houzez_local['price_range']; ?></span>
                             </div>
-                            <div class="range-wrap col-md-8 col-lg-9">
+                            <div class="range-wrap col-md-6 col-lg-8">
                                 <span class="min-price-range"></span>
                                 <div class="price-range-advanced"></div>
                                 <span class="max-price-range"></span>
