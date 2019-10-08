@@ -232,7 +232,7 @@ get_template_part( 'template-parts/mobile-header' );
 
 <div class="advanced-search advanced-search-module houzez-adv-price-range">
     <?php if (empty($search_title)) { ?>
-        <h3 class="advance-title"><?php echo esc_html__('Search Properties for Sale'); ?></h3>
+        <h3 class="advance-title"><?php echo esc_html__('Search Properties'); ?></h3>
     <?php } else { ?>
         <h3 class="advance-title"><?php echo esc_attr($search_title); ?></h3>
     <?php } ?>

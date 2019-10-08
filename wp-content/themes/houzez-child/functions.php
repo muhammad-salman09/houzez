@@ -1395,7 +1395,7 @@ if( !function_exists('houzez_advance_search_update') ) {
         <input type="hidden" id="max_price" value="<?php echo houzez_option('advanced_search_widget_max_price'); ?>" />
 
         <div class="advanced-search advanced-search-module houzez-adv-price-range front">
-            <h3 class="advance-title"><?php echo esc_html__('Search Properties for Sale'); ?></h3>
+            <h3 class="advance-title"><?php echo esc_html__('Search Properties'); ?></h3>
 
             <form autocomplete="off" method="get" action="<?php echo esc_url($search_template); ?>">
                 <?php if ($lang != '') { ?>

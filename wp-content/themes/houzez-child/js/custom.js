@@ -236,16 +236,6 @@ $(document).ready(function() {
 	$('.btn-type').click(function() {
 		$('.btn-type').removeClass('btn-primary');
 		$(this).addClass('btn-primary');
-
-		if ($(this).text() == 'Buy') {
-			$('#type').val('for-sale');
-			$('.advance-title').text('Search Properties for Sale');
-		}
-
-		if ($(this).text() == 'Rent') {
-			$('#type').val('for-rent');
-			$('.advance-title').text('Search Properties for Rent');
-		}
 	});
 
 	$('#cCalculate').click(function() {
