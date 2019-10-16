@@ -39,6 +39,10 @@ if( isset( $_GET['selected_package'] ) || isset( $_GET['state'] ) ) {
     
     $pack_price = get_post_meta( $selected_package_id, 'fave_payment_' . $option, true );
 
+    $tax = get_post_meta( $selected_package_id, 'fave_package_tax', true );
+
+    $total_price = floor(($pack_price * (1 + (int)$tax / 100)) * 100) / 100;
+
     if (isset($_GET['state'])) {
         $value = explode(',', urldecode($_GET['state']));
 
@@ -59,8 +63,6 @@ if( isset( $_GET['selected_package'] ) || isset( $_GET['state'] ) ) {
         $pack_billing_period .='s';
     }
     
-    $package_price = $currency_symbol . ' ' . $pack_price;
-
     ?>
     <ul class="pkg-total-list">
         <?php if ( is_user_logged_in() ) { ?>
@@ -93,8 +95,21 @@ if( isset( $_GET['selected_package'] ) || isset( $_GET['state'] ) ) {
             <span class="pull-right"><strong><?php echo esc_attr( $pack_featured_listings ); ?></strong></span>
         </li>
         <li>
+            <span class="pull-left"><?php esc_html_e( 'Package Price:', 'houzez' ); ?></span>
+            <span class="pull-right"><?php echo $currency_symbol . ' ' . esc_attr( $pack_price ); ?></span>
+        </li>
+        <?php if ($tax != '') { ?>
+        <li>
+            <span class="pull-left"><?php echo esc_attr( $tax ); ?>%<?php esc_html_e( ' Tax:', 'houzez' ); ?></span>
+            <span class="pull-right">
+                <?php echo $currency_symbol . ' '; ?>
+                <?php echo floor(($pack_price * (int)$tax / 100) * 100) / 100; ?>
+            </span>
+        </li>
+        <?php } ?>
+        <li>
             <span class="pull-left"><?php esc_html_e( 'Total Price:', 'houzez' ); ?></span>
-            <span class="pull-right"><?php echo esc_attr( $package_price ); ?></span>
+            <span class="pull-right"><?php echo $currency_symbol . ' ' . esc_attr( $total_price ); ?></span>
         </li>
     </ul>
 <?php } ?>

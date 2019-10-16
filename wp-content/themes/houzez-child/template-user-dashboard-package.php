@@ -7,6 +7,18 @@ if ( !is_user_logged_in() ) {
     wp_redirect(  home_url() );
 }
 
+global $current_user;
+
+wp_get_current_user();
+$userID = $current_user->ID;
+$package_id = houzez_get_user_package_id( $userID );
+
+$tax = 0;
+
+if(!empty($package_id)) {
+    $tax = (int)get_post_meta( $package_id, 'fave_package_tax', true );
+}
+
 $dashboard_listings = houzez_get_template_link_2('template-user-dashboard-properties.php');
 $listings = add_query_arg( 'prop_status', 'package', $dashboard_listings );
 
@@ -112,7 +124,11 @@ get_template_part( 'template-parts/dashboard', 'menu' );
     								<p>
     									Property of the Week is featured on the Homepage as well as sidebar positoning throughout the site. Users searching for propertes on aﬀordablemallorca.com will see Property of the Week listngs on search results pages and other views. Selected listngs will show randomly for 168 hours from the tme of purchase. Propertes are displayed at random based on individual user session.
     								</p>
-    								<span>€25.00 per week</span>
+                    <?php $total = 25 * (100 + $tax) / 100; ?>
+                    <?php $fee = 25 * $tax / 100; ?>
+                    <span>€25/week + <?php echo $tax . '% Tax (€' . $fee . ')'; ?></span>
+                    <br />
+                    <span><?php echo '€' . $total; ?></span>
   								</div>
   								<div>
     								<input type="radio" class="addon-type" name="addon-type" id="featured" value="featured"
@@ -121,7 +137,11 @@ get_template_part( 'template-parts/dashboard', 'menu' );
     								<p>
     									Agencies and Agent Users should be able to Purchase Featured Property Listngs – A Featured Property shows in all featured property sectons at random as well as on Search results pages to match search. Order is random on search results pages when more than one Featured property are a match. Limit 2 per sidebar. Selected listngs will show randomly for 168 hours from the tme of purchase. Propertes are displayed at random based on individual user session.
     								</p>
-    								<span>€15.00 per week</span>
+    								<?php $total = 15 * (100 + $tax) / 100; ?>
+                    <?php $fee = 15 * $tax / 100; ?>
+                    <span>€15/week + <?php echo $tax . '% Tax (€' . $fee . ')'; ?></span>
+                    <br />
+                    <span><?php echo '€' . $total; ?></span>
   								</div>
   							</div>
 							</div>

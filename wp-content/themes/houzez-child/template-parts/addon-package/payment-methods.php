@@ -1,5 +1,17 @@
 <?php
 
+global $current_user;
+
+wp_get_current_user();
+$userID = $current_user->ID;
+$package_id = houzez_get_user_package_id( $userID );
+
+$tax = 0;
+
+if(!empty($package_id)) {
+    $tax = (int)get_post_meta( $package_id, 'fave_package_tax', true );
+}
+
 $terms_conditions = houzez_option('payment_terms_condition');
 
 $allowed_html_array = array(
@@ -12,13 +24,15 @@ $allowed_html_array = array(
 
 if ($_GET['option'] == 'week') {
     $title = 'Property of the Week';
-    $price = '25';
+    $price = 25;
 }
 
 if ($_GET['option'] == 'featured') {
     $title = 'Featured Property';
-    $price = '15';
+    $price = 15;
 }
+
+$price = $price * (100 + $tax) / 100;
 
 $enable_paypal = houzez_option('enable_paypal');
 $enable_stripe = houzez_option('enable_stripe');

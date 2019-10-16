@@ -38,6 +38,10 @@ if (isset($_GET['option'])) {
 
 $pack_price = get_post_meta( $selected_package_id, 'fave_payment_' . $option, true );
 
+$tax = get_post_meta( $selected_package_id, 'fave_package_tax', true );
+
+$pack_price = floor(($pack_price * (1 + (int)$tax / 100)) * 100) / 100;
+
 $terms_conditions = houzez_option('payment_terms_condition');
 $allowed_html_array = array(
     'a' => array(

@@ -4,8 +4,15 @@ function register_my_session(){
         session_start();
     }
 }
-
 add_action('init', 'register_my_session');
+
+function editor_from_post_type() {
+    global $pagenow;
+    
+    if ($pagenow == 'post.php' && isset($_GET['post']) && get_post_type($_GET['post']) == 'houzez_packages')
+        add_post_type_support( 'houzez_packages', 'editor' );
+}
+add_action('admin_init', 'editor_from_post_type');
 
 add_action('admin_head', 'custom_styles');
 function custom_styles() {
@@ -1292,6 +1299,7 @@ function update_custom_metabox($meta_boxes) {
             ksort($meta_boxes[$j]['fields']);
 
             $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields']) - 1]['columns'] = 12;
+            $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields']) - 1]['type'] = 'number';
 
             $meta_boxes[$j]['fields'][sizeof($meta_boxes[$j]['fields'])] = array(
                 'id' => 'fave_encrypt_doc',
@@ -3945,8 +3953,194 @@ function houzez_membership_package_update($user_id, $package_id, $payment_option
 }
 
 /**
- * Membership Package Payment (Stripe, Bitcoin, GooglePay, ApplePay)
+ * Membership Package Payment (Paypal, Stripe, Bitcoin, GooglePay, ApplePay)
  */
+function houzez_recuring_paypal_package_payment() {
+    global $current_user;
+    wp_get_current_user();
+    $userID = $current_user->ID;
+
+    if ( !is_user_logged_in() ) {
+        wp_die('are you kidding?');
+    }
+
+    if( $userID === 0 ) {
+        wp_die('are you kidding?');
+    }
+
+    $allowed_html=array();
+    $houzez_package_id    = intval($_POST['houzez_package_id']);
+    $houzez_package_price = $_POST['houzez_package_price'];
+    $is_package_exist     = get_posts('post_type=houzez_packages&p='.$houzez_package_id);
+
+    if( !empty ( $is_package_exist ) ) {
+        global $current_user;
+        $access_token = '';
+
+        $is_paypal_live      = houzez_option('paypal_api');
+        $host                = 'https://api.sandbox.paypal.com';
+        if( $is_paypal_live =='live'){
+            $host = 'https://api.paypal.com';
+        }
+        
+        $url             =   $host.'/v1/oauth2/token';
+        $postArgs        =   'grant_type=client_credentials';        
+        
+        if(function_exists('houzez_get_paypal_access_token')){
+            $access_token    =   houzez_get_paypal_access_token( $url, $postArgs );
+        }
+
+        $billing_plan = get_post_meta($houzez_package_id, 'houzez_paypal_billing_plan_'.$is_paypal_live, true);
+
+        if( empty($billing_plan['id']) || empty($billing_plan) || !is_array($billing_plan) ) {
+            houzez_create_billing_plan($houzez_package_id, $houzez_package_price, $access_token);
+            $billing_plan = get_post_meta($houzez_package_id, 'houzez_paypal_billing_plan_'.$is_paypal_live, true);
+        }
+        
+        echo houzez_create_paypal_membership($houzez_package_id, $houzez_package_price, $access_token, $billing_plan['id']);
+        wp_die();
+    }
+    wp_die();
+
+}
+
+function houzez_create_billing_plan($package_id, $package_price, $access_token) {
+    $blogInfo = esc_url( home_url() );
+    $packPrice          =  $package_price;
+    $packName           =  get_the_title($package_id);
+    $billingPeriod      =  get_post_meta( $package_id, 'fave_billing_time_unit', true );
+    $billingFreq        =  intval( get_post_meta( $package_id, 'fave_billing_unit', true ) );
+    $submissionCurency  =  houzez_option('currency_paid_submission');
+    $return_url      = houzez_get_template_link('template/template-thankyou.php');
+    $cancel_url   =  houzez_get_dashboard_profile_link();
+    $plan_description = $packName.' '.esc_html__('Membership payment on ','houzez').$blogInfo;
+
+    $is_paypal_live      = houzez_option('paypal_api');
+    $host                = 'https://api.sandbox.paypal.com';
+    if( $is_paypal_live =='live'){
+        $host = 'https://api.paypal.com';
+    }
+
+    $url             =   $host.'/v1/oauth2/token';
+    $postArgs        =   'grant_type=client_credentials';
+    $url                = $host.'/v1/payments/billing-plans/';
+
+    $payment = array(
+            'name' => $packName,
+            'description' => $plan_description,
+            'type' => 'INFINITE',
+        );
+
+    $payment['payment_definitions'][0] = array(
+        'name' => 'Regular payment definition',
+        'type' => 'REGULAR',
+        'frequency' => $billingPeriod,
+        'frequency_interval' => $billingFreq,
+        'amount' => array(
+            'value' => $packPrice,
+            'currency' => $submissionCurency
+        ),
+        "cycles" => "0",
+    );
+
+    $payment['merchant_preferences'] = array(
+        'return_url' => $return_url,
+        'cancel_url' => $cancel_url,
+        'auto_bill_amount' => 'YES',
+        'initial_fail_amount_action' => 'CONTINUE',
+        'max_fail_attempts' => '0'
+    );
+
+    $jsonEncode = json_encode($payment);
+    $json_response = houzez_execute_paypal_request( $url, $jsonEncode, $access_token );
+
+    if( $json_response['state']!='ACTIVE'){
+        if( houzez_activate_billing_plan( $json_response['id'] ) ) {
+            $billing_info = array();
+            $billing_info['id']          =   $json_response['id'];
+            $billing_info['name']        =   $json_response['name'];
+            $billing_info['description'] =   $json_response['description'];
+            $billing_info['type']        =   $json_response['type'];
+            $billing_info['state']       =   "ACTIVE";
+           
+            update_post_meta($package_id,'houzez_paypal_billing_plan_'.$is_paypal_live, $billing_info);
+            echo houzez_create_paypal_membership($package_id, $packPrice, $access_token, $json_response['id']);
+            return true;
+        }
+    }
+
+}
+
+function houzez_create_paypal_membership($package_id, $package_price, $access_token, $plan_id) {
+    global $current_user;
+    wp_get_current_user();
+    $userID = $current_user->ID;
+    $blogInfo = esc_url( home_url() );
+
+    $host = 'https://api.sandbox.paypal.com';
+    $is_paypal_live = houzez_option('paypal_api');
+    if( $is_paypal_live =='live'){
+        $host = 'https://api.paypal.com';
+    }
+
+    $time               =  time();
+    $date               =  date('Y-m-d H:i:s',$time);
+
+    $packPrice          =  $package_price;
+    $packName           =  get_the_title($package_id);
+    $billingPeriod      =  get_post_meta( $package_id, 'fave_billing_time_unit', true );
+    $billingFreq        =  intval( get_post_meta( $package_id, 'fave_billing_unit', true ) );
+
+    $submissionCurency  =  houzez_option('currency_paid_submission');
+    $return_url      = houzez_get_template_link('template/template-thankyou.php');
+    $plan_description = $packName.' '.esc_html__('Membership payment on ','houzez').$blogInfo;
+    $return_url      = houzez_get_template_link('template/template-thankyou.php');
+
+    $url        = $host.'/v1/payments/billing-agreements/';
+
+
+    $billing_agreement = array(
+                        'name'          => $packName,
+                        'description'   => $plan_description,
+                        'start_date'    =>  gmdate("Y-m-d\TH:i:s\Z", time()+100 ),
+        
+    );
+    
+    $billing_agreement['payer'] =   array(
+                        'payment_method'=>'paypal',
+                        'payer_info'    => array('email'=>'payer@example.com'),
+    );
+     
+    $billing_agreement['plan'] = array(
+                        'id' => $plan_id,
+    );
+    
+    $json       = json_encode($billing_agreement);
+    $json_resp  = houzez_execute_paypal_request($url, $json,$access_token);
+  
+    foreach ($json_resp['links'] as $link) {
+            if($link['rel'] == 'execute'){
+                    $payment_execute_url = $link['href'];
+                    $payment_execute_method = $link['method'];
+            } else  if($link['rel'] == 'approval_url'){
+                            $payment_approval_url = $link['href'];
+                            $payment_approval_method = $link['method'];
+                            print $payment_approval_url;
+                    }
+    }
+
+    $output['payment_execute_url'] = $payment_execute_url;
+    $output['access_token']        = $access_token;
+    $output['package_id']          = $package_id;
+    $output['recursive']         = 1;
+    $output['date']              = $date;
+
+    $save_output[$userID]   =   $output;
+    update_option('houzez_paypal_package_transfer', $save_output);
+    update_user_meta( $userID, 'houzez_paypal_package', $output);
+    
+}
+
 function houzez_stripe_payment_membership( $pack_id, $pack_price, $title ) {
 
     require_once( get_template_directory() . '/framework/stripe-php/init.php' );

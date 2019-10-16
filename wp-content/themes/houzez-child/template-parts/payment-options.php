@@ -13,6 +13,8 @@ if (isset($_GET['state'])) {
 	$selected_package_id = $value[1];
 }
 
+$tax = get_post_meta( $selected_package_id, 'fave_package_tax', true );
+
 $payment1 = get_post_meta( $selected_package_id, 'fave_payment_option1', true );
 $payment2 = get_post_meta( $selected_package_id, 'fave_payment_option2', true );
 $payment3 = get_post_meta( $selected_package_id, 'fave_payment_option3', true );
@@ -56,6 +58,20 @@ $_SESSION['option'] = $option;
 	    <input type="radio" class="payment_option" name="payment_option" id="option1" value="option1" 
 	    	<?php if ($option == 'option1') echo 'checked'; ?>/>
 	    <label for="option1"><?php echo esc_attr('Daily €' . $payment1); ?></label>
+	    <?php if ($tax != '') { ?>
+	    <p>
+	    	<?php
+                echo $tax . '% Tax €';
+                echo floor(($payment1 * (int)$tax / 100) * 100) / 100;
+            ?>
+	    </p>
+	    <p>
+	    	<?php
+                echo esc_attr('Total €');
+                echo floor(($payment1 * (1 + (int)$tax / 100)) * 100) / 100;
+            ?>
+	    </p>
+	    <?php } ?>
 	</div>
 	<?php } ?>
 
@@ -64,6 +80,20 @@ $_SESSION['option'] = $option;
 	    <input type="radio" class="payment_option" name="payment_option" id="option2" value="option2" 
 	    	<?php if ($option == 'option2') echo 'checked'; ?>/>
 	    <label for="option2"><?php echo esc_attr('Weekly €' . $payment2); ?></label>
+	    <?php if ($tax != '') { ?>
+	    <p>
+	    	<?php
+                echo $tax . '% Tax €';
+                echo floor(($payment2 * (int)$tax / 100) * 100) / 100;
+            ?>
+	    </p>
+	    <p>
+	    	<?php
+                echo esc_attr('Total €');
+                echo floor(($payment2 * (1 + (int)$tax / 100)) * 100) / 100;
+            ?>
+	    </p>
+	    <?php } ?>
 	</div>
 	<?php } ?>
 
@@ -72,6 +102,20 @@ $_SESSION['option'] = $option;
 	    <input type="radio" class="payment_option" name="payment_option" id="option3" value="option3" 
 	    	<?php if ($option == 'option3') echo 'checked'; ?>/>
 	    <label for="option3"><?php echo esc_attr('Monthly €' . $payment3); ?></label>
+	    <?php if ($tax != '') { ?>
+	    <p>
+	    	<?php
+                echo $tax . '% Tax €';
+                echo floor(($payment3 * (int)$tax / 100) * 100) / 100;
+            ?>
+	    </p>
+	    <p>
+	    	<?php
+                echo esc_attr('Total €');
+                echo floor(($payment3 * (1 + (int)$tax / 100)) * 100) / 100;
+            ?>
+	    </p>
+	    <?php } ?>
 	</div>
 	<?php } ?>
 
@@ -80,6 +124,20 @@ $_SESSION['option'] = $option;
 	    <input type="radio" class="payment_option" name="payment_option" id="option4" value="option4" 
 	    	<?php if ($option == 'option4') echo 'checked'; ?>/>
 	    <label for="option4"><?php echo esc_attr('Every 3 months €' . $payment4); ?></label>
+	    <?php if ($tax != '') { ?>
+	    <p>
+	    	<?php
+                echo $tax . '% Tax €';
+                echo floor(($payment4 * (int)$tax / 100) * 100) / 100;
+            ?>
+	    </p>
+	    <p>
+	    	<?php
+                echo esc_attr('Total €');
+                echo floor(($payment4 * (1 + (int)$tax / 100)) * 100) / 100;
+            ?>
+	    </p>
+	    <?php } ?>
 	</div>
 	<?php } ?>
 
@@ -88,6 +146,20 @@ $_SESSION['option'] = $option;
 	    <input type="radio" class="payment_option" name="payment_option" id="option5" value="option5" 
 	    	<?php if ($option == 'option5') echo 'checked'; ?>/>
 	    <label for="option5"><?php echo esc_attr('Every 6 months €' . $payment5); ?></label>
+	    <?php if ($tax != '') { ?>
+	    <p>
+	    	<?php
+                echo $tax . '% Tax €';
+                echo floor(($payment5 * (int)$tax / 100) * 100) / 100;
+            ?>
+	    </p>
+	    <p>
+	    	<?php
+                echo esc_attr('Total €');
+                echo floor(($payment5 * (1 + (int)$tax / 100)) * 100) / 100;
+            ?>
+	    </p>
+	    <?php } ?>
 	</div>
 	<?php } ?>
 
@@ -96,6 +168,20 @@ $_SESSION['option'] = $option;
 	    <input type="radio" class="payment_option" name="payment_option" id="option6" value="option6" 
 	    	<?php if ($option == 'option6') echo 'checked'; ?>/>
 	    <label for="option6"><?php echo esc_attr('Yearly €' . $payment6); ?></label>
+	    <?php if ($tax != '') { ?>
+	    <p>
+	    	<?php
+                echo $tax . '% Tax €';
+                echo floor(($payment6 * (int)$tax / 100) * 100) / 100;
+            ?>
+	    </p>
+	    <p>
+	    	<?php
+                echo esc_attr('Total €');
+                echo floor(($payment6 * (1 + (int)$tax / 100)) * 100) / 100;
+            ?>
+	    </p>
+	    <?php } ?>
 	</div>
 	<?php } ?>
 
@@ -112,6 +198,20 @@ $_SESSION['option'] = $option;
 	    <input type="radio" class="payment_option" name="payment_option" id="option7" value="option7" 
 	    	<?php if ($option == 'option7') echo 'checked'; ?>/>
 	    <label for="option7"><?php echo esc_attr($str . ' €' . $payment7); ?></label>
+	    <?php if ($tax != '') { ?>
+	    <p>
+	    	<?php
+                echo $tax . '% Tax €';
+                echo floor(($payment7 * (int)$tax / 100) * 100) / 100;
+            ?>
+	    </p>
+	    <p>
+	    	<?php
+                echo esc_attr('Total €');
+                echo floor(($payment7 * (1 + (int)$tax / 100)) * 100) / 100;
+            ?>
+	    </p>
+	    <?php } ?>
 	</div>
 	<?php } ?>
 </div>

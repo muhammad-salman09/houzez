@@ -93,6 +93,8 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                     if ($flag) {
                         $price = get_post_meta( get_the_ID(), 'fave_package_price', true );
 
+                        $tax = get_post_meta( get_the_ID(), 'fave_package_tax', true );
+
                         $cValue  = get_post_meta( get_the_ID(), 'fave_billing_custom_value', true );
                         $cOption = get_post_meta( get_the_ID(), 'fave_billing_custom_option', true );
 
@@ -128,6 +130,7 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                             </div>
 
                             <div class="package-content">
+                                <?php the_content(); ?>
                                 <?php if( $pack_unlimited_listings == 1 ) { ?>
                                     <p>
                                         <?php echo $houzez_local['unlimited_listings']; ?>
@@ -158,36 +161,120 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                                 <p>
                                     <?php echo esc_attr('Daily €' . $option1); ?>
                                 </p>
+                                    <?php if ($tax != '') { ?>
+                                    <p>
+                                    <?php
+                                        echo $tax . '% Tax €';
+                                        echo floor(($option1 * (int)$tax / 100) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <p>
+                                    <?php
+                                        echo esc_attr('Total €');
+                                        echo floor(($option1 * (1 + (int)$tax / 100)) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <?php } ?>
                                 <?php } ?>
 
                                 <?php if ($option2 != '' && $option2 > 0) { ?>
                                 <p>
                                     <?php echo esc_attr('Weekly €' . $option2); ?>
                                 </p>
+                                    <?php if ($tax != '') { ?>
+                                    <p>
+                                    <?php
+                                        echo $tax . '% Tax €';
+                                        echo floor(($option2 * (int)$tax / 100) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <p>
+                                    <?php
+                                        echo esc_attr('Total €');
+                                        echo floor(($option2 * (1 + (int)$tax / 100)) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <?php } ?>
                                 <?php } ?>
 
                                 <?php if ($option3 != '' && $option3 > 0) { ?>
                                 <p>
                                     <?php echo esc_attr('Monthly €' . $option3); ?>
                                 </p>
+                                    <?php if ($tax != '') { ?>
+                                    <p>
+                                    <?php
+                                        echo $tax . '% Tax €';
+                                        echo floor(($option3 * (int)$tax / 100) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <p>
+                                    <?php
+                                        echo esc_attr('Total €');
+                                        echo floor(($option3 * (1 + (int)$tax / 100)) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <?php } ?>
                                 <?php } ?>
 
                                 <?php if ($option4 != '' && $option4 > 0) { ?>
                                 <p>
                                     <?php echo esc_attr('Every 3 months €' . $option4); ?>
                                 </p>
+                                    <?php if ($tax != '') { ?>
+                                    <p>
+                                    <?php
+                                        echo $tax . '% Tax €';
+                                        echo floor(($option4 * (int)$tax / 100) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <p>
+                                    <?php
+                                        echo esc_attr('Total €');
+                                        echo floor(($option4 * (1 + (int)$tax / 100)) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <?php } ?>
                                 <?php } ?>
 
                                 <?php if ($option5 != '' && $option5 > 0) { ?>
                                 <p>
                                     <?php echo esc_attr('Every 6 months €' . $option5); ?>
                                 </p>
+                                    <?php if ($tax != '') { ?>
+                                    <p>
+                                    <?php
+                                        echo $tax . '% Tax €';
+                                        echo floor(($option5 * (int)$tax / 100) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <p>
+                                    <?php
+                                        echo esc_attr('Total €');
+                                        echo floor(($option5 * (1 + (int)$tax / 100)) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <?php } ?>
                                 <?php } ?>
 
                                 <?php if ($option6 != '' && $option6 > 0) { ?>
                                 <p>
                                     <?php echo esc_attr('Yearly €' . $option6); ?>
                                 </p>
+                                    <?php if ($tax != '') { ?>
+                                    <p>
+                                    <?php
+                                        echo $tax . '% Tax €';
+                                        echo floor(($option6 * (int)$tax / 100) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <p>
+                                    <?php
+                                        echo esc_attr('Total €');
+                                        echo floor(($option6 * (1 + (int)$tax / 100)) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <?php } ?>
                                 <?php } ?>
 
                                 <?php if ($option7 != '' && $option7 > 0) { ?>
@@ -204,6 +291,20 @@ get_template_part( 'template-parts/dashboard', 'menu' ); ?>
                                         echo esc_attr($str . ' €' . $option7);
                                     ?>
                                 </p>
+                                    <?php if ($tax != '') { ?>
+                                    <p>
+                                    <?php
+                                        echo $tax . '% Tax €';
+                                        echo floor(($option7 * (int)$tax / 100) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <p>
+                                    <?php
+                                        echo esc_attr('Total €');
+                                        echo floor(($option7 * (1 + (int)$tax / 100)) * 100) / 100;
+                                    ?>
+                                    </p>
+                                    <?php } ?>
                                 <?php } ?>
                             </div>
                         </div>

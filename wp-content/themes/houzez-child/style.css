@@ -120,6 +120,7 @@ Template: houzez
 /* Advanced Search Style Start */
 .advanced-search-module {
 	margin: 0 auto;
+	padding: 35px 15px !important;
 	width: 80%;
 }
 .advance-title {
@@ -711,6 +712,10 @@ Template: houzez
 }
 .option-select-block .radio {
 	padding: 10px 0 10px 50px;
+}
+.option-select-block .radio p {
+	margin: 0;
+	padding-left: 20px;
 }
 /* Package Style End */
 
